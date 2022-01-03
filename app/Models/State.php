@@ -19,4 +19,9 @@ class State extends Model
     {
         return $this->hasMany(Chapter::class);
     }
+
+    public function sections(): HasMany
+    {
+        return $this->hasMany(Section::class);
+    }
 }

@@ -28,21 +28,26 @@ class FetchLaws extends Command
      */
     public function handle()
     {
-        $service =$this->stateService($this->argument('title'));
+        $service = $this->stateService($this->argument('title'));
 
         $chapters = $service->saveChapters();
         if ($chapters['count'] === 0) {
             $this->error('Could not find chapters in the page');
             // email admins
+        } else {
+            $this->info($chapters['message']);
         }
-        $this->info($chapters['message']);
 
         $sections = $service->saveChapterSections();
         if ($sections['count'] === 0) {
             $this->error('Could not find sections in the page');
             // email admins
+        } else {
+            $this->info($sections['message']);
         }
-        $this->info($sections['message']);
+
+        $content = $service->saveSectionContent();
+        $this->info($content['message']);
 
         return 0;
     }

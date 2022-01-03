@@ -17,6 +17,8 @@ abstract class AbstractStateService
 
     abstract protected function saveChapterSections(): array;
 
+    abstract protected function saveSectionContent(): array;
+
     protected function saveChapter(string $code, string $description)
     {
         return Chapter::firstOrCreate(
@@ -31,7 +33,8 @@ abstract class AbstractStateService
             ['code' => $code, 'chapter_id' => $chapter->id],
             [
                 'state_id' => $this->state->id,
-                'description' => strip_tags($description)
+                'description' => strip_tags($description),
+                'url' => $this->endpoint.$code,
             ],
         );
     }
@@ -45,7 +48,7 @@ abstract class AbstractStateService
     {
         return [
             'count' => $count,
-            'message' => $count ? $count.' '.$name.' were imported' : 'no '.$name.' were imported',
+            'message' => $count ? $name.' were imported' : 'no '.$name.' were imported',
         ];
     }
 }

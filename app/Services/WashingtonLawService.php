@@ -63,4 +63,19 @@ class WashingtonLawService extends AbstractStateService
         return $this->response($sectionCount, 'sections');
     }
 
+    public function saveSectionContent(): array
+    {
+        $contentCount = 0;
+
+        foreach ($this->state->sections as $section) {
+            $sectionPage = $this->fetch($section->url);
+
+            $sectionContent = $sectionPage->filter('#contentWrapper div')->eq(2);
+            $section->update(['content' => $sectionContent->text('')]);
+
+            $contentCount += 1;
+        }
+
+        return $this->response($contentCount, 'contents');
+    }
 }

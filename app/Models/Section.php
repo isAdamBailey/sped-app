@@ -14,6 +14,7 @@ class Section extends Model
         'state_id',
         'chapter_id',
         'code',
+        'url',
         'description',
         'content',
     ];

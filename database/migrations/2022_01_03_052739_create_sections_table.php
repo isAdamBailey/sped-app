@@ -20,7 +20,8 @@ class CreateSectionsTable extends Migration
             $table->foreignIdFor(Chapter::class);
             $table->foreignIdFor(State::class);
             $table->string('code');
-            $table->mediumText('description')->nullable();
+            $table->string('url');
+            $table->mediumText('description');
             $table->longText('content')->nullable();
             $table->timestamps();
         });
