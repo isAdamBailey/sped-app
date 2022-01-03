@@ -20,7 +20,8 @@ class Chapter extends Model
 
     public function state(): BelongsTo
     {
-        return $this->belongsTo(State::class);
+        return $this->belongsTo(State::class)
+            ->select(['id', 'name', 'code_title']);
     }
 
     public function sections(): HasMany
