@@ -12,7 +12,7 @@ class State extends Model
 
     protected $fillable = [
         'name',
-        'code_title'
+        'code_title',
     ];
 
     public function chapters(): HasMany

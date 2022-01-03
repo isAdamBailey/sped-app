@@ -4,13 +4,15 @@ namespace App\Abstracts;
 
 use App\Models\Chapter;
 use App\Models\Section;
-use Illuminate\Database\Eloquent\Model;
 use Goutte;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class AbstractStateService
 {
     protected Model $state;
+
     protected string $endpoint;
+
     protected string $title;
 
     abstract protected function saveChapters(): array;

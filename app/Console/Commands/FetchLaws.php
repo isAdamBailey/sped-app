@@ -33,7 +33,7 @@ class FetchLaws extends Command
         $chapters = $service->saveChapters();
         if ($chapters['count'] === 0) {
             $this->error('Could not find chapters in the page');
-            // email admins
+        // email admins
         } else {
             $this->info($chapters['message']);
         }
@@ -41,7 +41,7 @@ class FetchLaws extends Command
         $sections = $service->saveChapterSections();
         if ($sections['count'] === 0) {
             $this->error('Could not find sections in the page');
-            // email admins
+        // email admins
         } else {
             $this->info($sections['message']);
         }
@@ -52,7 +52,8 @@ class FetchLaws extends Command
         return 0;
     }
 
-    private function stateService(?string $title) {
+    private function stateService(?string $title)
+    {
         return match ($this->argument('state')) {
             'washington' => new WashingtonLawService($title),
             default => new WashingtonLawService($title),

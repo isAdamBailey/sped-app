@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class CreateStatesTable extends Migration
 {
@@ -23,7 +23,7 @@ class CreateStatesTable extends Migration
 
         DB::table('states')->insert([
             'name' => 'washington',
-            'code_title' => 'RSW'
+            'code_title' => 'RSW',
         ]);
     }
 
