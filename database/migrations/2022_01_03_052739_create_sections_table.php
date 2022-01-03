@@ -1,11 +1,12 @@
 <?php
 
+use App\Models\Chapter;
 use App\Models\State;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChaptersTable extends Migration
+class CreateSectionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,12 +15,13 @@ class CreateChaptersTable extends Migration
      */
     public function up()
     {
-        Schema::create('chapters', function (Blueprint $table) {
+        Schema::create('sections', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Chapter::class);
             $table->foreignIdFor(State::class);
             $table->string('code');
             $table->mediumText('description')->nullable();
-            $table->integer('active')->default(1);
+            $table->longText('content')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ class CreateChaptersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chapters');
+        Schema::dropIfExists('sections');
     }
 }

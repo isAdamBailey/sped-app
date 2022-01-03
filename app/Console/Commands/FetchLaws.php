@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Chapter;
+use App\Services\WashingtonLawService;
 use Illuminate\Console\Command;
 
 class FetchLaws extends Command
@@ -12,29 +12,14 @@ class FetchLaws extends Command
      *
      * @var string
      */
-    protected $signature = 'fetch:state-laws';
+    protected $signature = 'fetch:laws {state?} {title?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'This command fetches state laws and persists them to the database';
-
-    protected string $endpoint = '';
-    protected string $title = '';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->endpoint = 'https://app.leg.wa.gov/RCW/default.aspx?cite=';
-        $this->title = '28A';
-    }
+    protected $description = 'This command accepts a state name, then fetches laws from that state and persists them to the database';
 
     /**
      * Execute the console command.
@@ -43,28 +28,29 @@ class FetchLaws extends Command
      */
     public function handle()
     {
-        // fetching all chapters
-        $content = \Goutte::request('GET', $this->endpoint.$this->title);
+        $service =$this->stateService($this->argument('title'));
 
-        $responseArray = [];
-        $content->filter('table tr')->each(function ($node) use (&$responseArray) {
-            $code = $node->filter('td a')->first()->text();
-            $description = $node->filter('td')->last()->text();
+        $chapters = $service->saveChapters();
+        if ($chapters['count'] === 0) {
+            $this->error('Could not find chapters in the page');
+            // email admins
+        }
+        $this->info($chapters['message']);
 
-            $chapter = Chapter::firstOrCreate(['code' => $code]);
+        $sections = $service->saveChapterSections();
+        if ($sections['count'] === 0) {
+            $this->error('Could not find sections in the page');
+            // email admins
+        }
+        $this->info($sections['message']);
 
-            if($chapter->description !== $description) {
-                $chapter->update(['description' => $description]);
-            }
-
-            $responseArray[] = [
-                'code' => $code,
-                'description' => $description
-            ];
-
-        });
-
-        $this->info(count($responseArray).' chapters have been imported');
         return 0;
+    }
+
+    private function stateService(?string $title) {
+        return match ($this->argument('state')) {
+            'washington' => new WashingtonLawService($title),
+            default => new WashingtonLawService($title),
+        };
     }
 }
