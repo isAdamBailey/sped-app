@@ -9,8 +9,8 @@
                 </div>
 
                 <div
-                    v-html="terms"
                     class="w-full sm:max-w-2xl mt-6 p-6 bg-white shadow-md overflow-hidden sm:rounded-lg prose"
+                    v-html="terms"
                 ></div>
             </div>
         </div>
@@ -23,11 +23,12 @@ import { Head } from "@inertiajs/inertia-vue3";
 import JetAuthenticationCardLogo from "@/Jetstream/AuthenticationCardLogo.vue";
 
 export default defineComponent({
-    props: ["terms"],
-
     components: {
         Head,
         JetAuthenticationCardLogo,
+    },
+    props: {
+        terms: String,
     },
 });
 </script>

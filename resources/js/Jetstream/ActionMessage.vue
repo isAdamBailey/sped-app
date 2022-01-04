@@ -16,6 +16,8 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-    props: ["on"],
+    props: {
+        on: Boolean,
+    },
 });
 </script>

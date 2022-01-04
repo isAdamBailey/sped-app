@@ -1,10 +1,10 @@
 <template>
     <div>
-        <button :class="classes" class="w-full text-left" v-if="as == 'button'">
+        <button v-if="as == 'button'" :class="classes" class="w-full text-left">
             <slot></slot>
         </button>
 
-        <Link :href="href" :class="classes" v-else>
+        <Link v-else :href="href" :class="classes">
             <slot />
         </Link>
     </div>
@@ -18,7 +18,11 @@ export default defineComponent({
     components: {
         Link,
     },
-    props: ["active", "href", "as"],
+    props: {
+        active: Boolean,
+        href: String,
+        as: String,
+    },
 
     computed: {
         classes() {

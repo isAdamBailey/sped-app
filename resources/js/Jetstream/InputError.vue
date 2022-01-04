@@ -10,6 +10,8 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-    props: ["message"],
+    props: {
+        message: String,
+    },
 });
 </script>

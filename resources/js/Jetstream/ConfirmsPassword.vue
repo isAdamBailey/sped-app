@@ -14,11 +14,11 @@
 
                 <div class="mt-4">
                     <jet-input
+                        ref="password"
+                        v-model="form.password"
                         type="password"
                         class="mt-1 block w-3/4"
                         placeholder="Password"
-                        ref="password"
-                        v-model="form.password"
                         @keyup.enter="confirmPassword"
                     />
 
@@ -33,9 +33,9 @@
 
                 <jet-button
                     class="ml-2"
-                    @click="confirmPassword"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
+                    @click="confirmPassword"
                 >
                     {{ button }}
                 </jet-button>
@@ -53,21 +53,6 @@ import JetInputError from "./InputError.vue";
 import JetSecondaryButton from "./SecondaryButton.vue";
 
 export default defineComponent({
-    emits: ["confirmed"],
-
-    props: {
-        title: {
-            default: "Confirm Password",
-        },
-        content: {
-            default:
-                "For your security, please confirm your password to continue.",
-        },
-        button: {
-            default: "Confirm",
-        },
-    },
-
     components: {
         JetButton,
         JetDialogModal,
@@ -75,6 +60,23 @@ export default defineComponent({
         JetInputError,
         JetSecondaryButton,
     },
+
+    props: {
+        title: {
+            type: String,
+            default: "Confirm Password",
+        },
+        content: {
+            type: String,
+            default:
+                "For your security, please confirm your password to continue.",
+        },
+        button: {
+            type: String,
+            default: "Confirm",
+        },
+    },
+    emits: ["confirmed"],
 
     data() {
         return {

@@ -13,8 +13,8 @@
         </div>
 
         <div
-            class="mb-4 font-medium text-sm text-green-600"
             v-if="verificationLinkSent"
+            class="mb-4 font-medium text-sm text-green-600"
         >
             A new verification link has been sent to the email address you
             provided during registration.
@@ -67,15 +67,15 @@ export default defineComponent({
         };
     },
 
-    methods: {
-        submit() {
-            this.form.post(this.route("verification.send"));
-        },
-    },
-
     computed: {
         verificationLinkSent() {
             return this.status === "verification-link-sent";
+        },
+    },
+
+    methods: {
+        submit() {
+            this.form.post(this.route("verification.send"));
         },
     },
 });

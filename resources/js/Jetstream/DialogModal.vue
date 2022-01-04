@@ -26,23 +26,25 @@ import { defineComponent } from "vue";
 import Modal from "./Modal.vue";
 
 export default defineComponent({
-    emits: ["close"],
-
     components: {
         Modal,
     },
 
     props: {
         show: {
+            type: Boolean,
             default: false,
         },
         maxWidth: {
+            type: String,
             default: "2xl",
         },
         closeable: {
+            type: Boolean,
             default: true,
         },
     },
+    emits: ["close"],
 
     methods: {
         close() {

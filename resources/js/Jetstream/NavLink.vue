@@ -12,7 +12,10 @@ export default defineComponent({
     components: {
         Link,
     },
-    props: ["href", "active"],
+    props: {
+        active: Boolean,
+        href: String,
+    },
 
     computed: {
         classes() {

@@ -30,9 +30,9 @@
                 <jet-label for="name" value="Team Name" />
                 <jet-input
                     id="name"
+                    v-model="form.name"
                     type="text"
                     class="block w-full mt-1"
-                    v-model="form.name"
                     autofocus
                 />
                 <jet-input-error :message="form.errors.name" class="mt-2" />

@@ -23,9 +23,9 @@
                 <jet-label for="email" value="Email" />
                 <jet-input
                     id="email"
+                    v-model="form.email"
                     type="email"
                     class="mt-1 block w-full"
-                    v-model="form.email"
                     required
                     autofocus
                 />

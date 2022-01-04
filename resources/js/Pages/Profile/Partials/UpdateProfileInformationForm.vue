@@ -9,21 +9,21 @@
         <template #form>
             <!-- Profile Photo -->
             <div
-                class="col-span-6 sm:col-span-4"
                 v-if="$page.props.jetstream.managesProfilePhotos"
+                class="col-span-6 sm:col-span-4"
             >
                 <!-- Profile Photo File Input -->
                 <input
+                    ref="photo"
                     type="file"
                     class="hidden"
-                    ref="photo"
                     @change="updatePhotoPreview"
                 />
 
                 <jet-label for="photo" value="Photo" />
 
                 <!-- Current Profile Photo -->
-                <div class="mt-2" v-show="!photoPreview">
+                <div v-show="!photoPreview" class="mt-2">
                     <img
                         :src="user.profile_photo_url"
                         :alt="user.name"
@@ -32,7 +32,7 @@
                 </div>
 
                 <!-- New Profile Photo Preview -->
-                <div class="mt-2" v-show="photoPreview">
+                <div v-show="photoPreview" class="mt-2">
                     <span
                         class="block rounded-full w-20 h-20 bg-cover bg-no-repeat bg-center"
                         :style="
@@ -51,10 +51,10 @@
                 </jet-secondary-button>
 
                 <jet-secondary-button
+                    v-if="user.profile_photo_path"
                     type="button"
                     class="mt-2"
                     @click.prevent="deletePhoto"
-                    v-if="user.profile_photo_path"
                 >
                     Remove Photo
                 </jet-secondary-button>
@@ -67,9 +67,9 @@
                 <jet-label for="name" value="Name" />
                 <jet-input
                     id="name"
+                    v-model="form.name"
                     type="text"
                     class="mt-1 block w-full"
-                    v-model="form.name"
                     autocomplete="name"
                 />
                 <jet-input-error :message="form.errors.name" class="mt-2" />
@@ -80,9 +80,9 @@
                 <jet-label for="email" value="Email" />
                 <jet-input
                     id="email"
+                    v-model="form.email"
                     type="email"
                     class="mt-1 block w-full"
-                    v-model="form.email"
                 />
                 <jet-input-error :message="form.errors.email" class="mt-2" />
             </div>
@@ -124,7 +124,9 @@ export default defineComponent({
         JetSecondaryButton,
     },
 
-    props: ["user"],
+    props: {
+        user: Object,
+    },
 
     data() {
         return {

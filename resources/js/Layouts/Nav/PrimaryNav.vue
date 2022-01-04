@@ -32,9 +32,9 @@
                     <div class="ml-3 relative">
                         <!-- Teams Dropdown -->
                         <jet-dropdown
+                            v-if="$page.props.jetstream.hasTeamFeatures"
                             align="right"
                             width="60"
-                            v-if="$page.props.jetstream.hasTeamFeatures"
                         >
                             <template #trigger>
                                 <span class="inline-flex rounded-md">
@@ -89,11 +89,11 @@
                                         </jet-dropdown-link>
 
                                         <jet-dropdown-link
-                                            :href="route('teams.create')"
                                             v-if="
                                                 $page.props.jetstream
                                                     .canCreateTeams
                                             "
+                                            :href="route('teams.create')"
                                         >
                                             Create New Team
                                         </jet-dropdown-link>
@@ -125,7 +125,7 @@
                                                     >
                                                         <svg
                                                             v-if="
-                                                                team.id ==
+                                                                team.id ===
                                                                 $page.props.user
                                                                     .current_team_id
                                                             "
@@ -212,8 +212,8 @@
                                 </jet-dropdown-link>
 
                                 <jet-dropdown-link
-                                    :href="route('api-tokens.index')"
                                     v-if="$page.props.jetstream.hasApiFeatures"
+                                    :href="route('api-tokens.index')"
                                 >
                                     API Tokens
                                 </jet-dropdown-link>
@@ -234,11 +234,11 @@
                 <!-- Hamburger -->
                 <div class="-mr-2 flex items-center sm:hidden">
                     <button
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition"
                         @click="
                             showingNavigationDropdown =
                                 !showingNavigationDropdown
                         "
-                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition"
                     >
                         <svg
                             class="h-6 w-6"
@@ -328,9 +328,9 @@
                     </jet-responsive-nav-link>
 
                     <jet-responsive-nav-link
+                        v-if="$page.props.jetstream.hasApiFeatures"
                         :href="route('api-tokens.index')"
                         :active="route().current('api-tokens.index')"
-                        v-if="$page.props.jetstream.hasApiFeatures"
                     >
                         API Tokens
                     </jet-responsive-nav-link>
@@ -364,9 +364,9 @@
                         </jet-responsive-nav-link>
 
                         <jet-responsive-nav-link
+                            v-if="$page.props.jetstream.canCreateTeams"
                             :href="route('teams.create')"
                             :active="route().current('teams.create')"
-                            v-if="$page.props.jetstream.canCreateTeams"
                         >
                             Create New Team
                         </jet-responsive-nav-link>
@@ -387,7 +387,7 @@
                                     <div class="flex items-center">
                                         <svg
                                             v-if="
-                                                team.id ==
+                                                team.id ===
                                                 $page.props.user.current_team_id
                                             "
                                             class="mr-2 h-5 w-5 text-green-400"
@@ -417,7 +417,6 @@
 <script>
 import { defineComponent } from "vue";
 import JetApplicationMark from "@/Jetstream/ApplicationMark.vue";
-import JetBanner from "@/Jetstream/Banner.vue";
 import JetDropdown from "@/Jetstream/Dropdown.vue";
 import JetDropdownLink from "@/Jetstream/DropdownLink.vue";
 import JetNavLink from "@/Jetstream/NavLink.vue";
@@ -427,7 +426,6 @@ import { Link } from "@inertiajs/inertia-vue3";
 export default defineComponent({
     components: {
         JetApplicationMark,
-        JetBanner,
         JetDropdown,
         JetDropdownLink,
         JetNavLink,

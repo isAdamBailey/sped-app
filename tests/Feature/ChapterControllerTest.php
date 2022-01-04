@@ -26,8 +26,7 @@ class ChapterControllerTest extends TestCase
         Chapter::factory()
             ->count(130)
             ->for($state)
-            ->create()
-        ;
+            ->create();
 
         $response = $this->get(route('chapters.index'));
 
@@ -58,8 +57,7 @@ class ChapterControllerTest extends TestCase
         Chapter::factory()
             ->count(130)
             ->for($state)
-            ->create()
-        ;
+            ->create();
 
         $searchTerm = 'qwerty';
 
@@ -96,8 +94,7 @@ class ChapterControllerTest extends TestCase
         $chapter = Chapter::factory()
             ->for($state)
             ->has(Section::factory()->for($state)->count(5))
-            ->create()
-        ;
+            ->create();
 
         $response = $this->get(route('chapters.show', $chapter));
 

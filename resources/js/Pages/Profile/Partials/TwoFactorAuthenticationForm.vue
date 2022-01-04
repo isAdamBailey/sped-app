@@ -9,13 +9,13 @@
 
         <template #content>
             <h3
-                class="text-lg font-medium text-gray-900"
                 v-if="twoFactorEnabled"
+                class="text-lg font-medium text-gray-900"
             >
                 You have enabled two factor authentication.
             </h3>
 
-            <h3 class="text-lg font-medium text-gray-900" v-else>
+            <h3 v-else class="text-lg font-medium text-gray-900">
                 You have not enabled two factor authentication.
             </h3>
 
@@ -79,8 +79,8 @@
                 <div v-else>
                     <jet-confirms-password @confirmed="regenerateRecoveryCodes">
                         <jet-secondary-button
-                            class="mr-3"
                             v-if="recoveryCodes.length > 0"
+                            class="mr-3"
                         >
                             Regenerate Recovery Codes
                         </jet-secondary-button>
@@ -88,8 +88,8 @@
 
                     <jet-confirms-password @confirmed="showRecoveryCodes">
                         <jet-secondary-button
-                            class="mr-3"
                             v-if="recoveryCodes.length === 0"
+                            class="mr-3"
                         >
                             Show Recovery Codes
                         </jet-secondary-button>
@@ -138,6 +138,12 @@ export default defineComponent({
         };
     },
 
+    computed: {
+        twoFactorEnabled() {
+            return !this.enabling && this.$page.props.user.two_factor_enabled;
+        },
+    },
+
     methods: {
         enableTwoFactorAuthentication() {
             this.enabling = true;
@@ -172,7 +178,7 @@ export default defineComponent({
         },
 
         regenerateRecoveryCodes() {
-            axios.post("/user/two-factor-recovery-codes").then((response) => {
+            axios.post("/user/two-factor-recovery-codes").then(() => {
                 this.showRecoveryCodes();
             });
         },
@@ -184,12 +190,6 @@ export default defineComponent({
                 preserveScroll: true,
                 onSuccess: () => (this.disabling = false),
             });
-        },
-    },
-
-    computed: {
-        twoFactorEnabled() {
-            return !this.enabling && this.$page.props.user.two_factor_enabled;
         },
     },
 });

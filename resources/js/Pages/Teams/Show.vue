@@ -37,14 +37,17 @@ import TeamMemberManager from "@/Pages/Teams/Partials/TeamMemberManager.vue";
 import UpdateTeamNameForm from "@/Pages/Teams/Partials/UpdateTeamNameForm.vue";
 
 export default defineComponent({
-    props: ["team", "availableRoles", "permissions"],
-
     components: {
         AppLayout,
         DeleteTeamForm,
         JetSectionBorder,
         TeamMemberManager,
         UpdateTeamNameForm,
+    },
+    props: {
+        team: Object,
+        availableRoles: Array,
+        permissions: Object,
     },
 });
 </script>

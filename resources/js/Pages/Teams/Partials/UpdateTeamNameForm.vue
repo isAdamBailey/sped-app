@@ -33,9 +33,9 @@
 
                 <jet-input
                     id="name"
+                    v-model="form.name"
                     type="text"
                     class="mt-1 block w-full"
-                    v-model="form.name"
                     :disabled="!permissions.canUpdateTeam"
                 />
 
@@ -43,7 +43,7 @@
             </div>
         </template>
 
-        <template #actions v-if="permissions.canUpdateTeam">
+        <template v-if="permissions.canUpdateTeam" #actions>
             <jet-action-message :on="form.recentlySuccessful" class="mr-3">
                 Saved.
             </jet-action-message>
@@ -77,7 +77,10 @@ export default defineComponent({
         JetLabel,
     },
 
-    props: ["team", "permissions"],
+    props: {
+        team: Object,
+        permissions: Object,
+    },
 
     data() {
         return {
