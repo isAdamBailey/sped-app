@@ -9,8 +9,6 @@ class CreateStatesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -22,15 +20,19 @@ class CreateStatesTable extends Migration
         });
 
         DB::table('states')->insert([
-            'name' => 'washington',
-            'code_title' => 'RSW',
+            [
+                'name' => 'washington',
+                'code_title' => 'RSW',
+            ],
+            [
+                'name' => 'oregon',
+                'code_title' => 'ORS',
+            ],
         ]);
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

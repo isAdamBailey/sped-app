@@ -25,12 +25,12 @@ class WashingtonLawService extends AbstractStateService
         if ($chapterTable->count() > 0) {
             $chapterTable->filter('tr')->each(function (Crawler $node) use (&$chapterCount) {
                 $code = $node->filter('td a')->first()->text('');
-                if (! empty($code)) {
+                if (!empty($code)) {
                     $description = $node->filter('td')->last()->text('No Description');
 
                     $this->saveChapter($code, $description);
 
-                    $chapterCount += 1;
+                    ++$chapterCount;
                 }
             });
         }
@@ -50,11 +50,11 @@ class WashingtonLawService extends AbstractStateService
             if ($sectionTable->count() > 0) {
                 $sectionTable->filter('tr')->each(function (Crawler $node) use (&$sectionCount, $chapter) {
                     $sectionCode = $node->filter('td a')->text('');
-                    if (! empty($sectionCode)) {
+                    if (!empty($sectionCode)) {
                         $description = $node->filter('td')->last()->text('No Description');
 
                         $this->saveSection($chapter, $sectionCode, $description);
-                        $sectionCount += 1;
+                        ++$sectionCount;
                     }
                 });
             }
@@ -73,7 +73,7 @@ class WashingtonLawService extends AbstractStateService
             $sectionContent = $sectionPage->filter('#contentWrapper div')->eq(2);
             $section->update(['content' => $sectionContent->text('')]);
 
-            $contentCount += 1;
+            ++$contentCount;
         }
 
         return $this->response($contentCount, 'contents');

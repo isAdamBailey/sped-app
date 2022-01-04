@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Services\OregonLawService;
 use App\Services\WashingtonLawService;
+use Exception;
 use Illuminate\Console\Command;
 
 class FetchLaws extends Command
@@ -29,9 +31,14 @@ class FetchLaws extends Command
     public function handle()
     {
         $service = $this->stateService($this->argument('title'));
+        if (is_a($service, Exception::class)) {
+            $this->error($service->getMessage());
+
+            return 1;
+        }
 
         $chapters = $service->saveChapters();
-        if ($chapters['count'] === 0) {
+        if (0 === $chapters['count']) {
             $this->error('Could not find chapters in the page');
         // email admins
         } else {
@@ -39,7 +46,7 @@ class FetchLaws extends Command
         }
 
         $sections = $service->saveChapterSections();
-        if ($sections['count'] === 0) {
+        if (0 === $sections['count']) {
             $this->error('Could not find sections in the page');
         // email admins
         } else {
@@ -52,11 +59,12 @@ class FetchLaws extends Command
         return 0;
     }
 
-    private function stateService(?string $title)
+    private function stateService(?string $title): OregonLawService|Exception|WashingtonLawService
     {
         return match ($this->argument('state')) {
             'washington' => new WashingtonLawService($title),
-            default => new WashingtonLawService($title),
+            'oregon' => new OregonLawService($title),
+            default => new Exception('Enter a valid state')
         };
     }
 }
