@@ -26,24 +26,27 @@ class OregonLawService extends AbstractStateService
         if ($titleTable->count() > 0) {
             $titleTable->filter('tbody')->each(function (Crawler $node) use (&$chapterCount) {
                 if (str_contains($node->text(), 'Title Number : '.$this->title)) {
-                    // get array of chapters from the table text
+                    // get first and last chapters from the table text
                     $chapters = explode('-', Str::between($node->html(), 'Chapters ', '<span'));
 
                     // first chapter has the list of all chapters in the html
                     $page = $this->fetch($this->endpoint.'ors/ors'.$chapters[0].'.html');
 
+                    $page->filter('p span')->each(function (Crawler $chapterNode, $index) use (&$chapterCount) {
+                        $content = htmlentities($chapterNode->text(), null, 'utf-8');
 
-                    dd($page);
-
+                        // locate each chapter on the page based on how many spaces are before it...????
+                        $spacesBeforeChapterNumber = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                        if (Str::startsWith($content, ['Chapter', $spacesBeforeChapterNumber])) {
+                            $chapterString = trim(Str::remove(['Chapter', '&nbsp;'], $content));
+                            $chapterArray = explode('. ', $chapterString);
+                            if (2 === count($chapterArray)) {
+                                $this->saveChapter($chapterArray[0], $chapterArray[1]);
+                                $chapterCount++;
+                            }
+                        }
+                    });
                 }
-//                $code = $node->filter('td a')->first()->text('');
-//                if (!empty($code)) {
-//                    $description = $node->filter('td')->last()->text('No Description');
-//
-//                    $this->saveChapter($code, $description);
-//
-//                    ++$chapterCount;
-//                }
             });
         }
 
