@@ -16,6 +16,7 @@ class CreateChaptersTable extends Migration
     {
         Schema::create('chapters', function (Blueprint $table) {
             $table->id();
+            $table->string('slug');
             $table->foreignIdFor(State::class);
             $table->string('title_id');
             $table->string('code');

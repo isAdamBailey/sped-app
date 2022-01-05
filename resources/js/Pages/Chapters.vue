@@ -39,7 +39,7 @@
                     <Link
                         v-for="(chapter, index) in chaptersData"
                         :key="index"
-                        :href="route('chapters.show', chapter.id)"
+                        :href="route('chapters.show', chapter.slug)"
                     >
                         <li
                             class="p-3 hover:bg-gray-100 hover:text-blue-800 transition"

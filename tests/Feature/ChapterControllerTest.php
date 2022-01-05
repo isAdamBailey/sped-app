@@ -36,7 +36,7 @@ class ChapterControllerTest extends TestCase
                 ->url('/chapters')
                 ->has('chapters.data', 15)
                 ->has('chapters.links')
-                ->has('chapters.data.0.id')
+                ->has('chapters.data.0.slug')
                 ->has('chapters.data.0.code')
                 ->has('chapters.data.0.description')
                 ->has(
@@ -73,7 +73,7 @@ class ChapterControllerTest extends TestCase
                 ->url('/chapters?search='.$searchTerm)
                 ->has('chapters.data', 1)
                 ->has('chapters.links')
-                ->has('chapters.data.0.id')
+                ->has('chapters.data.0.slug')
                 ->has('chapters.data.0.code')
                 ->has('chapters.data.0.description')
                 ->has(
@@ -101,7 +101,7 @@ class ChapterControllerTest extends TestCase
         $response->assertInertia(
             fn (Assert $page) => $page
                 ->component('Chapter')
-                ->url('/chapters/'.$chapter->id)
+                ->url('/chapters/'.$chapter->slug)
                 ->has('chapter.id')
                 ->has('chapter.code')
                 ->has('chapter.description')

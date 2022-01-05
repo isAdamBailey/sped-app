@@ -30,7 +30,7 @@ class ChapterController extends Controller
 
         return Inertia::render('Chapters', [
             'chapters' => $chapters->through(fn ($chapter) => [
-                'id' => $chapter->id,
+                'slug' => $chapter->slug,
                 'code' => $chapter->code,
                 'description' => $chapter->description,
                 'state' => $chapter->state,
