@@ -51,9 +51,14 @@ class WashingtonLawService extends AbstractStateService
                 $sectionTable->filter('tr')->each(function (Crawler $node) use (&$sectionCount, $chapter) {
                     $sectionCode = $node->filter('td a')->text('');
                     if (! empty($sectionCode)) {
-                        $description = $node->filter('td')->last()->text('No Description');
+                        $description = $node->filter('td')->last()->text('');
 
-                        $this->saveSection($chapter, $sectionCode, $description);
+                        $this->saveSection($chapter, [
+                            'code' => $sectionCode,
+                            'description' => $description,
+                            'url' => $this->endpoint.$sectionCode,
+                        ]);
+
                         $sectionCount++;
                     }
                 });

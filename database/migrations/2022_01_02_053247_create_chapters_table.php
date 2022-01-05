@@ -17,6 +17,7 @@ class CreateChaptersTable extends Migration
         Schema::create('chapters', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(State::class);
+            $table->string('title_id');
             $table->string('code');
             $table->mediumText('description')->nullable();
             $table->integer('active')->default(1);

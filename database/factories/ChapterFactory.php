@@ -19,6 +19,7 @@ class ChapterFactory extends Factory
         return [
             'code' => $this->faker->randomFloat(3, 2, 30),
             'description' => $this->faker->sentences(2, true),
+            'title_id' => $this->faker->word(),
         ];
     }
 }

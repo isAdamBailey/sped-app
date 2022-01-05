@@ -33,7 +33,6 @@ class FetchLaws extends Command
         $service = $this->stateService($this->argument('title'));
         if (is_a($service, Exception::class)) {
             $this->error($service->getMessage());
-
             return 1;
         }
 
@@ -41,6 +40,7 @@ class FetchLaws extends Command
         if (0 === $chapters['count']) {
             $this->error('Could not find chapters in the page');
         // email admins
+            return 1;
         } else {
             $this->info($chapters['message']);
         }
@@ -49,6 +49,7 @@ class FetchLaws extends Command
         if (0 === $sections['count']) {
             $this->error('Could not find sections in the page');
         // email admins
+            return 1;
         } else {
             $this->info($sections['message']);
         }

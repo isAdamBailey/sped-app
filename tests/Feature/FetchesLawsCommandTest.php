@@ -11,26 +11,36 @@ class FetchesLawsCommandTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_fetches_washington_chapters()
+    public function test_fetches_washington_chapters_and_contents()
     {
-        // title 28a has 73 chapters totalling 1428 sections (actual title we want)
-//        $title = '28A';
-//        $chapterCount = 73;
-//        $sectionCount = 1428;
+        // title 1 has 10 chapters totalling 143 sections
+        $this->helperTestChapterContents('washington', [
+            'title' => 1,
+            'chapterCount' => 10,
+            'sectionCount' => 143,
+        ]);
+    }
 
-        // title 1 has 10 chapters totalling 143 sections (quicker for testing)
-        $title = 1;
-        $chapterCount = 10;
-        $sectionCount = 143;
+    public function test_fetches_oregon_chapters_and_contents()
+    {
+        // oregon title 30 has 28 chapters totalling 1703 sections
+        $this->helperTestChapterContents('oregon', [
+            'title' => 30,
+            'chapterCount' => 28,
+            'sectionCount' => 1703,
+        ]);
+    }
 
-        $this->artisan('fetch:laws washington '.$title)
+    private function helperTestChapterContents(string $state, array $data)
+    {
+        $this->artisan('fetch:laws '.$state.' '.$data['title'])
             ->expectsOutput('chapters were imported')
             ->expectsOutput('sections were imported')
             ->expectsOutput('contents were imported')
             ->assertExitCode(0);
 
-        $this->assertDatabaseCount('chapters', $chapterCount);
-        $this->assertDatabaseCount('sections', $sectionCount);
+        $this->assertDatabaseCount('chapters', $data['chapterCount']);
+        $this->assertDatabaseCount('sections', $data['sectionCount']);
         // make sure each section has content
         $this->assertFalse(Section::where('content', '')->exists());
         $this->assertFalse(Section::whereNull('content')->exists());

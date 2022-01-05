@@ -24,19 +24,19 @@ abstract class AbstractStateService
     protected function saveChapter(string $code, string $description)
     {
         return Chapter::firstOrCreate(
-            ['code' => $code, 'state_id' => $this->state->id],
-            ['description' => strip_tags($description)]
+            ['code' => trim($code), 'state_id' => $this->state->id, 'title_id' => $this->title],
+            ['description' => trim(strip_tags($description))]
         );
     }
 
-    protected function saveSection(Chapter $chapter, string $code, string $description): Model
+    protected function saveSection(Chapter $chapter, array $data): Model
     {
         return Section::firstOrCreate(
-            ['code' => $code, 'chapter_id' => $chapter->id],
+            ['code' => trim($data['code']), 'chapter_id' => $chapter->id],
             [
                 'state_id' => $this->state->id,
-                'description' => strip_tags($description),
-                'url' => $this->endpoint.$code,
+                'description' => trim(strip_tags($data['description'])),
+                'url' => $data['url'],
             ],
         );
     }

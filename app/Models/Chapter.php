@@ -12,6 +12,7 @@ class Chapter extends Model
     use HasFactory;
 
     protected $fillable = [
+        'title_id',
         'state_id',
         'code',
         'description',

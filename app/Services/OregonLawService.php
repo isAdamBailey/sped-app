@@ -32,7 +32,7 @@ class OregonLawService extends AbstractStateService
                     // first chapter has the list of all chapters in the html
                     $page = $this->fetch($this->endpoint.'ors/ors'.$chapters[0].'.html');
 
-                    $page->filter('p span')->each(function (Crawler $chapterNode, $index) use (&$chapterCount) {
+                    $page->filter('p span')->each(function (Crawler $chapterNode) use (&$chapterCount) {
                         $content = htmlentities($chapterNode->text(), null, 'utf-8');
 
                         // locate each chapter on the page based on how many spaces are before it...????
@@ -56,6 +56,30 @@ class OregonLawService extends AbstractStateService
     public function saveChapterSections(): array
     {
         $sectionCount = 0;
+
+        $activeChapters = $this->state->chapters()->whereActive('1')->get();
+        foreach ($activeChapters as $chapter) {
+            $urlString = $this->endpoint.'ors/ors'.$chapter->code.'.html';
+            $chapterPage = $this->fetch($urlString);
+
+            $chapterPage->filter('p span')->each(function (Crawler $node) use ($chapter, $urlString, &$sectionCount) {
+                $content = htmlentities($node->text(), null, 'utf-8');
+                if (Str::startsWith($content, $chapter->code)) {
+                    // literally using the number of forced spaces to explode this data.
+                    $numberOfSpaces = $chapter->code === '329A' ? '&nbsp;' : '&nbsp;&nbsp;&nbsp;&nbsp;';
+                    $sectionArray = explode($numberOfSpaces, $content);
+                    if (count($sectionArray) === 2) {
+                        $this->saveSection($chapter, [
+                            'code' => $sectionArray[0],
+                            'description' => $sectionArray[1],
+                            'url' => $urlString,
+                        ]);
+
+                        $sectionCount++;
+                    }
+                }
+            });
+        }
 
         return $this->response($sectionCount, 'sections');
     }
