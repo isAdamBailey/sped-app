@@ -24,11 +24,11 @@ class ChapterController extends Controller
             )
             ->when(
                 $filter,
-                fn ($query) => $query->whereHas('state', fn ($q) => $q->where('states.name', $filter)),
+                fn ($query) => $query->whereHas('state', fn ($q) => $q->where('states.name', strtolower($filter))),
             )
             ->paginate(100);
 
-        return Inertia::render('StateLaws', [
+        return Inertia::render('Chapters', [
             'chapters' => $chapters->through(fn ($chapter) => [
                 'id' => $chapter->id,
                 'code' => $chapter->code,

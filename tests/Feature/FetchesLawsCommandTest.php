@@ -13,6 +13,7 @@ class FetchesLawsCommandTest extends TestCase
 
     public function test_fetches_washington_chapters_and_contents()
     {
+        $this->markTestSkipped();
         // title 1 has 10 chapters totalling 143 sections
         $this->helperTestChapterContents('washington', [
             'title' => 1,
@@ -23,6 +24,7 @@ class FetchesLawsCommandTest extends TestCase
 
     public function test_fetches_oregon_chapters_and_contents()
     {
+        $this->markTestSkipped();
         // oregon title 30 has 28 chapters totalling 1703 sections
         $this->helperTestChapterContents('oregon', [
             'title' => 30,

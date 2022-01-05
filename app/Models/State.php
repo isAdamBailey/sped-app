@@ -15,6 +15,11 @@ class State extends Model
         'code_title',
     ];
 
+    public function getNameAttribute($value): string
+    {
+        return ucfirst($value);
+    }
+
     public function chapters(): HasMany
     {
         return $this->hasMany(Chapter::class);

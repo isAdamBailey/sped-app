@@ -32,7 +32,7 @@ class ChapterControllerTest extends TestCase
 
         $response->assertInertia(
             fn (Assert $chapter) => $chapter
-                ->component('StateLaws')
+                ->component('Chapters')
                 ->url('/chapters')
                 ->has('chapters.data', 100)
                 ->has('chapters.links')
@@ -69,7 +69,7 @@ class ChapterControllerTest extends TestCase
 
         $response->assertInertia(
             fn (Assert $chapter) => $chapter
-                ->component('StateLaws')
+                ->component('Chapters')
                 ->url('/chapters?search='.$searchTerm)
                 ->has('chapters.data', 1)
                 ->has('chapters.links')

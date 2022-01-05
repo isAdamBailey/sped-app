@@ -10,7 +10,10 @@
         </template>
 
         <div class="p-10">
-            <div class="text-2xl font-bold mb-5">Sections</div>
+            <div class="text-2xl font-bold mb-5">
+                {{ chapter.state.name }} Chapter {{ chapter.state.code_title }}
+                {{ chapter.code }}
+            </div>
             <div v-for="(section, index) in chapter.sections" :key="index">
                 <div class="font-semibold">
                     <span class="text-lg">Section {{ section.code }}</span>

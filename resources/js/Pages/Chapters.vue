@@ -12,7 +12,7 @@
                     <dropdown-link
                         :href="
                             route('chapters.index', {
-                                filter: 'washington',
+                                filter: 'Washington',
                                 search: $page.props.search,
                             })
                         "
@@ -22,7 +22,7 @@
                     <dropdown-link
                         :href="
                             route('chapters.index', {
-                                filter: 'oregon',
+                                filter: 'Oregon',
                                 search: $page.props.search,
                             })
                         "

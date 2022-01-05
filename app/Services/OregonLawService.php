@@ -88,6 +88,33 @@ class OregonLawService extends AbstractStateService
     {
         $contentCount = 0;
 
+        foreach ($this->state->sections as $section) {
+            $sectionPage = $this->fetch($section->url);
+
+            // we need to find the p tag with the section code, then append further p tag contents until the section code changes.
+            $hasTitle = false;
+            $sectionCode = '';
+            $contents = '';
+            $sectionPage->filter('p')->each(function (Crawler $node) use ($section, &$hasTitle, &$sectionCode, &$contents, &$contentCount) {
+                $hasTitle = $node->filter('b')->count();
+                if ($hasTitle) {
+                    $sectionCode = $node->filter('b')->text('');
+                }
+                // as long as the section code doesn't change, keep appending contents
+                if (Str::contains($sectionCode, $section->code)) {
+                    if ($hasTitle) {
+                        $contents .= htmlentities($node->filter('span')->eq(1)->text(''), null, 'utf-8');
+                    } else {
+                        $contents .= htmlentities($node->text(''), null, 'utf-8');
+                    }
+                }
+            });
+
+            $section->update(['content' => html_entity_decode(Str::replace('&nbsp;', '', $contents))]);
+
+            $contentCount++;
+        }
+
         return $this->response($contentCount, 'contents');
     }
 }
