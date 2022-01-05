@@ -34,24 +34,34 @@
                     </dropdown-link>
                 </filter-dropdown>
             </div>
-            <ul v-if="chapters.data.length">
-                <Link
-                    v-for="(chapter, index) in chapters.data"
-                    :key="index"
-                    :href="route('chapters.show', chapter.id)"
-                >
-                    <li
-                        class="p-3 hover:bg-gray-100 hover:text-blue-800 transition"
+            <div v-if="chaptersData.length">
+                <ul>
+                    <Link
+                        v-for="(chapter, index) in chaptersData"
+                        :key="index"
+                        :href="route('chapters.show', chapter.id)"
                     >
-                        <span class="font-bold"
-                            >{{ chapter.state.code_title }}
-                            {{ chapter.code }}</span
+                        <li
+                            class="p-3 hover:bg-gray-100 hover:text-blue-800 transition"
                         >
-                        -
-                        {{ chapter.description }}
-                    </li>
-                </Link>
-            </ul>
+                            <span class="font-bold"
+                                >{{ chapter.state.code_title }}
+                                {{ chapter.code }}</span
+                            >
+                            -
+                            {{ chapter.description }}
+                        </li>
+                    </Link>
+                </ul>
+                <div
+                    v-if="chapters.next_page_url"
+                    class="flex justify-center mt-7"
+                >
+                    <jet-button @click="loadMore">
+                        Load More Chapters
+                    </jet-button>
+                </div>
+            </div>
             <div v-else class="my-12 text-gray-500">No chapters found</div>
         </div>
     </app-layout>
@@ -64,9 +74,11 @@ import { Link } from "@inertiajs/inertia-vue3";
 import SearchInput from "@/Jetstream/SearchInput";
 import FilterDropdown from "@/Jetstream/FilterDropdown";
 import DropdownLink from "@/Jetstream/DropdownLink";
+import JetButton from "@/Jetstream/Button";
 
 export default defineComponent({
     components: {
+        JetButton,
         DropdownLink,
         FilterDropdown,
         SearchInput,
@@ -75,6 +87,35 @@ export default defineComponent({
     },
     props: {
         chapters: Object,
+    },
+    data() {
+        return {
+            chaptersData: this.chapters.data,
+        };
+    },
+    watch: {
+        chapters() {
+            this.chaptersData.push(...this.chapters.data);
+        },
+    },
+    methods: {
+        loadMore() {
+            const links = this.chapters.links;
+            const next = links[links.length - 1];
+            if (next.url) {
+                this.$inertia.get(
+                    next.url,
+                    {
+                        search: this.$inertia.page.props.search,
+                        filter: this.$inertia.page.props.filter,
+                    },
+                    {
+                        preserveScroll: true,
+                        preserveState: true,
+                    }
+                );
+            }
+        },
     },
 });
 </script>
