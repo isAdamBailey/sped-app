@@ -105,6 +105,7 @@ export default defineComponent({
         widthClass() {
             return {
                 48: "w-48",
+                60: "w-60",
             }[this.width.toString()];
         },
 

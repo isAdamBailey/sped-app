@@ -17,9 +17,11 @@ export default defineComponent({
     computed: {
         dropdownText() {
             let text = "Filter By State";
-            const state = this.$inertia.page.props.chapters.data[0].state;
+            const state = this.$inertia.page.props.chapters.data[0]?.state;
             if (this.$inertia.page.props.filter) {
-                text = `${this.$inertia.page.props.filter} ${state.code_title}`;
+                text = `${this.$inertia.page.props.filter} ${
+                    state?.code_title || ""
+                }`;
             }
             return text;
         },

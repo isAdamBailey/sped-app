@@ -24,7 +24,7 @@ class ChapterControllerTest extends TestCase
 
         $state = State::factory()->create();
         Chapter::factory()
-            ->count(130)
+            ->count(20)
             ->for($state)
             ->create();
 
@@ -34,7 +34,7 @@ class ChapterControllerTest extends TestCase
             fn (Assert $chapter) => $chapter
                 ->component('Chapters')
                 ->url('/chapters')
-                ->has('chapters.data', 100)
+                ->has('chapters.data', 15)
                 ->has('chapters.links')
                 ->has('chapters.data.0.id')
                 ->has('chapters.data.0.code')

@@ -26,7 +26,7 @@ class ChapterController extends Controller
                 $filter,
                 fn ($query) => $query->whereHas('state', fn ($q) => $q->where('states.name', strtolower($filter))),
             )
-            ->paginate(100);
+            ->paginate();
 
         return Inertia::render('Chapters', [
             'chapters' => $chapters->through(fn ($chapter) => [

@@ -34,17 +34,25 @@
                     </dropdown-link>
                 </filter-dropdown>
             </div>
-            <ul>
-                <li v-for="(chapter, index) in chapters.data" :key="index">
-                    <Link
-                        class="font-semibold text-blue-600 hover:underline"
-                        :href="route('chapters.show', chapter.id)"
+            <ul v-if="chapters.data.length">
+                <Link
+                    v-for="(chapter, index) in chapters.data"
+                    :key="index"
+                    :href="route('chapters.show', chapter.id)"
+                >
+                    <li
+                        class="p-3 hover:bg-gray-100 hover:text-blue-800 transition"
                     >
-                        {{ chapter.state.code_title }} {{ chapter.code }}
-                    </Link>
-                    - {{ chapter.description }}
-                </li>
+                        <span class="font-bold"
+                            >{{ chapter.state.code_title }}
+                            {{ chapter.code }}</span
+                        >
+                        -
+                        {{ chapter.description }}
+                    </li>
+                </Link>
             </ul>
+            <div v-else class="my-12 text-gray-500">No chapters found</div>
         </div>
     </app-layout>
 </template>
