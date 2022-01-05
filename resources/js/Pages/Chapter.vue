@@ -1,8 +1,12 @@
 <template>
     <app-layout :title="`${chapter.state.code_title} ${chapter.code}`">
         <template #header>
-            <Link :href="route('chapters.index')">State Laws</Link> / Chapter
-            {{ chapter.state.code_title }} {{ chapter.code }}
+            <Link
+                class="underline text-blue-600 hover:text-blue-400"
+                :href="route('chapters.index')"
+                >State Laws</Link
+            >
+            / Chapter {{ chapter.state.code_title }} {{ chapter.code }}
         </template>
 
         <div class="p-10">
@@ -13,7 +17,13 @@
                     - {{ section.description }}
                 </div>
                 <div class="ml-5 prose max-w-full">
-                    <div class="text-blue-600 text-sm">{{ section.url }}</div>
+                    <a
+                        :href="section.url"
+                        class="text-blue-600 text-sm"
+                        target="_blank"
+                        rel="nofollow"
+                        >{{ section.url }}</a
+                    >
                     {{ section.content }}
                 </div>
             </div>

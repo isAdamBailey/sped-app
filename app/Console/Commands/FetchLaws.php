@@ -33,26 +33,25 @@ class FetchLaws extends Command
         $service = $this->stateService($this->argument('title'));
         if (is_a($service, Exception::class)) {
             $this->error($service->getMessage());
+
             return 1;
         }
 
         $chapters = $service->saveChapters();
         if (0 === $chapters['count']) {
             $this->error('Could not find chapters in the page');
-        // email admins
+            // email admins
             return 1;
-        } else {
-            $this->info($chapters['message']);
         }
+        $this->info($chapters['message']);
 
         $sections = $service->saveChapterSections();
         if (0 === $sections['count']) {
             $this->error('Could not find sections in the page');
-        // email admins
+            // email admins
             return 1;
-        } else {
-            $this->info($sections['message']);
         }
+        $this->info($sections['message']);
 
         $content = $service->saveSectionContent();
         $this->info($content['message']);
