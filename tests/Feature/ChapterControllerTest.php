@@ -102,7 +102,7 @@ class ChapterControllerTest extends TestCase
             fn (Assert $page) => $page
                 ->component('Chapter')
                 ->url('/chapters/'.$chapter->slug)
-                ->has('chapter.id')
+                ->has('chapter.slug')
                 ->has('chapter.code')
                 ->has('chapter.description')
                 ->has('chapter.sections', 5)

@@ -30,7 +30,8 @@ class Chapter extends Model
 
     public function sections(): HasMany
     {
-        return $this->hasMany(Section::class);
+        return $this->hasMany(Section::class)
+            ->select(['chapter_id', 'url', 'code', 'description', 'content']);
     }
 
     /**

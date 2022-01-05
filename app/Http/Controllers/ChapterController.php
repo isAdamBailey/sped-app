@@ -43,7 +43,8 @@ class ChapterController extends Controller
     public function show(Chapter $chapter): Response
     {
         return Inertia::render('Chapter', [
-            'chapter' => $chapter->load(['state', 'sections']),
+            'chapter' => $chapter->load(['state', 'sections'])
+                ->only('slug', 'code', 'description', 'title_id', 'state', 'sections'),
         ]);
     }
 }
