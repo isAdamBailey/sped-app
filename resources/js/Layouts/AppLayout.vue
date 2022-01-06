@@ -27,6 +27,8 @@
                         </div>
                     </div>
                 </div>
+
+                <scroll-top />
             </main>
         </div>
     </div>
@@ -37,9 +39,11 @@ import { defineComponent } from "vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import PrimaryNav from "@/Layouts/Nav/PrimaryNav";
 import Banner from "@/Jetstream/Banner";
+import ScrollTop from "@/Jetstream/ScrollTop";
 
 export default defineComponent({
     components: {
+        ScrollTop,
         Banner,
         PrimaryNav,
         Head,
