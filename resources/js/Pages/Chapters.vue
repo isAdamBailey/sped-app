@@ -91,15 +91,21 @@ export default defineComponent({
     data() {
         return {
             chaptersData: this.chapters.data,
+            loadingMore: false,
         };
     },
     watch: {
         chapters() {
-            this.chaptersData.push(...this.chapters.data);
+            if (this.loadingMore) {
+                this.chaptersData.push(...this.chapters.data);
+                this.loadingMore = false;
+            }
         },
     },
     methods: {
         loadMore() {
+            this.loadingMore = true;
+
             const links = this.chapters.links;
             const next = links[links.length - 1];
             if (next.url) {

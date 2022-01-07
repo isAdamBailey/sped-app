@@ -46,7 +46,7 @@ export default defineComponent({
             this.$inertia.get(
                 route(this.routeName),
                 { search: this.search, filter: this.filter },
-                { preserveState: true }
+                { preserveState: false }
             );
         }, 500),
     },
