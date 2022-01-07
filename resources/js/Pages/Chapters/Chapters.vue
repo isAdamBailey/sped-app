@@ -6,7 +6,12 @@
             <div class="flex justify-between">
                 <div class="text-2xl font-bold mb-5">Chapters</div>
 
-                <search-input route-name="chapters.index" />
+                <search-input
+                    v-if="
+                        $page.props.user.permissions.includes('edit chapters')
+                    "
+                    route-name="chapters.index"
+                />
 
                 <filter-dropdown>
                     <dropdown-link
@@ -35,13 +40,15 @@
                 </filter-dropdown>
             </div>
             <div v-if="chaptersData.length">
-                <ul>
-                    <Link
-                        v-for="(chapter, index) in chaptersData"
-                        :key="index"
-                        :href="route('chapters.show', chapter.slug)"
-                    >
-                        <li
+                <div
+                    v-for="(chapter, index) in chaptersData"
+                    :key="index"
+                    class="flex items-center"
+                >
+                    <chapter-active-form :chapter="chapter" />
+
+                    <Link :href="route('chapters.show', chapter.slug)">
+                        <div
                             class="p-3 hover:bg-gray-100 hover:text-blue-800 transition"
                         >
                             <span class="font-bold"
@@ -50,9 +57,9 @@
                             >
                             -
                             {{ chapter.description }}
-                        </li>
+                        </div>
                     </Link>
-                </ul>
+                </div>
                 <div
                     v-if="chapters.next_page_url"
                     class="flex justify-center mt-7"
@@ -75,9 +82,11 @@ import SearchInput from "@/Jetstream/SearchInput";
 import FilterDropdown from "@/Jetstream/FilterDropdown";
 import DropdownLink from "@/Jetstream/DropdownLink";
 import JetButton from "@/Jetstream/Button";
+import ChapterActiveForm from "@/Pages/Chapters/Partials/ChapterActiveForm";
 
 export default defineComponent({
     components: {
+        ChapterActiveForm,
         JetButton,
         DropdownLink,
         FilterDropdown,

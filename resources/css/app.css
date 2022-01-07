@@ -1,3 +1,10 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+@layer base {
+    input:checked ~ .dot {
+        transform: translateX(100%);
+        @apply bg-blue-400;
+    }
+}

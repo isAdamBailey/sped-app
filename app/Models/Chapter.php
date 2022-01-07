@@ -40,9 +40,8 @@ class Chapter extends Model
     public function getSlugOptions() : SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom(function (self $chapter) {
-                return $chapter->state->code_title.'-'.$chapter->code;
-            })->saveSlugsTo('slug');
+            ->generateSlugsFrom(['code_title', 'code'])
+            ->saveSlugsTo('slug');
     }
 
     /**

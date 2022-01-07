@@ -32,7 +32,7 @@ class ChapterControllerTest extends TestCase
 
         $response->assertInertia(
             fn (Assert $chapter) => $chapter
-                ->component('Chapters')
+                ->component('Chapters/Chapters')
                 ->url('/chapters')
                 ->has('chapters.data', 15)
                 ->has('chapters.links')
@@ -46,6 +46,47 @@ class ChapterControllerTest extends TestCase
                         ->where('code_title', $state->code_title)
                         ->etc()
                 )
+        );
+    }
+
+    public function testChaptersIndexPageDoesNotShowInactiveChapters()
+    {
+        $this->actingAs($user = User::factory()->create());
+
+        $state = State::factory()->create();
+        Chapter::factory()
+            ->count(20)
+            ->for($state)
+            ->create(['active' => 0]);
+
+        $response = $this->get(route('chapters.index'));
+
+        $response->assertInertia(
+            fn (Assert $chapter) => $chapter
+                ->component('Chapters/Chapters')
+                ->url('/chapters')
+                ->has('chapters.data', 0)
+        );
+    }
+
+    public function testChaptersIndexPageDoesShowsInactiveChaptersForSuperAdmin()
+    {
+        $this->actingAs($user = User::factory()->create());
+        $user->assignRole('super-admin');
+
+        $state = State::factory()->create();
+        Chapter::factory()
+            ->count(20)
+            ->for($state)
+            ->create(['active' => 0]);
+
+        $response = $this->get(route('chapters.index'));
+
+        $response->assertInertia(
+            fn (Assert $chapter) => $chapter
+                ->component('Chapters/Chapters')
+                ->url('/chapters')
+                ->has('chapters.data', 15)
         );
     }
 
@@ -69,11 +110,12 @@ class ChapterControllerTest extends TestCase
 
         $response->assertInertia(
             fn (Assert $chapter) => $chapter
-                ->component('Chapters')
+                ->component('Chapters/Chapters')
                 ->url('/chapters?search='.$searchTerm)
                 ->has('chapters.data', 1)
                 ->has('chapters.links')
                 ->has('chapters.data.0.slug')
+                ->has('chapters.data.0.active')
                 ->has('chapters.data.0.code')
                 ->has('chapters.data.0.description')
                 ->has(
@@ -100,10 +142,11 @@ class ChapterControllerTest extends TestCase
 
         $response->assertInertia(
             fn (Assert $page) => $page
-                ->component('Chapter')
+                ->component('Chapters/Chapter')
                 ->url('/chapters/'.$chapter->slug)
                 ->has('chapter.slug')
                 ->has('chapter.code')
+                ->has('chapter.active')
                 ->has('chapter.description')
                 ->has('chapter.sections', 5)
                 ->has('chapter.sections.0.code')

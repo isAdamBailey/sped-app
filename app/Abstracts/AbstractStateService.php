@@ -27,7 +27,7 @@ abstract class AbstractStateService
 
         $chapter = Chapter::firstOrCreate(
             ['code' => trim($code), 'state_id' => $this->state->id, 'title_id' => $this->title],
-            ['description' => $description]
+            ['description' => $description, 'code_title' => $this->state->code_title]
         );
 
         if ($description !== $chapter->description) {

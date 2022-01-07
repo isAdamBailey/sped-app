@@ -19,6 +19,7 @@ class CreateChaptersTable extends Migration
             $table->string('slug');
             $table->foreignIdFor(State::class);
             $table->string('title_id');
+            $table->string('code_title');
             $table->string('code');
             $table->mediumText('description')->nullable();
             $table->integer('active')->default(1);

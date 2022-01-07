@@ -27,4 +27,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/chapters', [ChapterController::class, 'index'])->name('chapters.index');
     Route::get('/chapters/{chapter}', [ChapterController::class, 'show'])->name('chapters.show');
+
+    Route::group(['middleware' => ['can:edit chapters']], function () {
+        Route::put('chapters/{chapter}', [ChapterController::class, 'update'])->name('chapters.update');
+    });
 });
