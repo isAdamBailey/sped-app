@@ -10,12 +10,18 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param  Schedule  $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('fetch:laws washington 28A')
+            ->dailyAt('00:00')
+            ->emailOutputOnFailure('adamjbailey7@gmail.com');
+
+        $schedule->command('fetch:laws oregon 30')
+            ->dailyAt('01:00')
+            ->emailOutputOnFailure('adamjbailey7@gmail.com');
     }
 
     /**
