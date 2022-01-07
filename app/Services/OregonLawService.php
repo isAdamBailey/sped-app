@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Abstracts\AbstractStateService;
+use App\Models\Chapter;
 use App\Models\State;
 use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
@@ -21,6 +22,7 @@ class OregonLawService extends AbstractStateService
         $content = $this->fetch($this->endpoint.'pages/ors.aspx');
 
         $chapterCount = 0;
+        $initialCount = Chapter::count();
 
         $titleTable = $content->filter('table')->eq(1);
         if ($titleTable->count() > 0) {
@@ -50,20 +52,27 @@ class OregonLawService extends AbstractStateService
             });
         }
 
-        return $this->response($chapterCount, 'chapters');
+        return $this->response($initialCount, $chapterCount, 'chapters');
     }
 
     public function saveChapterSections(): array
     {
+        $initialCount = 0;
+
+        // this value is updated by reference in the loop below.
         $sectionCount = 0;
 
         $activeChapters = $this->state->chapters()->whereActive('1')->get();
+
         foreach ($activeChapters as $chapter) {
+            $initialCount += $chapter->sections->count();
+
             $urlString = $this->endpoint.'ors/ors'.$chapter->code.'.html';
             $chapterPage = $this->fetch($urlString);
 
             $chapterPage->filter('p span')->each(function (Crawler $node) use ($chapter, $urlString, &$sectionCount) {
                 $content = htmlentities($node->text(), null, 'utf-8');
+
                 if (Str::startsWith($content, $chapter->code)) {
                     // literally using the number of forced spaces to explode this data.
                     $numberOfSpaces = $chapter->code === '329A' ? '&nbsp;' : '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -81,20 +90,24 @@ class OregonLawService extends AbstractStateService
             });
         }
 
-        return $this->response($sectionCount, 'sections');
+        return $this->response($initialCount, $sectionCount, 'sections');
     }
 
     public function saveSectionContent(): array
     {
         $contentCount = 0;
+        $sections = $this->state->sections;
 
-        foreach ($this->state->sections as $section) {
+        foreach ($sections as $section) {
             $sectionPage = $this->fetch($section->url);
 
             // we need to find the p tag with the section code, then append further p tag contents until the section code changes.
             $hasTitle = false;
+
+            // these values are updated by reference in the loop below.
             $sectionCode = '';
             $contents = '';
+
             $sectionPage->filter('p')->each(function (Crawler $node) use ($section, &$hasTitle, &$sectionCode, &$contents, &$contentCount) {
                 $hasTitle = $node->filter('b')->count();
                 if ($hasTitle) {
@@ -109,12 +122,17 @@ class OregonLawService extends AbstractStateService
                     }
                 }
             });
+            $sectionContents = html_entity_decode(Str::replace('&nbsp;', '', $contents));
 
-            $section->update(['content' => html_entity_decode(Str::replace('&nbsp;', '', $contents))]);
+            if ($sectionContents !== $section->content) {
+                $section->update(['content' => $sectionContents]);
+            }
 
-            $contentCount++;
+            if (! empty($sectionContents)) {
+                $contentCount++;
+            }
         }
 
-        return $this->response($contentCount, 'contents');
+        return $this->response($sections->count(), $contentCount, 'contents');
     }
 }

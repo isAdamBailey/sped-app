@@ -23,22 +23,38 @@ abstract class AbstractStateService
 
     protected function saveChapter(string $code, string $description)
     {
-        return Chapter::firstOrCreate(
+        $description = trim(strip_tags($description));
+
+        $chapter = Chapter::firstOrCreate(
             ['code' => trim($code), 'state_id' => $this->state->id, 'title_id' => $this->title],
-            ['description' => trim(strip_tags($description))]
+            ['description' => $description]
         );
+
+        if ($description !== $chapter->description) {
+            $chapter->update('description', $description);
+        }
+
+        return $chapter;
     }
 
     protected function saveSection(Chapter $chapter, array $data): Model
     {
-        return Section::firstOrCreate(
+        $description = trim(strip_tags($data['description']));
+
+        $section = Section::firstOrCreate(
             ['code' => trim($data['code']), 'chapter_id' => $chapter->id],
             [
                 'state_id' => $this->state->id,
-                'description' => trim(strip_tags($data['description'])),
+                'description' => $description,
                 'url' => $data['url'],
             ],
         );
+
+        if ($description !== $section->description) {
+            $section->update('description', $description);
+        }
+
+        return $section;
     }
 
     protected function fetch(string $endpoint)
@@ -46,11 +62,16 @@ abstract class AbstractStateService
         return \Goutte::request('GET', $endpoint);
     }
 
-    protected function response(int $count, string $name): array
+    protected function response(int $storedCount, int $foundCount, string $name): array
     {
+        $message = $storedCount !== $foundCount
+            ? 'We had '.$storedCount.' stored, but found '.$foundCount.'. '
+            : '';
+        $message .= $foundCount ? $foundCount.' '.$name.' were imported' : 'no '.$name.' were imported';
+
         return [
-            'count' => $count,
-            'message' => $count ? $name.' were imported' : 'no '.$name.' were imported',
+            'count' => $foundCount,
+            'message' => $message,
         ];
     }
 }
