@@ -31,7 +31,7 @@ abstract class AbstractStateService
         );
 
         if ($description !== $chapter->description) {
-            $chapter->update('description', $description);
+            $chapter->update(['description' => $description]);
         }
 
         return $chapter;
@@ -51,7 +51,7 @@ abstract class AbstractStateService
         );
 
         if ($description !== $section->description) {
-            $section->update('description', $description);
+            $section->update(['description' => $description]);
         }
 
         return $section;

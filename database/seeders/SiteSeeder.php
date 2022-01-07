@@ -16,11 +16,13 @@ class SiteSeeder extends Seeder
     public function run()
     {
         // create a registered user we can log in with
-        User::factory()->withPersonalTeam()->create([
+        $user = User::factory()->withPersonalTeam()->create([
             'email' => 'test@test.com',
         ]);
 
-        // fetch washington laws bby title
+        $user->assignRole('super-admin');
+
+        // fetch washington laws by title
         Artisan::call('fetch:laws washington 28A');
     }
 }
