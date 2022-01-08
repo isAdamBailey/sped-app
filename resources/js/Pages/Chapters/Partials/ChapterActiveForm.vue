@@ -1,13 +1,13 @@
 <template>
-    <toggle v-model:checked="form.active" @update:checked="onUpdateChecked" />
+    <checkbox v-model:checked="form.active" @update:checked="onUpdateChecked" />
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import Toggle from "@/Jetstream/Toggle";
+import Checkbox from "@/Jetstream/Checkbox";
 
 export default defineComponent({
-    components: { Toggle },
+    components: { Checkbox },
 
     props: {
         chapter: {
@@ -18,22 +18,15 @@ export default defineComponent({
 
     data() {
         return {
-            form: this.$inertia.form(
-                {
-                    _method: "PUT",
-                    active: this.chapter.active,
-                },
-                {
-                    bag: "updateChapter",
-                    resetOnSuccess: true,
-                }
-            ),
+            form: this.$inertia.form({
+                _method: "PUT",
+                active: Boolean(this.chapter.active),
+            }),
         };
     },
 
     methods: {
         onUpdateChecked() {
-            console.log(this.chapter);
             this.form.post(route("chapters.update", this.chapter), {
                 preserveScroll: true,
             });

@@ -6,12 +6,7 @@
             <div class="flex justify-between">
                 <div class="text-2xl font-bold mb-5">Chapters</div>
 
-                <search-input
-                    v-if="
-                        $page.props.user.permissions.includes('edit chapters')
-                    "
-                    route-name="chapters.index"
-                />
+                <search-input route-name="chapters.index" />
 
                 <filter-dropdown>
                     <dropdown-link
@@ -40,12 +35,21 @@
                 </filter-dropdown>
             </div>
             <div v-if="chaptersData.length">
+                <span
+                    v-if="permissions.includes('edit chapters')"
+                    class="text-sm font-semibold underline"
+                    >Active</span
+                >
                 <div
                     v-for="(chapter, index) in chaptersData"
                     :key="index"
                     class="flex items-center"
                 >
-                    <chapter-active-form :chapter="chapter" />
+                    <chapter-active-form
+                        v-if="permissions.includes('edit chapters')"
+                        class="mr-5"
+                        :chapter="chapter"
+                    />
 
                     <Link :href="route('chapters.show', chapter.slug)">
                         <div
@@ -102,6 +106,11 @@ export default defineComponent({
             chaptersData: this.chapters.data,
             loadingMore: false,
         };
+    },
+    computed: {
+        permissions() {
+            return this.$page.props.user.permissions;
+        },
     },
     watch: {
         chapters() {
