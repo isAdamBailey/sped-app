@@ -1,5 +1,5 @@
 <template>
-    <app-layout title="State Laws">
+    <dashboard-layout title="State Laws">
         <template #header>State Laws</template>
 
         <div class="p-10">
@@ -72,28 +72,28 @@
             </div>
             <div v-else class="my-12 text-gray-500">No chapters found</div>
         </div>
-    </app-layout>
+    </dashboard-layout>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link } from "@inertiajs/inertia-vue3";
 import SearchInput from "@/Jetstream/SearchInput";
-import JetDropdown from "@/Jetstream/JetDropdown";
+import JetDropdown from "@/Jetstream/Dropdown";
 import DropdownLink from "@/Jetstream/DropdownLink";
 import JetButton from "@/Jetstream/Button";
-import ChapterActiveForm from "@/Pages/Chapters/Partials/ChapterActiveForm";
+import ChapterActiveForm from "@/Pages/Dashboard/Chapters/Partials/ChapterActiveForm";
+import DashboardLayout from "@/Layouts/DashboardLayout";
 
 export default defineComponent({
     components: {
+        DashboardLayout,
         ChapterActiveForm,
         JetButton,
         DropdownLink,
         JetDropdown,
         SearchInput,
         Link,
-        AppLayout,
     },
     props: {
         chapters: Object,
