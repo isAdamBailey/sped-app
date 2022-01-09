@@ -21,6 +21,7 @@ class SectionFactory extends Factory
             'url' => $this->faker->url(),
             'description' => $this->faker->sentences(2, true),
             'content' => $this->faker->paragraphs(3, true),
+            'code_title' => $this->faker->word(),
         ];
     }
 }

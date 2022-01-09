@@ -4,9 +4,9 @@
 
         <div class="p-10">
             <div class="flex justify-between">
-                <div class="text-2xl font-bold mb-5">Chapters</div>
+                <div class="text-2xl font-bold mb-5">Sections</div>
 
-                <search-input route-name="chapters.index" />
+                <search-input route-name="sections.index" />
 
                 <jet-dropdown width="48" :arrow-trigger-title="dropdownText">
                     <template #content>
@@ -15,7 +15,7 @@
                         </div>
                         <dropdown-link
                             :href="
-                                route('chapters.index', {
+                                route('sections.index', {
                                     filter: 'Washington',
                                     search: $page.props.search,
                                 })
@@ -25,7 +25,7 @@
                         </dropdown-link>
                         <dropdown-link
                             :href="
-                                route('chapters.index', {
+                                route('sections.index', {
                                     filter: 'Oregon',
                                     search: $page.props.search,
                                 })
@@ -33,44 +33,41 @@
                         >
                             Oregon
                         </dropdown-link>
-                        <dropdown-link :href="route('chapters.index')">
+                        <dropdown-link :href="route('sections.index')">
                             <i class="ri-filter-off-fill"></i> Clear
                         </dropdown-link>
                     </template>
                 </jet-dropdown>
             </div>
-            <div v-if="chaptersData.length">
-                <span class="text-sm font-semibold underline">Active</span>
+            <div v-if="sectionsData.length">
                 <div
-                    v-for="(chapter, index) in chaptersData"
+                    v-for="(section, index) in sectionsData"
                     :key="index"
                     class="flex items-center"
                 >
-                    <chapter-active-form class="mr-5" :chapter="chapter" />
-
-                    <Link :href="route('chapters.show', chapter.slug)">
+                    <Link :href="route('sections.show', section.slug)">
                         <div
                             class="p-3 hover:bg-gray-100 hover:text-blue-800 transition"
                         >
                             <span class="font-bold"
-                                >{{ chapter.state.code_title }}
-                                {{ chapter.code }}</span
+                                >{{ section.state.code_title }}
+                                {{ section.code }}</span
                             >
                             -
-                            {{ chapter.description }}
+                            {{ section.description }}
                         </div>
                     </Link>
                 </div>
                 <div
-                    v-if="chapters.next_page_url"
+                    v-if="sections.next_page_url"
                     class="flex justify-center mt-7"
                 >
                     <jet-button @click="loadMore">
-                        Load More Chapters
+                        Load More Sections
                     </jet-button>
                 </div>
             </div>
-            <div v-else class="my-12 text-gray-500">No chapters found</div>
+            <div v-else class="my-12 text-gray-500">No sections found</div>
         </div>
     </app-layout>
 </template>
@@ -80,14 +77,12 @@ import { defineComponent } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link } from "@inertiajs/inertia-vue3";
 import SearchInput from "@/Jetstream/SearchInput";
-import JetDropdown from "@/Jetstream/JetDropdown";
+import JetDropdown from "@/Jetstream/Dropdown";
 import DropdownLink from "@/Jetstream/DropdownLink";
 import JetButton from "@/Jetstream/Button";
-import ChapterActiveForm from "@/Pages/Chapters/Partials/ChapterActiveForm";
 
 export default defineComponent({
     components: {
-        ChapterActiveForm,
         JetButton,
         DropdownLink,
         JetDropdown,
@@ -96,18 +91,18 @@ export default defineComponent({
         AppLayout,
     },
     props: {
-        chapters: Object,
+        sections: Object,
     },
     data() {
         return {
-            chaptersData: this.chapters.data,
+            sectionsData: this.sections.data,
             loadingMore: false,
         };
     },
     computed: {
         dropdownText() {
             let text = "Filter By State";
-            const state = this.chapters.data[0]?.state;
+            const state = this.sections.data[0]?.state;
             if (this.$inertia.page.props.filter) {
                 text = `${this.$page.props.filter} ${state?.code_title || ""}`;
             }
@@ -115,9 +110,9 @@ export default defineComponent({
         },
     },
     watch: {
-        chapters() {
+        sections() {
             if (this.loadingMore) {
-                this.chaptersData.push(...this.chapters.data);
+                this.sectionsData.push(...this.sections.data);
                 this.loadingMore = false;
             }
         },
@@ -126,7 +121,7 @@ export default defineComponent({
         loadMore() {
             this.loadingMore = true;
 
-            const links = this.chapters.links;
+            const links = this.sections.links;
             const next = links[links.length - 1];
             if (next.url) {
                 this.$inertia.get(

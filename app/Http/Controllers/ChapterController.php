@@ -18,10 +18,6 @@ class ChapterController extends Controller
         $filter = $request->filter;
 
         $chapters = Chapter::with('state')
-            ->when( // only show active chapters for non-admins
-                ! auth()->user()->hasRole('super-admin'),
-                fn ($query) => $query->whereActive('1')
-            )
             ->when(
                 $search,
                 fn ($query) => $query->where('code', 'LIKE', '%'.$search.'%')
@@ -43,14 +39,6 @@ class ChapterController extends Controller
             ]),
             'search' => $search,
             'filter' => $filter,
-        ]);
-    }
-
-    public function show(Chapter $chapter): Response
-    {
-        return Inertia::render('Chapters/Chapter', [
-            'chapter' => $chapter->load(['state', 'sections'])
-                ->only('slug', 'code', 'active', 'description', 'title_id', 'state', 'sections'),
         ]);
     }
 

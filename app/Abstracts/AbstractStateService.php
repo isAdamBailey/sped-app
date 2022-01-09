@@ -44,6 +44,7 @@ abstract class AbstractStateService
         $section = Section::firstOrCreate(
             ['code' => trim($data['code']), 'chapter_id' => $chapter->id],
             [
+                'code_title' => $this->state->code_title,
                 'state_id' => $this->state->id,
                 'description' => $description,
                 'url' => $data['url'],

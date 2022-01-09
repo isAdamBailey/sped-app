@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChapterController;
+use App\Http\Controllers\SectionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -25,10 +26,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/chapters', [ChapterController::class, 'index'])->name('chapters.index');
-    Route::get('/chapters/{chapter}', [ChapterController::class, 'show'])->name('chapters.show');
+    Route::get('/sections', [SectionController::class, 'index'])->name('sections.index');
+    Route::get('/sections/{section}', [SectionController::class, 'show'])->name('sections.show');
 
     Route::group(['middleware' => ['can:edit chapters']], function () {
+        Route::get('/chapters', [ChapterController::class, 'index'])->name('chapters.index');
         Route::put('chapters/{chapter}', [ChapterController::class, 'update'])->name('chapters.update');
     });
 });

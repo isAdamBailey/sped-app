@@ -20,8 +20,8 @@
                             Dashboard
                         </jet-nav-link>
                         <jet-nav-link
-                            :href="route('chapters.index')"
-                            :active="route().current('chapters.*')"
+                            :href="route('sections.index')"
+                            :active="route().current('sections.*')"
                         >
                             State Laws
                         </jet-nav-link>
@@ -288,8 +288,8 @@
                     Dashboard
                 </jet-responsive-nav-link>
                 <jet-responsive-nav-link
-                    :href="route('chapters.index')"
-                    :active="route().current('chapters.*')"
+                    :href="route('sections.index')"
+                    :active="route().current('sections.*')"
                 >
                     State Laws
                 </jet-responsive-nav-link>

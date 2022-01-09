@@ -20,7 +20,7 @@ class SiteSeeder extends Seeder
             'email' => 'test@test.com',
         ]);
 
-        $user->assignRole('super-admin');
+        $user->assignRole('super admin');
 
         // fetch washington laws by title
         Artisan::call('fetch:laws washington 28A');

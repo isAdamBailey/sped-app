@@ -19,6 +19,8 @@ class CreateSectionsTable extends Migration
             $table->id();
             $table->foreignIdFor(Chapter::class);
             $table->foreignIdFor(State::class);
+            $table->string('slug');
+            $table->string('code_title');
             $table->string('code');
             $table->string('url');
             $table->mediumText('description');
