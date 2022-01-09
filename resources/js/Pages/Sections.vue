@@ -6,7 +6,10 @@
             <div class="flex justify-between">
                 <div class="text-2xl font-bold mb-5">Sections</div>
 
-                <search-input route-name="sections.index" />
+                <search-input
+                    route-name="sections.index"
+                    :result-count="sections.total"
+                />
 
                 <jet-dropdown width="48" :arrow-trigger-title="dropdownText">
                     <template #content>

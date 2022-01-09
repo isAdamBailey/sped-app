@@ -14,6 +14,9 @@
             @keyup.esc="search = null"
             @blur="search = null"
         />
+        <span v-if="resultCount >= 0" class="ml-5 text-sm text-indigo-700">
+            {{ resultCount }} found
+        </span>
     </div>
 </template>
 
@@ -23,6 +26,7 @@ import { defineComponent } from "vue";
 export default defineComponent({
     props: {
         routeName: String,
+        resultCount: Number,
     },
 
     data() {
