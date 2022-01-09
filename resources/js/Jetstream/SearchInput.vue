@@ -12,6 +12,7 @@
             placeholder="Search"
             type="search"
             @keyup.esc="search = null"
+            @blur="search = null"
         />
     </div>
 </template>
@@ -39,6 +40,10 @@ export default defineComponent({
                 this.$inertia.get(route(this.routeName));
             }
         },
+    },
+
+    mounted() {
+        this.$refs.search.focus();
     },
 
     methods: {
