@@ -6,6 +6,7 @@
         <h1 class="text-2xl font-semibold">Dashboard</h1>
     </dashboard-nav-link>
     <dashboard-nav-link
+        v-if="roles.includes('super admin')"
         :href="route('chapters.index')"
         :active="route().current('chapters.*')"
     >
@@ -20,5 +21,10 @@ import DashboardNavLink from "@/Layouts/Nav/DashboardNavLink";
 
 export default defineComponent({
     components: { Link, DashboardNavLink },
+    computed: {
+        roles() {
+            return this.$page.props.user.roles;
+        },
+    },
 });
 </script>

@@ -14,12 +14,6 @@
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <jet-nav-link
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
-                        >
-                            Dashboard
-                        </jet-nav-link>
-                        <jet-nav-link
                             :href="route('sections.index')"
                             :active="route().current('sections.*')"
                         >
@@ -198,6 +192,15 @@
                             </template>
 
                             <template #content>
+                                <div
+                                    class="block px-4 py-2 text-xs text-gray-400"
+                                >
+                                    Administration
+                                </div>
+
+                                <jet-dropdown-link :href="route('dashboard')">
+                                    Dashboard
+                                </jet-dropdown-link>
                                 <!-- Account Management -->
                                 <div
                                     class="block px-4 py-2 text-xs text-gray-400"
@@ -282,12 +285,6 @@
         >
             <div class="pt-2 pb-3 space-y-1">
                 <jet-responsive-nav-link
-                    :href="route('dashboard')"
-                    :active="route().current('dashboard')"
-                >
-                    Dashboard
-                </jet-responsive-nav-link>
-                <jet-responsive-nav-link
                     :href="route('sections.index')"
                     :active="route().current('sections.*')"
                 >
@@ -320,6 +317,12 @@
                 </div>
 
                 <div class="mt-3 space-y-1">
+                    <jet-responsive-nav-link
+                        :href="route('dashboard')"
+                        :active="route().current('dashboard')"
+                    >
+                        Dashboard
+                    </jet-responsive-nav-link>
                     <jet-responsive-nav-link
                         :href="route('profile.show')"
                         :active="route().current('profile.show')"
@@ -437,6 +440,12 @@ export default defineComponent({
         return {
             showingNavigationDropdown: false,
         };
+    },
+
+    computed: {
+        roles() {
+            return this.$page.props.user.roles;
+        },
     },
 
     methods: {
