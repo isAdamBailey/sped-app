@@ -1,17 +1,24 @@
 <template>
-    <h1 class="text-2xl font-semibold p-3 border-b">Dashboard</h1>
-    <ul>
-        <li class="p-5 border-b">
-            <Link class="w-full"> Active Chapters </Link>
-        </li>
-    </ul>
+    <dashboard-nav-link
+        :href="route('dashboard')"
+        :active="route().current('dashboard')"
+    >
+        <h1 class="text-2xl font-semibold">Dashboard</h1>
+    </dashboard-nav-link>
+    <dashboard-nav-link
+        :href="route('chapters.index')"
+        :active="route().current('chapters.*')"
+    >
+        Active Chapters
+    </dashboard-nav-link>
 </template>
 
 <script>
 import { defineComponent } from "vue";
 import { Link } from "@inertiajs/inertia-vue3";
+import DashboardNavLink from "@/Layouts/Nav/DashboardNavLink";
 
 export default defineComponent({
-    components: { Link },
+    components: { Link, DashboardNavLink },
 });
 </script>

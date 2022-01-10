@@ -22,6 +22,31 @@ class Section extends Model
         'content',
     ];
 
+    public function scopeSearch($query, ?string $search)
+    {
+        if ($search) {
+            return $query->where('code', 'LIKE', '%'.$search.'%')
+                ->orWhere('description', 'LIKE', '%'.$search.'%')
+                ->orWhere('content', 'LIKE', '%'.$search.'%');
+        }
+
+        return $query;
+    }
+
+    public function scopeFilterState($query, ?string $state)
+    {
+        if ($state) {
+            return $query->whereHas('state', fn ($q) => $q->where('states.name', strtolower($state)));
+        }
+
+        return $query;
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->whereHas('chapter', fn ($query) => $query->where('active', 1));
+    }
+
     public function state(): BelongsTo
     {
         return $this->belongsTo(State::class)

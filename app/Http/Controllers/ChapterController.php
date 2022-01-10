@@ -29,7 +29,7 @@ class ChapterController extends Controller
             )
             ->paginate();
 
-        return Inertia::render('Chapters/Chapters', [
+        return Inertia::render('Dashboard/Chapters/Index', [
             'chapters' => $chapters->through(fn ($chapter) => [
                 'slug' => $chapter->slug,
                 'code' => $chapter->code,

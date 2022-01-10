@@ -29,5 +29,9 @@ export default defineComponent({
         ApplicationMark,
         DashboardLayout,
     },
+
+    props: {
+        chapters: Object,
+    },
 });
 </script>

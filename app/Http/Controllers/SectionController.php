@@ -11,21 +11,13 @@ class SectionController extends Controller
 {
     public function index(Request $request): Response
     {
-        $search = $request->search;
         $filter = $request->filter;
+        $search = $request->search;
 
         $sections = Section::with('state')
-            ->whereHas('chapter', fn ($q) => $q->where('active', 1))
-            ->when(
-                $search,
-                fn ($query) => $query->where('code', 'LIKE', '%'.$search.'%')
-                    ->orWhere('description', 'LIKE', '%'.$search.'%')
-                    ->orWhere('content', 'LIKE', '%'.$search.'%')
-            )
-            ->when(
-                $filter,
-                fn ($query) => $query->whereHas('state', fn ($q) => $q->where('states.name', strtolower($filter))),
-            )
+            ->active()
+            ->search($search)
+            ->filterState($filter)
             ->paginate();
 
         return Inertia::render('Sections', [
