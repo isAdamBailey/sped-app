@@ -9,9 +9,16 @@ use Inertia\Response;
 
 class DocumentController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $search = $request->search;
+
         $documents = Document::where('team_id', auth()->user()->currentTeam->id)
+            ->when(
+                $search,
+                fn ($query) => $query->where('name', 'LIKE', '%'.$search.'%')
+                    ->orWhere('description', 'LIKE', '%'.$search.'%')
+            )
             ->orderBy('next_action_date')
             ->paginate();
 
@@ -23,6 +30,7 @@ class DocumentController extends Controller
                 'next_action_date' => $document->next_action_date,
                 'file_path' => $document->file_path,
             ]),
+            'search' => $search,
         ]);
     }
 }
