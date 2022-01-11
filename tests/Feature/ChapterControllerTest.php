@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Chapter;
-use App\Models\Section;
 use App\Models\State;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,6 +16,13 @@ use Tests\TestCase;
 class ChapterControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function testChaptersIndexPageNotSuperAdmin()
+    {
+        $this->actingAs($user = User::factory()->create());
+
+        $this->get(route('chapters.index'))->assertStatus(403);
+    }
 
     public function testChaptersIndexPage()
     {
@@ -33,7 +39,7 @@ class ChapterControllerTest extends TestCase
 
         $response->assertInertia(
             fn (Assert $chapter) => $chapter
-                ->component('Chapters/Chapters')
+                ->component('Dashboard/Chapters/Index')
                 ->url('/chapters')
                 ->has('chapters.data', 15)
                 ->has('chapters.links')
@@ -71,7 +77,7 @@ class ChapterControllerTest extends TestCase
 
         $response->assertInertia(
             fn (Assert $chapter) => $chapter
-                ->component('Chapters/Chapters')
+                ->component('Dashboard/Chapters/Index')
                 ->url('/chapters?search='.$searchTerm)
                 ->has('chapters.data', 1)
                 ->has('chapters.links')
@@ -104,7 +110,7 @@ class ChapterControllerTest extends TestCase
 
         $response->assertInertia(
             fn (Assert $chapter) => $chapter
-                ->component('Chapters/Chapters')
+                ->component('Dashboard/Chapters/Index')
                 ->url('/chapters?filter='.$state->name)
                 ->has('chapters.data', 10)
                 ->has('chapters.links')
@@ -126,7 +132,7 @@ class ChapterControllerTest extends TestCase
 
         $badResponse->assertInertia(
             fn (Assert $chapter) => $chapter
-                ->component('Chapters/Chapters')
+                ->component('Dashboard/Chapters/Index')
                 ->url('/chapters?filter='.$nonStateName)
                 ->has('chapters.data', 0)
                 ->has('chapters.links')

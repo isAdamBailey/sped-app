@@ -19,6 +19,12 @@
                         >
                             State Laws
                         </jet-nav-link>
+                        <jet-nav-link
+                            :href="route('documents.index')"
+                            :active="route().current('documents.*')"
+                        >
+                            Documentation
+                        </jet-nav-link>
                     </div>
                 </div>
 

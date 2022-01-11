@@ -21,7 +21,7 @@ class WashingtonLawService extends AbstractStateService
         $content = $this->fetch($this->endpoint.$this->title);
 
         $chapterCount = 0;
-        $initialCount = Chapter::count();
+        $initialCount = $this->state->chapters->count();
 
         $chapterTable = $content->filter('table')->first();
         if ($chapterTable->count() > 0) {

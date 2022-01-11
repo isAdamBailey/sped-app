@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChapterController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\SectionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/sections', [SectionController::class, 'index'])->name('sections.index');
     Route::get('/sections/{section}', [SectionController::class, 'show'])->name('sections.show');
+
+    Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
 
     Route::group(['middleware' => ['can:edit chapters']], function () {
         Route::get('/chapters', [ChapterController::class, 'index'])->name('chapters.index');

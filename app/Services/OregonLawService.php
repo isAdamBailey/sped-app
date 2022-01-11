@@ -22,7 +22,7 @@ class OregonLawService extends AbstractStateService
         $content = $this->fetch($this->endpoint.'pages/ors.aspx');
 
         $chapterCount = 0;
-        $initialCount = Chapter::count();
+        $initialCount = $this->state->chapters->count();
 
         $titleTable = $content->filter('table')->eq(1);
         if ($titleTable->count() > 0) {

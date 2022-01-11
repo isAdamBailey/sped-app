@@ -20,6 +20,7 @@ class Section extends Model
         'url',
         'description',
         'content',
+        'code_title',
     ];
 
     public function scopeSearch($query, ?string $search)

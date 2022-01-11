@@ -20,6 +20,7 @@ class Chapter extends Model
         'code',
         'description',
         'active',
+        'code_title',
     ];
 
     public function state(): BelongsTo

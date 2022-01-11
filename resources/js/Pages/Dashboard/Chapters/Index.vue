@@ -5,7 +5,10 @@
                 <div class="flex justify-between">
                     <div class="text-2xl font-bold mb-5">Chapters</div>
 
-                    <search-input route-name="chapters.index" />
+                    <search-input
+                        route-name="chapters.index"
+                        :result-count="chapters.total"
+                    />
 
                     <jet-dropdown
                         width="48"
@@ -41,6 +44,14 @@
                         </template>
                     </jet-dropdown>
                 </div>
+
+                <info-text class="mb-5">
+                    Choose which chapters users can see sections from. This
+                    helps reduce the amount of data users need to sift through,
+                    and narrow down results. Note: this also limits the content
+                    we read from each state's website. Only active chapters are
+                    checked daily for changes.
+                </info-text>
                 <div v-if="chaptersData.length">
                     <span class="text-sm font-semibold underline">Active</span>
                     <div
@@ -50,9 +61,7 @@
                     >
                         <chapter-active-form class="mr-5" :chapter="chapter" />
 
-                        <div
-                            class="p-3 hover:bg-gray-100 hover:text-blue-800 transition"
-                        >
+                        <div class="p-2">
                             <span class="font-bold"
                                 >{{ chapter.state.code_title }}
                                 {{ chapter.code }}</span
@@ -85,9 +94,11 @@ import DropdownLink from "@/Jetstream/DropdownLink";
 import JetButton from "@/Jetstream/Button";
 import ChapterActiveForm from "@/Pages/Dashboard/Chapters/Partials/ChapterActiveForm";
 import DashboardLayout from "@/Layouts/DashboardLayout";
+import InfoText from "../../../Jetstream/InfoText";
 
 export default defineComponent({
     components: {
+        InfoText,
         DashboardLayout,
         ChapterActiveForm,
         JetButton,

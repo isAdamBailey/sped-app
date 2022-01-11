@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Document;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
@@ -21,6 +22,8 @@ class SiteSeeder extends Seeder
         ]);
 
         $user->assignRole('super admin');
+
+        Document::factory()->for($user->currentTeam)->count(20)->create();
 
         // fetch washington laws by title
         Artisan::call('fetch:laws washington 28A');
