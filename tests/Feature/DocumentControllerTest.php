@@ -6,6 +6,7 @@ use App\Models\Document;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\Assert;
 use Tests\TestCase;
@@ -13,11 +14,33 @@ use Tests\TestCase;
 class DocumentControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use WithFaker;
+
+    public function testChaptersIndexPageCannotBeViewedByNonTeamMembers()
+    {
+        $user = User::factory()->withPersonalTeam()->create();
+
+        Document::factory()
+            ->count(20)
+            ->for($user->currentTeam)
+            ->create();
+
+        // a user on a different team should not be able to see any of these documents
+        $this->actingAs($otherUser = User::factory()->withPersonalTeam()->create());
+
+        $response = $this->get(route('documents.index'))->assertStatus(200);
+
+        $response->assertInertia(
+            fn (Assert $chapter) => $chapter
+                ->component('Documents')
+                ->url('/documents')
+                ->has('documents.data', 0)
+                ->has('documents.links')
+        );
+    }
 
     public function testChaptersIndexPageCanBeViewedByTeamMembers()
     {
-        Storage::fake();
-
         $user = User::factory()->withPersonalTeam()->create();
 
         // add a team member and let them view the documents
@@ -45,6 +68,34 @@ class DocumentControllerTest extends TestCase
                 ->has('documents.data.0.name')
                 ->has('documents.data.0.description')
                 ->has('documents.data.0.next_action_date')
+                ->has('documents.data.0.file_path')
         );
+    }
+
+    public function testUserCanCreateDocument()
+    {
+        Storage::fake('s3');
+
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+
+        $request = [
+            'document' => UploadedFile::fake()->create('document.pdf', 200, 'application/pdf'),
+            'name' => $this->faker->word(),
+            'description' => $this->faker->sentences(4, true),
+            'next_action_date' => $this->faker->date(),
+        ];
+
+        $this->post(route('documents.store'), $request)
+            ->assertRedirect()
+            ->assertSessionHas('flash.banner');
+
+        $filePath = 'documents/'.$user->currentTeam->id.'/'.$request['document']->hashName();
+        Storage::disk('s3')->assertExists($filePath);
+
+        $document = Document::first();
+        $this->assertEquals($document->file_path, $filePath);
+        $this->assertEquals($document->name, $request['name']);
+        $this->assertEquals($document->description, $request['description']);
+        $this->assertEquals($document->next_action_date, $request['next_action_date'].' 00:00:00');
     }
 }

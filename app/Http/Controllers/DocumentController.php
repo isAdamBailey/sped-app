@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -32,5 +33,36 @@ class DocumentController extends Controller
             ]),
             'search' => $search,
         ]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'description' => 'required|string',
+            'next_action_date' => 'date|nullable',
+            'document' => [
+                'file',
+                'mimes:pdf,vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'max:2000',
+                'nullable',
+            ],
+        ]);
+
+        $userTeam = auth()->user()->currentTeam;
+
+        $filePath = null;
+        if ($request->hasFile('document')) {
+            $filePath = $request->file('document')->storePublicly('documents/'.$userTeam->id);
+        }
+
+        $userTeam->documents()->create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'next_action_date' => $request->next_action_date,
+            'file_path' => $filePath,
+        ]);
+
+        return back()->with('flash.banner', 'Document successfully uploaded!');
     }
 }

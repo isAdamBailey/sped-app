@@ -19,8 +19,8 @@ class CreateDocumentsTable extends Migration
             $table->foreignIdFor(Team::class);
             $table->string('name');
             $table->longText('description');
-            $table->dateTime('next_action_date');
-            $table->string('file_path');
+            $table->dateTime('next_action_date')->nullable();
+            $table->string('file_path')->nullable();
             $table->timestamps();
         });
     }
