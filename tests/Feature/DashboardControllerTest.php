@@ -37,6 +37,14 @@ class DashboardControllerTest extends TestCase
             ->assertRedirect(route('create-first-team'));
     }
 
+    public function testUserWithTeamCannotSeeNewTeamForm()
+    {
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+
+        $this->get(route('create-first-team'))
+            ->assertRedirect(route('dashboard'));
+    }
+
     public function testUserWithTeamSeesDashboard()
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
