@@ -23,7 +23,7 @@ class SiteSeeder extends Seeder
 
         $user->assignRole('super admin');
 
-        Document::factory()->for($user->currentTeam)->count(20)->create();
+        Document::factory()->for($user->currentTeam)->count(5)->create();
 
         // fetch washington laws by title
         Artisan::call('fetch:laws washington 28A');

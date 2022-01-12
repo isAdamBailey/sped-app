@@ -33,6 +33,11 @@
         "vue-loader": "^16.1.2"
     },
     "dependencies": {
-        "remixicon": "^2.5.0"
+        "@tiptap/extension-link": "^2.0.0-beta.33",
+        "@tiptap/extension-typography": "*",
+        "@tiptap/starter-kit": "*",
+        "@tiptap/vue-3": "*",
+        "remixicon": "^2.5.0",
+        "vue3-date-time-picker": "^2.3.6"
     }
 }

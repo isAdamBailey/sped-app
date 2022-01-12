@@ -198,13 +198,11 @@
 
 <script>
 import { defineComponent } from "vue";
-import JetApplicationLogo from "@/Jetstream/ApplicationLogo.vue";
-import ApplicationMark from "./ApplicationMark";
+import ApplicationMark from "@/Jetstream/ApplicationMark";
 
 export default defineComponent({
     components: {
         ApplicationMark,
-        JetApplicationLogo,
     },
 });
 </script>

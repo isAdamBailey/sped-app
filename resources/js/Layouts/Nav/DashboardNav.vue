@@ -16,11 +16,10 @@
 
 <script>
 import { defineComponent } from "vue";
-import { Link } from "@inertiajs/inertia-vue3";
 import DashboardNavLink from "@/Layouts/Nav/DashboardNavLink";
 
 export default defineComponent({
-    components: { Link, DashboardNavLink },
+    components: { DashboardNavLink },
     computed: {
         roles() {
             return this.$page.props.user.roles;

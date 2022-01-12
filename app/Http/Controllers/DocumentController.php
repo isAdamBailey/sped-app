@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -56,10 +57,15 @@ class DocumentController extends Controller
             $filePath = $request->file('document')->storePublicly('documents/'.$userTeam->id);
         }
 
+        $actionDate = null;
+        if ($request->next_action_date) {
+            $actionDate = Carbon::parse($request->next_action_date)->toDateString();
+        }
+
         $userTeam->documents()->create([
             'name' => $request->name,
             'description' => $request->description,
-            'next_action_date' => $request->next_action_date,
+            'next_action_date' => $actionDate,
             'file_path' => $filePath,
         ]);
 

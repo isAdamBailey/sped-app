@@ -87,14 +87,13 @@
 
 <script>
 import { defineComponent } from "vue";
-import { Link } from "@inertiajs/inertia-vue3";
 import SearchInput from "@/Jetstream/SearchInput";
 import JetDropdown from "@/Jetstream/Dropdown";
 import DropdownLink from "@/Jetstream/DropdownLink";
 import JetButton from "@/Jetstream/Button";
 import ChapterActiveForm from "@/Pages/Dashboard/Chapters/Partials/ChapterActiveForm";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import InfoText from "../../../Jetstream/InfoText";
+import InfoText from "@/Jetstream/InfoText";
 
 export default defineComponent({
     components: {
@@ -105,7 +104,6 @@ export default defineComponent({
         DropdownLink,
         JetDropdown,
         SearchInput,
-        Link,
     },
     props: {
         chapters: Object,
