@@ -118,6 +118,7 @@ export default defineComponent({
     data() {
         return {
             form: this.$inertia.form({
+                _method: "PUT",
                 name: this.document.name,
                 description: this.document.description,
                 next_action_date: this.document.next_action_date,
@@ -141,8 +142,7 @@ export default defineComponent({
         },
 
         updateDocument() {
-            this.form.post(route("documents.update"), {
-                method: "PUT",
+            this.form.post(route("documents.update", this.document.id), {
                 errorBag: "updateDocument",
                 onSuccess: () => this.closeModal(),
             });

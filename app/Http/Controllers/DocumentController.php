@@ -6,6 +6,7 @@ use App\Models\Document;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -86,5 +87,46 @@ class DocumentController extends Controller
 
         return redirect(route('documents.index'))
             ->with('flash.banner', 'Document successfully uploaded!');
+    }
+
+    public function update(Request $request, Document $document): RedirectResponse
+    {
+        $request->validate([
+            'name' => 'string|max:100',
+            'description' => 'string',
+            'next_action_date' => 'date|nullable',
+            'document' => [
+                'file',
+                'mimes:pdf,vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'max:2000',
+                'nullable',
+            ],
+        ]);
+
+        $userTeam = auth()->user()->currentTeam;
+
+        if ($request->hasFile('document')) {
+            if ($document->file_path) {
+                Storage::delete($document->file_path);
+            }
+            $document->file_path = $request->file('document')->storePublicly('documents/'.$userTeam->id);
+        }
+
+        if ($request->next_action_date) {
+            $document->next_action_date = Carbon::parse($request->next_action_date)->toDateString();
+        }
+
+        if ($request->name) {
+            $document->name = $request->name;
+        }
+
+        if ($request->description) {
+            $document->description = $request->description;
+        }
+
+        $document->save();
+
+        return redirect(route('documents.show', $document))
+            ->with('flash.banner', 'Document successfully updated!');
     }
 }

@@ -18,11 +18,17 @@ class Document extends Model
         'file_path',
     ];
 
+    public function getNameAttribute($value): string
+    {
+        return ucfirst($value);
+    }
+
     public function getFileUrlAttribute(): ?string
     {
         if (empty($this->file_path)) {
             return null;
         }
+
         return Storage::temporaryUrl($this->file_path, now()->addMinutes(30));
     }
 

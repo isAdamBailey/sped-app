@@ -136,4 +136,35 @@ class DocumentControllerTest extends TestCase
         $this->assertEquals($document->description, $request['description']);
         $this->assertEquals($document->next_action_date, $request['next_action_date'].' 00:00:00');
     }
+
+    public function testUserCanUpdateDocument()
+    {
+        Storage::fake('s3');
+
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+
+        $document = Document::factory()->for($user->currentTeam)->create([
+            'file_path' => 'fake/file/path',
+        ]);
+
+        $request = [
+            'document' => UploadedFile::fake()->create('document.pdf', 200, 'application/pdf'),
+            'name' => $this->faker->word(),
+            'description' => $this->faker->sentences(4, true),
+            'next_action_date' => $this->faker->date(),
+        ];
+
+        $this->put(route('documents.update', $document), $request)
+            ->assertRedirect(route('documents.show', $document))
+            ->assertSessionHas('flash.banner');
+
+        $filePath = 'documents/'.$user->currentTeam->id.'/'.$request['document']->hashName();
+        Storage::disk('s3')->assertExists($filePath);
+
+        $document = $document->fresh();
+        $this->assertEquals($document->file_path, $filePath);
+        $this->assertEquals($document->name, $request['name']);
+        $this->assertEquals($document->description, $request['description']);
+        $this->assertEquals($document->next_action_date, $request['next_action_date'].' 00:00:00');
+    }
 }
