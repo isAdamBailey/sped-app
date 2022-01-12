@@ -68,7 +68,7 @@ class DocumentControllerTest extends TestCase
                 ->has('documents.data.0.name')
                 ->has('documents.data.0.description')
                 ->has('documents.data.0.next_action_date')
-                ->has('documents.data.0.file_path')
+                ->has('documents.data.0.file_url')
         );
     }
 
@@ -96,9 +96,11 @@ class DocumentControllerTest extends TestCase
             fn (Assert $page) => $page
                 ->component('Document')
                 ->url('/documents/'.$document->id)
+                ->has('document.id')
                 ->has('document.name')
                 ->has('document.next_action_date')
                 ->has('document.description')
+                ->has('document.file_url')
                 ->has(
                     'document.team',
                     fn (Assert $page) => $page

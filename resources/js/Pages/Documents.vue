@@ -3,7 +3,7 @@
         <template #header>Documentation</template>
 
         <div class="p-10">
-            <div class="flex justify-between items-start">
+            <div class="flex flex-wrap justify-between items-start">
                 <div class="text-2xl font-bold mb-5">Documentation</div>
 
                 <search-input
@@ -15,8 +15,8 @@
                     class="flex items-center h-10"
                     @click="newDocumentModalOpen = true"
                 >
-                    <i class="text-3xl mr-2 ri-file-add-fill"></i>
-                    New Document
+                    <i class="text-xl ri-file-add-fill"></i>
+                    <span class="hidden md:block md:ml-3">New Document</span>
                 </jet-button>
             </div>
             <info-text
@@ -27,18 +27,17 @@
                 <div
                     class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-4 mx-auto md:p-4"
                 >
-                    <div
+                    <Link
                         v-for="(doc, index) in documentsData"
                         :key="index"
+                        :href="route('documents.show', doc.id)"
                         class="flex items-center rounded border shadow hover:shadow-lg transition"
                     >
-                        <Link :href="route('documents.show', doc.id)">
-                            <div class="p-3">
-                                <h3 class="font-bold">{{ doc.name }}</h3>
-                                <p v-html="doc.description" />
-                            </div>
-                        </Link>
-                    </div>
+                        <div class="p-3">
+                            <h3 class="font-bold">{{ doc.name }}</h3>
+                            <p v-html="doc.description" />
+                        </div>
+                    </Link>
                 </div>
                 <div
                     v-if="documents.next_page_url"

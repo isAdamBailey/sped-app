@@ -30,7 +30,7 @@ class DocumentController extends Controller
                 'name' => $document->name,
                 'description' => $document->description,
                 'next_action_date' => $document->next_action_date,
-                'file_path' => $document->file_path,
+                'file_url' => $document->file_url,
             ]),
             'search' => $search,
         ]);
@@ -47,7 +47,7 @@ class DocumentController extends Controller
 
         return Inertia::render('Document', [
             'document' => $document->load('team')
-                ->only('id', 'file_path', 'name', 'description', 'next_action_date', 'team'),
+                ->only('id', 'file_url', 'name', 'description', 'next_action_date', 'team'),
         ]);
     }
 

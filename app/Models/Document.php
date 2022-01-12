@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class Document extends Model
 {
@@ -16,6 +17,14 @@ class Document extends Model
         'next_action_date',
         'file_path',
     ];
+
+    public function getFileUrlAttribute(): ?string
+    {
+        if (empty($this->file_path)) {
+            return null;
+        }
+        return Storage::temporaryUrl($this->file_path, now()->addMinutes(30));
+    }
 
     public function team(): BelongsTo
     {
