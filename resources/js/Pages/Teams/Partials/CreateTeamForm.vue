@@ -3,7 +3,15 @@
         <template #title> Team Details </template>
 
         <template #description>
-            Create a new team to collaborate with others on projects.
+            <p class="mb-5">
+                Create a new team to collaborate with others on projects.
+            </p>
+            <info-text>
+                To join an existing team, click the "Accept Invitation" button
+                in the team invitation email. Didn't get a team invitation
+                email? Ask a member of an existing team to add you to their
+                team.
+            </info-text>
         </template>
 
         <template #form>
@@ -57,9 +65,11 @@ import JetFormSection from "@/Jetstream/FormSection.vue";
 import JetInput from "@/Jetstream/Input.vue";
 import JetInputError from "@/Jetstream/InputError.vue";
 import JetLabel from "@/Jetstream/Label.vue";
+import InfoText from "../../../Jetstream/InfoText";
 
 export default defineComponent({
     components: {
+        InfoText,
         JetButton,
         JetFormSection,
         JetInput,

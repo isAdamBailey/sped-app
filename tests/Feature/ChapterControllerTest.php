@@ -19,14 +19,14 @@ class ChapterControllerTest extends TestCase
 
     public function testChaptersIndexPageNotSuperAdmin()
     {
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
         $this->get(route('chapters.index'))->assertStatus(403);
     }
 
     public function testChaptersIndexPage()
     {
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
         $user->assignRole('super admin');
 
         $state = State::factory()->create();
@@ -58,7 +58,7 @@ class ChapterControllerTest extends TestCase
 
     public function testSearchChaptersIndexPage()
     {
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
         $user->assignRole('super admin');
 
         $state = State::factory()->create();
@@ -97,7 +97,7 @@ class ChapterControllerTest extends TestCase
 
     public function testFilterChaptersIndexPage()
     {
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
         $user->assignRole('super admin');
 
         $state = State::factory()->create();

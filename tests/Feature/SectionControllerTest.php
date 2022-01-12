@@ -17,7 +17,7 @@ class SectionControllerTest extends TestCase
 
     public function testSectionsIndexPage()
     {
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
         $state = State::factory()->create();
         $chapter = Chapter::factory()->for($state)->create();
@@ -50,7 +50,7 @@ class SectionControllerTest extends TestCase
 
     public function testSectionsIndexPageDoesNotShowInactiveChapterSections()
     {
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
         $state = State::factory()->create();
         $chapter = Chapter::factory()->for($state)->create(['active' => 0]);
@@ -72,7 +72,7 @@ class SectionControllerTest extends TestCase
 
     public function testSearchSectionsIndexPage()
     {
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
         $state = State::factory()->create();
         $chapter = Chapter::factory()->for($state)->create();
@@ -111,7 +111,7 @@ class SectionControllerTest extends TestCase
 
     public function testFilterSectionsIndexPageByState()
     {
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
         $state = State::factory()->create();
         $chapter = Chapter::factory()->for($state)->create();
@@ -155,7 +155,7 @@ class SectionControllerTest extends TestCase
 
     public function testSectionShowPage()
     {
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
         $state = State::factory()->create();
         $chapter = Chapter::factory()->for($state)->create();

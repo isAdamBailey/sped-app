@@ -1,5 +1,5 @@
 <template>
-    <app-layout title="Create Team">
+    <home-layout title="Create Team">
         <template #header>Create Team</template>
 
         <div>
@@ -7,17 +7,17 @@
                 <create-team-form />
             </div>
         </div>
-    </app-layout>
+    </home-layout>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import AppLayout from "@/Layouts/AppLayout.vue";
+import HomeLayout from "@/Layouts/HomeLayout.vue";
 import CreateTeamForm from "@/Pages/Teams/Partials/CreateTeamForm.vue";
 
 export default defineComponent({
     components: {
-        AppLayout,
+        HomeLayout,
         CreateTeamForm,
     },
 });

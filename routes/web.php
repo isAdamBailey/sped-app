@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\NewTeamController;
 use App\Http\Controllers\SectionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -23,20 +24,26 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard/Show');
-    })->name('dashboard');
+    Route::get('/create-first-team', NewTeamController::class)
+        ->middleware('no-team')
+        ->name('create-first-team');
 
-    Route::get('/sections', [SectionController::class, 'index'])->name('sections.index');
-    Route::get('/sections/{section}', [SectionController::class, 'show'])->name('sections.show');
+    Route::middleware(['team'])->group(function () {
+        Route::get('/dashboard', function () {
+            return Inertia::render('Dashboard/Show');
+        })->name('dashboard');
 
-    Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
-    Route::get('/documents/{document}', [DocumentController::class, 'show'])->name('documents.show');
-    Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
-    Route::put('/documents/{document}', [DocumentController::class, 'update'])->name('documents.update');
+        Route::get('/sections', [SectionController::class, 'index'])->name('sections.index');
+        Route::get('/sections/{section}', [SectionController::class, 'show'])->name('sections.show');
 
-    Route::group(['middleware' => ['can:edit chapters']], function () {
-        Route::get('/chapters', [ChapterController::class, 'index'])->name('chapters.index');
-        Route::put('chapters/{chapter}', [ChapterController::class, 'update'])->name('chapters.update');
+        Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
+        Route::get('/documents/{document}', [DocumentController::class, 'show'])->name('documents.show');
+        Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
+        Route::put('/documents/{document}', [DocumentController::class, 'update'])->name('documents.update');
+
+        Route::group(['middleware' => ['can:edit chapters']], function () {
+            Route::get('/chapters', [ChapterController::class, 'index'])->name('chapters.index');
+            Route::put('chapters/{chapter}', [ChapterController::class, 'update'])->name('chapters.update');
+        });
     });
 });
