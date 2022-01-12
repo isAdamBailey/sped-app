@@ -11,6 +11,22 @@
                 We hope this application can be a great resource for navigating
                 through the nightmare of special education.
             </div>
+            <div class="mt-5 text-gray-500 md:text-lg">
+                This application has all of your state's special education laws
+                populated in a way that you can easily search through and find
+                the text you need for your meetings.
+            </div>
+
+            <div class="mt-5 text-gray-500 md:text-lg">
+                We have a way for you to upload and securely keep track of
+                important documents. You can invite others to your "team" to
+                review and help you in your journey.
+            </div>
+
+            <div class="mt-5 text-gray-500 md:text-lg">
+                Creating a team requires a small monthly subscription, but you
+                can add 3 people to your team for free.
+            </div>
 
             <div class="mt-5 md:mt-12">
                 <Link v-if="$page.props.user.name" :href="route('dashboard')">

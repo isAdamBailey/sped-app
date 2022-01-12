@@ -25,10 +25,10 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/create-first-team', NewTeamController::class)
-        ->middleware('no-team')
+        ->middleware('ensure-no-team')
         ->name('create-first-team');
 
-    Route::middleware(['team'])->group(function () {
+    Route::middleware('ensure-team')->group(function () {
         Route::get('/dashboard', function () {
             return Inertia::render('Dashboard/Show');
         })->name('dashboard');
