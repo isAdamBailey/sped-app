@@ -7,9 +7,7 @@
 
             <div class="mt-5 text-2xl">Hello, {{ $page.props.user.name }}</div>
 
-            <div class="mt-5 text-2xl">
-                Welcome to the unnamed special education helper!
-            </div>
+            <div class="mt-5 text-2xl">Welcome to {{ $page.props.name }}!</div>
 
             <div class="mt-6">
                 <span class="text-gray-500">You are logged in as </span>
@@ -27,6 +25,15 @@
                     </span>
                 </span>
             </div>
+
+            <div class="flex mt-10">
+                <Link :href="route('sections.index')">
+                    <jet-button>View State Laws</jet-button>
+                </Link>
+                <Link class="ml-3" :href="route('documents.index')">
+                    <jet-button>View Your Documentation</jet-button>
+                </Link>
+            </div>
         </div>
     </dashboard-layout>
 </template>
@@ -35,11 +42,15 @@
 import { defineComponent } from "vue";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import ApplicationMark from "@/Jetstream/ApplicationMark";
+import JetButton from "@/Jetstream/Button";
+import { Link } from "@inertiajs/inertia-vue3";
 
 export default defineComponent({
     components: {
         ApplicationMark,
         DashboardLayout,
+        JetButton,
+        Link,
     },
 
     props: {

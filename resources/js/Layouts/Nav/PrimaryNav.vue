@@ -296,6 +296,13 @@
                 >
                     State Laws
                 </jet-responsive-nav-link>
+
+                <jet-responsive-nav-link
+                    :href="route('documents.index')"
+                    :active="route().current('documents.*')"
+                >
+                    Documentation
+                </jet-responsive-nav-link>
             </div>
 
             <!-- Responsive Settings Options -->

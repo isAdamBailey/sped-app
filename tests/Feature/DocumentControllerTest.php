@@ -132,7 +132,7 @@ class DocumentControllerTest extends TestCase
 
         $document = Document::first();
         $this->assertEquals($document->file_path, $filePath);
-        $this->assertEquals($document->name, $request['name']);
+        $this->assertEquals($document->name, ucfirst($request['name']));
         $this->assertEquals($document->description, $request['description']);
         $this->assertEquals($document->next_action_date, $request['next_action_date'].' 00:00:00');
     }
@@ -163,7 +163,7 @@ class DocumentControllerTest extends TestCase
 
         $document = $document->fresh();
         $this->assertEquals($document->file_path, $filePath);
-        $this->assertEquals($document->name, $request['name']);
+        $this->assertEquals($document->name, ucfirst($request['name']));
         $this->assertEquals($document->description, $request['description']);
         $this->assertEquals($document->next_action_date, $request['next_action_date'].' 00:00:00');
     }
