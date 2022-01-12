@@ -31,11 +31,13 @@
                     <div class="w-full md:w-1/2 px-3">
                         <jet-label for="document" value="Upload a file" />
                         <jet-input
-                            ref="file"
+                            id="fileInput"
                             name="document"
                             type="file"
+                            class="hidden"
                             @input="form.document = $event.target.files[0]"
                         />
+                        <jet-button @click="getFile">Upload</jet-button>
                         <progress
                             v-if="form.progress"
                             :value="form.progress.percentage"
@@ -121,6 +123,13 @@ export default defineComponent({
     },
 
     methods: {
+        getFile() {
+            let fileUpload = document.getElementById("fileInput");
+            if (fileUpload !== null) {
+                fileUpload.click();
+            }
+        },
+
         storeDocument() {
             this.form.post(route("documents.store"), {
                 errorBag: "storeDocument",

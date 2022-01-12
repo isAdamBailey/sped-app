@@ -1,71 +1,49 @@
 <template>
-    <Head title="Welcome" />
+    <home-layout title="Welcome">
+        <div>
+            <div class="font-bold text-gray-700 text-6xl md:text-8xl">
+                Welcome
+            </div>
+            <div class="text-gray-500 md:text-2xl">
+                to {{ $page.props.name }}!
+            </div>
+            <div class="mt-6 text-gray-500 text-l md:text-2xl">
+                We hope this application can be a great resource for navigating
+                through the nightmare of special education.
+            </div>
 
-    <div
-        class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0"
-    >
-        <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-            <Link
-                v-if="$page.props.user"
-                :href="route('dashboard')"
-                class="text-sm text-gray-700 underline"
-            >
-                Dashboard
-            </Link>
-
-            <template v-else>
-                <Link
-                    :href="route('login')"
-                    class="text-sm text-gray-700 underline"
-                >
-                    Log in
+            <div class="mt-5 md:mt-12">
+                <Link v-if="$page.props.user.name" :href="route('dashboard')">
+                    <jet-button>Dashboard</jet-button>
                 </Link>
 
-                <Link
-                    :href="route('register')"
-                    class="ml-4 text-sm text-gray-700 underline"
-                >
-                    Register
-                </Link>
-            </template>
-        </div>
+                <template v-else>
+                    <Link :href="route('login')">
+                        <secondary-button>Log In</secondary-button>
+                    </Link>
 
-        <div class="max-w-6xl mx-auto mt-20 md:mt-0">
-            <div
-                class="p-10 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
-            >
-                <div class="flex flex-col-reverse mb-5 md:mb-7 lg:flex-row">
-                    <div>
-                        <div
-                            class="font-bold text-gray-700 dark:text-indigo-400 text-6xl md:text-8xl"
-                        >
-                            Welcome
-                        </div>
-                        <div
-                            class="mt-6 text-gray-500 dark:text-indigo-300 text-l md:text-2xl"
-                        >
-                            etc etc
-                        </div>
-                    </div>
-                    <application-mark
-                        class="w-full md:w-1/2 mx-auto mb-6 lg:mb-0"
-                    />
-                </div>
+                    <Link :href="route('register')" class="ml-4">
+                        <jet-button> Register </jet-button>
+                    </Link>
+                </template>
             </div>
         </div>
-    </div>
+    </home-layout>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import { Head, Link } from "@inertiajs/inertia-vue3";
-import ApplicationMark from "../Jetstream/ApplicationMark";
+import { Link } from "@inertiajs/inertia-vue3";
+import HomeLayout from "@/Layouts/HomeLayout";
+import JetButton from "@/Jetstream/Button";
+import SecondaryButton from "../Jetstream/SecondaryButton";
 
 export default defineComponent({
     components: {
-        ApplicationMark,
-        Head,
+        SecondaryButton,
+        HomeLayout,
         Link,
+        JetButton,
     },
 });
 </script>

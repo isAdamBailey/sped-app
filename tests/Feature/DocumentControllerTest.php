@@ -72,6 +72,42 @@ class DocumentControllerTest extends TestCase
         );
     }
 
+    public function testDocumentShowPageNotAvailableToUnauthenticated()
+    {
+        $user = User::factory()->withPersonalTeam()->create();
+        $document = Document::factory()->for($user->currentTeam)->create();
+
+        $this->actingAs($otherUser = User::factory()->withPersonalTeam()->create());
+
+        $this->get(route('documents.show', $document))
+            ->assertRedirect()
+            ->assertSessionHas('flash.banner');
+    }
+
+    public function testDocumentShowPageIsAvailableToAuthenticated()
+    {
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+
+        $document = Document::factory()->for($user->currentTeam)->create();
+
+        $response = $this->get(route('documents.show', $document));
+
+        $response->assertInertia(
+            fn (Assert $page) => $page
+                ->component('Document')
+                ->url('/documents/'.$document->id)
+                ->has('document.name')
+                ->has('document.next_action_date')
+                ->has('document.description')
+                ->has(
+                    'document.team',
+                    fn (Assert $page) => $page
+                        ->where('name', $user->currentTeam->name)
+                        ->etc()
+                )
+        );
+    }
+
     public function testUserCanCreateDocument()
     {
         Storage::fake('s3');
@@ -86,7 +122,7 @@ class DocumentControllerTest extends TestCase
         ];
 
         $this->post(route('documents.store'), $request)
-            ->assertRedirect()
+            ->assertRedirect(route('documents.index'))
             ->assertSessionHas('flash.banner');
 
         $filePath = 'documents/'.$user->currentTeam->id.'/'.$request['document']->hashName();

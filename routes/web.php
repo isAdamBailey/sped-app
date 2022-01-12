@@ -31,6 +31,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/sections/{section}', [SectionController::class, 'show'])->name('sections.show');
 
     Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
+    Route::get('/documents/{document}', [DocumentController::class, 'show'])->name('documents.show');
     Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
 
     Route::group(['middleware' => ['can:edit chapters']], function () {

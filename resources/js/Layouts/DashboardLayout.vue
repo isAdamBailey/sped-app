@@ -16,6 +16,7 @@
                 </div>
             </div>
         </div>
+        <scroll-top />
     </div>
 </template>
 
@@ -25,6 +26,7 @@ import { Head } from "@inertiajs/inertia-vue3";
 import PrimaryNav from "@/Layouts/Nav/PrimaryNav";
 import DashboardNav from "@/Layouts/Nav/DashboardNav";
 import Banner from "@/Jetstream/Banner";
+import ScrollTop from "@/Jetstream/ScrollTop";
 
 export default defineComponent({
     components: {
@@ -32,6 +34,7 @@ export default defineComponent({
         PrimaryNav,
         DashboardNav,
         Head,
+        ScrollTop,
     },
     props: {
         title: String,

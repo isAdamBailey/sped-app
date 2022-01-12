@@ -36,6 +36,21 @@ class DocumentController extends Controller
         ]);
     }
 
+    public function show(Document $document): Response|RedirectResponse
+    {
+        if (auth()->user()->currentTeam->id !== $document->team->id) {
+            return back()->with([
+                'flash.bannerStyle' => 'error',
+                'flash.banner' => 'You don\'t have access to this document!',
+            ]);
+        }
+
+        return Inertia::render('Document', [
+            'document' => $document->load('team')
+                ->only('id', 'file_path', 'name', 'description', 'next_action_date', 'team'),
+        ]);
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
@@ -69,6 +84,7 @@ class DocumentController extends Controller
             'file_path' => $filePath,
         ]);
 
-        return back()->with('flash.banner', 'Document successfully uploaded!');
+        return redirect(route('documents.index'))
+            ->with('flash.banner', 'Document successfully uploaded!');
     }
 }

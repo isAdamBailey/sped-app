@@ -1,0 +1,47 @@
+<template>
+    <home-layout :title="title">
+        <div>
+            <div class="font-bold text-gray-700 text-6xl md:text-8xl">
+                <h1>{{ title }}</h1>
+            </div>
+            <div class="mt-6 text-gray-500 text-l md:text-2xl">
+                <div>{{ description }}</div>
+            </div>
+            <div class="flex justify-center mt-10">
+                <Link :href="route('dashboard')">
+                    <jet-button>Back Home?</jet-button>
+                </Link>
+            </div>
+        </div>
+    </home-layout>
+</template>
+
+<script>
+import JetButton from "@/Jetstream/Button";
+import { Link } from "@inertiajs/inertia-vue3";
+import HomeLayout from "@/Layouts/HomeLayout";
+export default {
+    components: { HomeLayout, JetButton, Link },
+    props: {
+        status: Number,
+    },
+    computed: {
+        title() {
+            return {
+                503: "503: Service Unavailable",
+                500: "500: Server Error",
+                404: "404: Page Not Found",
+                403: "403: Forbidden",
+            }[this.status];
+        },
+        description() {
+            return {
+                503: "Sorry, we are doing some maintenance. Please check back soon.",
+                500: "Whoops, something went wrong on our servers.",
+                404: "Sorry, the page you are looking for could not be found.",
+                403: "Sorry, you are forbidden from accessing this page.",
+            }[this.status];
+        },
+    },
+};
+</script>

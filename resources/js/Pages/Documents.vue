@@ -32,7 +32,7 @@
                         :key="index"
                         class="flex items-center rounded border shadow hover:shadow-lg transition"
                     >
-                        <Link>
+                        <Link :href="route('documents.show', doc.id)">
                             <div class="p-3">
                                 <h3 class="font-bold">{{ doc.name }}</h3>
                                 <p v-html="doc.description" />
