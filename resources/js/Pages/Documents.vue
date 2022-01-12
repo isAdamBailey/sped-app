@@ -91,6 +91,8 @@ export default defineComponent({
             if (this.loadingMore) {
                 this.documentsData.push(...this.documents.data);
                 this.loadingMore = false;
+            } else {
+                this.documentsData = this.documents.data;
             }
         },
     },
