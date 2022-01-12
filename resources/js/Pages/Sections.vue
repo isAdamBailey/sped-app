@@ -43,24 +43,21 @@
                 </jet-dropdown>
             </div>
             <div v-if="sectionsData.length">
-                <div
+                <Link
                     v-for="(section, index) in sectionsData"
                     :key="index"
-                    class="flex items-center"
+                    :href="route('sections.show', section.slug)"
+                    class="flex items-center hover:bg-gray-100 hover:text-blue-800 transition"
                 >
-                    <Link :href="route('sections.show', section.slug)">
-                        <div
-                            class="p-3 hover:bg-gray-100 hover:text-blue-800 transition"
+                    <div class="p-3">
+                        <span class="font-bold"
+                            >{{ section.state.code_title }}
+                            {{ section.code }}</span
                         >
-                            <span class="font-bold"
-                                >{{ section.state.code_title }}
-                                {{ section.code }}</span
-                            >
-                            -
-                            {{ section.description }}
-                        </div>
-                    </Link>
-                </div>
+                        -
+                        {{ section.description }}
+                    </div>
+                </Link>
                 <div
                     v-if="sections.next_page_url"
                     class="flex justify-center mt-7"

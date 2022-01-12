@@ -31,7 +31,7 @@
                         v-for="(doc, index) in documentsData"
                         :key="index"
                         :href="route('documents.show', doc.id)"
-                        class="flex items-center rounded border shadow hover:shadow-lg transition"
+                        class="flex rounded border shadow hover:shadow-lg transition"
                     >
                         <div class="p-3">
                             <h3 class="font-bold">{{ doc.name }}</h3>
