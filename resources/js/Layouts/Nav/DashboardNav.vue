@@ -1,9 +1,12 @@
 <template>
+    <Link :href="route('dashboard')" class="hidden md:flex justify-center my-2">
+        <application-mark size="text-7xl" color="text-gray-400" />
+    </Link>
     <dashboard-nav-link
         :href="route('dashboard')"
         :active="route().current('dashboard')"
     >
-        <h1 class="text-2xl font-semibold">Dashboard</h1>
+        <h1 class="text-xl font-semibold">Dashboard</h1>
     </dashboard-nav-link>
     <dashboard-nav-link
         v-if="roles.includes('super admin')"
@@ -17,9 +20,10 @@
 <script>
 import { defineComponent } from "vue";
 import DashboardNavLink from "@/Layouts/Nav/DashboardNavLink";
+import ApplicationMark from "@/Jetstream/ApplicationMark";
 
 export default defineComponent({
-    components: { DashboardNavLink },
+    components: { ApplicationMark, DashboardNavLink },
     computed: {
         roles() {
             return this.$page.props.user.roles;

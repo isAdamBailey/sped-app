@@ -1,31 +1,61 @@
 <template>
     <home-layout title="Welcome">
         <div>
-            <div class="font-bold text-gray-700 text-6xl md:text-8xl">
+            <div class="font-bold text-blue-900 text-6xl md:text-8xl">
                 Welcome
             </div>
             <div class="text-gray-500 md:text-2xl">
-                to {{ $page.props.name }}!
+                to
+                <span class="font-semibold text-gray-900"
+                    >{{ $page.props.name }}!</span
+                >
             </div>
             <div class="mt-6 text-gray-500 text-l md:text-2xl">
                 We hope this application can be a great resource for navigating
-                through the nightmare of special education.
-            </div>
-            <div class="mt-5 text-gray-500 md:text-lg">
-                This application has all of your state's special education laws
-                populated in a way that you can easily search through and find
-                the text you need for your meetings.
+                through the atrocities and confusions of special education.
             </div>
 
-            <div class="mt-5 text-gray-500 md:text-lg">
-                We have a way for you to upload and securely keep track of
-                important documents. You can invite others to your "team" to
-                review and help you in your journey.
-            </div>
+            <div class="mt-10 md:flex -mx-2 -mx-4">
+                <div class="mx-3 px-2 md:w-1/3">
+                    <i class="text-7xl text-blue-900 ri-book-open-fill"></i>
 
-            <div class="mt-5 text-gray-500 md:text-lg">
-                Creating a team requires a small monthly subscription, but you
-                can add 10 people for free.
+                    <h3 class="text-2xl text-blue-900 mb-0">
+                        Your states laws
+                    </h3>
+
+                    <p class="text-gray-600">
+                        This application has all of your state's special
+                        education laws populated in a way that you can easily
+                        search through and find the text you need for your
+                        meetings.
+                    </p>
+                </div>
+
+                <div class="mt-8 md:mt-0 mx-3 px-2 md:w-1/3">
+                    <i class="text-7xl text-blue-900 ri-draft-fill"></i>
+
+                    <h3 class="text-2xl text-blue-900 mb-0">Documentation</h3>
+
+                    <p class="text-gray-600">
+                        We have a way for you to upload and securely keep track
+                        of important documents. Set a reminder date for the
+                        document to be acted upon. We'll email your team when
+                        it's time!
+                    </p>
+                </div>
+
+                <div class="mt-8 md:mt-0 mx-3 px-2 md:w-1/3">
+                    <i class="text-7xl text-blue-900 ri-team-fill"></i>
+
+                    <h3 class="text-2xl text-blue-900 mb-0">
+                        Contribute as a team.
+                    </h3>
+
+                    <p class="text-gray-600">
+                        You're not in this alone! You can invite others to your
+                        team to review documents and help you in your journey.
+                    </p>
+                </div>
             </div>
 
             <div class="mt-5 md:mt-12">
@@ -49,7 +79,6 @@
 
 <script>
 import { defineComponent } from "vue";
-import { Link } from "@inertiajs/inertia-vue3";
 import HomeLayout from "@/Layouts/HomeLayout";
 import JetButton from "@/Jetstream/Button";
 import SecondaryButton from "../Jetstream/SecondaryButton";
@@ -58,7 +87,6 @@ export default defineComponent({
     components: {
         SecondaryButton,
         HomeLayout,
-        Link,
         JetButton,
     },
 });

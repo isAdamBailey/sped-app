@@ -1,7 +1,7 @@
 require("./bootstrap");
 
 import { createApp, h } from "vue";
-import { createInertiaApp } from "@inertiajs/inertia-vue3";
+import { createInertiaApp, Link } from "@inertiajs/inertia-vue3";
 import { InertiaProgress } from "@inertiajs/progress";
 import "remixicon/fonts/remixicon.css";
 
@@ -15,6 +15,7 @@ createInertiaApp({
         return createApp({ render: () => h(app, props) })
             .use(plugin)
             .mixin({ methods: { route } })
+            .component("Link", Link)
             .mount(el);
     },
 });

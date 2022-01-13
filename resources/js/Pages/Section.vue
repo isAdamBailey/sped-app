@@ -43,11 +43,9 @@
 <script>
 import { defineComponent } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { Link } from "@inertiajs/inertia-vue3";
 
 export default defineComponent({
     components: {
-        Link,
         AppLayout,
     },
     props: {

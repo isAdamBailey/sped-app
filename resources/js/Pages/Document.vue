@@ -55,14 +55,12 @@
 import { defineComponent } from "vue";
 import { format, parseISO } from "date-fns";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { Link } from "@inertiajs/inertia-vue3";
 import JetButton from "@/Jetstream/Button";
 import EditDocumentModal from "@/Modals/EditDocumentModal";
 
 export default defineComponent({
     components: {
         EditDocumentModal,
-        Link,
         JetButton,
         AppLayout,
     },

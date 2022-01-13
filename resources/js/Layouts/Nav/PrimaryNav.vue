@@ -7,7 +7,7 @@
                     <!-- Logo -->
                     <div class="shrink-0 flex items-center">
                         <Link :href="route('dashboard')">
-                            <jet-application-mark class="block h-9 w-auto" />
+                            <jet-application-mark size="text-4xl" />
                         </Link>
                     </div>
 
@@ -437,7 +437,6 @@ import JetDropdown from "@/Jetstream/Dropdown.vue";
 import JetDropdownLink from "@/Jetstream/DropdownLink.vue";
 import JetNavLink from "@/Jetstream/NavLink.vue";
 import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink.vue";
-import { Link } from "@inertiajs/inertia-vue3";
 
 export default defineComponent({
     components: {
@@ -446,7 +445,6 @@ export default defineComponent({
         JetDropdownLink,
         JetNavLink,
         JetResponsiveNavLink,
-        Link,
     },
 
     data() {

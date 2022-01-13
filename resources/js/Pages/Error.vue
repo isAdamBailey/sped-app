@@ -18,10 +18,9 @@
 
 <script>
 import JetButton from "@/Jetstream/Button";
-import { Link } from "@inertiajs/inertia-vue3";
 import HomeLayout from "@/Layouts/HomeLayout";
 export default {
-    components: { HomeLayout, JetButton, Link },
+    components: { HomeLayout, JetButton },
     props: {
         status: Number,
     },

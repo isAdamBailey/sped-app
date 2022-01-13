@@ -1,15 +1,11 @@
 <template>
     <dashboard-layout title="Dashboard">
         <div class="m-5 p-5 bg-white shadow-xl rounded-lg">
-            <div>
-                <application-mark class="block h-12 w-auto" />
-            </div>
-
             <div class="mt-5 text-2xl">Hello, {{ $page.props.user.name }}</div>
 
             <div class="mt-5 text-2xl">Welcome to {{ $page.props.name }}!</div>
 
-            <div class="mt-6">
+            <div v-if="$page.props.user.roles.length" class="mt-6">
                 <span class="text-gray-500">You are logged in as </span>
                 <span class="text-xl font-semibold">{{
                     $page.props.user.roles[0]
@@ -41,16 +37,12 @@
 <script>
 import { defineComponent } from "vue";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import ApplicationMark from "@/Jetstream/ApplicationMark";
 import JetButton from "@/Jetstream/Button";
-import { Link } from "@inertiajs/inertia-vue3";
 
 export default defineComponent({
     components: {
-        ApplicationMark,
         DashboardLayout,
         JetButton,
-        Link,
     },
 
     props: {

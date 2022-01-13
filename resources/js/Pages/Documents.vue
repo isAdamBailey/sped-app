@@ -61,7 +61,6 @@
 <script>
 import { defineComponent } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { Link } from "@inertiajs/inertia-vue3";
 import SearchInput from "@/Jetstream/SearchInput";
 import JetButton from "@/Jetstream/Button";
 import InfoText from "../Jetstream/InfoText";
@@ -73,7 +72,6 @@ export default defineComponent({
         InfoText,
         JetButton,
         SearchInput,
-        Link,
         AppLayout,
     },
     props: {
