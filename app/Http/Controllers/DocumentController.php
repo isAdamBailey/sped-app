@@ -109,7 +109,7 @@ class DocumentController extends Controller
 
         if ($request->hasFile('document')) {
             if ($document->file_path) {
-                Storage::delete($document->file_path);
+                Storage::disk('s3')->delete($document->file_path);
             }
             $document->file_path = $request->file('document')->storePublicly('documents/'.$userTeam->id);
         }
