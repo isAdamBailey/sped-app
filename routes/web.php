@@ -40,6 +40,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/documents/{document}', [DocumentController::class, 'show'])->name('documents.show');
         Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
         Route::put('/documents/{document}', [DocumentController::class, 'update'])->name('documents.update');
+        Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
 
         Route::group(['middleware' => ['can:edit chapters']], function () {
             Route::get('/chapters', [ChapterController::class, 'index'])->name('chapters.index');

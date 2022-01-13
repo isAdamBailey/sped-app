@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -128,5 +130,17 @@ class DocumentController extends Controller
 
         return redirect(route('documents.show', $document))
             ->with('flash.banner', 'Document successfully updated!');
+    }
+
+    public function destroy(Document $document): Redirector|Application|RedirectResponse
+    {
+        if ($document->file_path) {
+            Storage::disk('s3')->delete($document->file_path);
+        }
+
+        $document->delete();
+
+        return redirect(route('documents.index'))
+            ->with('flash.banner', 'Document successfully deleted!');
     }
 }

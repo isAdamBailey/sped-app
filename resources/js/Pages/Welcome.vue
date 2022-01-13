@@ -25,7 +25,7 @@
 
             <div class="mt-5 text-gray-500 md:text-lg">
                 Creating a team requires a small monthly subscription, but you
-                can add 3 people to your team for free.
+                can add 10 people for free.
             </div>
 
             <div class="mt-5 md:mt-12">

@@ -167,4 +167,27 @@ class DocumentControllerTest extends TestCase
         $this->assertEquals($document->description, $request['description']);
         $this->assertEquals($document->next_action_date, $request['next_action_date'].' 00:00:00');
     }
+
+    public function testDocumentCanBeDestroyed()
+    {
+        Storage::fake('s3');
+
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+
+        $file = UploadedFile::fake()->create('document.pdf', 200, 'application/pdf');
+        $filePath = 'documents/'.$user->currentTeam->id.'/'.$file->hashName();
+
+        $document = Document::factory()->for($user->currentTeam)->create([
+            'file_path' => $filePath,
+        ]);
+
+        $response = $this->delete(route('documents.destroy', $document));
+
+        $response->assertRedirect(route('documents.index'))
+            ->assertSessionHas('flash.banner');
+
+        Storage::disk('s3')->assertMissing($filePath);
+
+        $this->assertDeleted($document);
+    }
 }
