@@ -8,6 +8,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -93,6 +94,11 @@ class DocumentController extends Controller
 
     public function update(Request $request, Document $document): RedirectResponse
     {
+        $user = auth()->user();
+        $team = $user->currentTeam;
+
+        Gate::forUser($user)->authorize('update', $team);
+
         $request->validate([
             'name' => 'string|max:100',
             'description' => 'string',
@@ -105,13 +111,11 @@ class DocumentController extends Controller
             ],
         ]);
 
-        $userTeam = auth()->user()->currentTeam;
-
         if ($request->hasFile('document')) {
             if ($document->file_path) {
                 Storage::disk('s3')->delete($document->file_path);
             }
-            $document->file_path = $request->file('document')->storePublicly('documents/'.$userTeam->id);
+            $document->file_path = $request->file('document')->storePublicly('documents/'.$team->id);
         }
 
         if ($request->next_action_date) {
@@ -134,6 +138,10 @@ class DocumentController extends Controller
 
     public function destroy(Document $document): Redirector|Application|RedirectResponse
     {
+        $user = auth()->user();
+
+        Gate::forUser($user)->authorize('delete', $user->currentTeam);
+
         if ($document->file_path) {
             Storage::disk('s3')->delete($document->file_path);
         }

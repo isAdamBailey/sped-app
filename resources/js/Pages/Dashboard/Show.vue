@@ -5,6 +5,8 @@
 
             <div class="mt-5 text-2xl">Welcome to {{ $page.props.name }}!</div>
 
+            <div>You are on {{ $page.props.teamPermissions.name }}.</div>
+
             <div v-if="$page.props.user.roles.length" class="mt-6">
                 <span class="text-gray-500">You are logged in as </span>
                 <span class="text-xl font-semibold">{{

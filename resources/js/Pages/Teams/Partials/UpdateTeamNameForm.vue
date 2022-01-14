@@ -36,14 +36,14 @@
                     v-model="form.name"
                     type="text"
                     class="mt-1 block w-full"
-                    :disabled="!permissions.canUpdateTeam"
+                    :disabled="!permissions.canDeleteTeam"
                 />
 
                 <jet-input-error :message="form.errors.name" class="mt-2" />
             </div>
         </template>
 
-        <template v-if="permissions.canUpdateTeam" #actions>
+        <template v-if="permissions.canDeleteTeam" #actions>
             <jet-action-message :on="form.recentlySuccessful" class="mr-3">
                 Saved.
             </jet-action-message>
