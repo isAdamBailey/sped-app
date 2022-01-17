@@ -4,16 +4,25 @@
 
         <banner />
 
-        <div class="bg-gray-100">
+        <div class="min-h-screen bg-gray-100">
             <primary-nav />
 
-            <div class="min-h-screen grid grid-cols-1 md:grid-cols-[15rem,1fr]">
+            <div
+                v-if="roles.includes('super admin')"
+                class="md:min-h-screen grid grid-cols-1 md:grid-cols-[15rem,1fr]"
+            >
                 <div class="aside bg-gray-800 text-gray-100">
                     <dashboard-nav></dashboard-nav>
                 </div>
-                <div class="main">
+                <main>
                     <slot></slot>
-                </div>
+                </main>
+            </div>
+
+            <div v-else class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <main>
+                    <slot></slot>
+                </main>
             </div>
         </div>
         <scroll-top />
@@ -38,6 +47,11 @@ export default defineComponent({
     },
     props: {
         title: String,
+    },
+    computed: {
+        roles() {
+            return this.$page.props.user.roles;
+        },
     },
 });
 </script>
