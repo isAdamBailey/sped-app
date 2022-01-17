@@ -43,6 +43,13 @@
         </template>
 
         <template #actions>
+            <Link
+                v-if="$page.props.user.current_team"
+                :href="route('teams.show', $page.props.user.current_team)"
+                class="mr-5"
+            >
+                <secondary-button> Nevermind </secondary-button>
+            </Link>
             <jet-button
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing"
@@ -61,9 +68,11 @@ import JetInput from "@/Jetstream/Input.vue";
 import JetInputError from "@/Jetstream/InputError.vue";
 import JetLabel from "@/Jetstream/Label.vue";
 import InfoText from "../../../Jetstream/InfoText";
+import SecondaryButton from "../../../Jetstream/SecondaryButton";
 
 export default defineComponent({
     components: {
+        SecondaryButton,
         InfoText,
         JetButton,
         JetFormSection,
