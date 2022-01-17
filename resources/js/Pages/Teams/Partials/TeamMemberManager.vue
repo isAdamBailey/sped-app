@@ -216,7 +216,7 @@
                                 <!-- Manage Team Member Role -->
                                 <button
                                     v-if="
-                                        userPermissions.canDeleteTeamMembers &&
+                                        userPermissions.canDeleteTeam &&
                                         availableRoles.length
                                     "
                                     class="ml-2 text-sm text-gray-400 underline"
@@ -538,7 +538,6 @@ export default defineComponent({
         },
 
         displayableRole(role) {
-            console.log(role);
             return this.availableRoles.find((r) => r.key === role).name;
         },
     },
