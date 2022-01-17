@@ -26,6 +26,7 @@ class DashboardControllerTest extends TestCase
             fn (Assert $page) => $page
                 ->component('Teams/Create')
                 ->url('/create-first-team')
+                ->where('firstTeam', fn ($value) => $value === true)
         );
     }
 

@@ -1,17 +1,12 @@
 <template>
     <jet-form-section @submitted="createTeam">
-        <template #title> Team Details </template>
+        <template #title> New Team! </template>
 
         <template #description>
             <p class="mb-5">
-                Create a new team to collaborate with others on projects.
+                Name your team to create a new group to collaborate with. You
+                will be the administrator of this team.
             </p>
-            <info-text>
-                To join an existing team, click the "Accept Invitation" button
-                in the team invitation email. Didn't get a team invitation
-                email? Ask a member of an existing team to add you to their
-                team.
-            </info-text>
         </template>
 
         <template #form>

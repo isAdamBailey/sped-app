@@ -16,6 +16,8 @@ class NewTeamController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        return Inertia::render('Teams/Create');
+        return Inertia::render('Teams/Create', [
+            'firstTeam' => true,
+        ]);
     }
 }
