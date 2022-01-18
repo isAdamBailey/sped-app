@@ -38,13 +38,6 @@
                             @input="form.document = $event.target.files[0]"
                         />
                         <jet-button @click="getFile">{{ fileText }}</jet-button>
-                        <progress
-                            v-if="form.progress"
-                            :value="form.progress.percentage"
-                            max="100"
-                        >
-                            {{ form.progress.percentage }}%
-                        </progress>
                         <jet-input-error
                             :message="form.errors.document"
                             class="mt-2"
@@ -61,6 +54,13 @@
                     class="mt-2"
                 />
             </div>
+            <progress
+                v-if="form.progress && form.document"
+                :value="form.progress.percentage"
+                max="100"
+            >
+                {{ form.progress.percentage }}%
+            </progress>
         </template>
 
         <template #footer>

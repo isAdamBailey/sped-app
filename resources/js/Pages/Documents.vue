@@ -31,12 +31,22 @@
                         v-for="(doc, index) in documentsData"
                         :key="index"
                         :href="route('documents.show', doc.id)"
-                        class="flex rounded border shadow hover:shadow-lg transition"
+                        class="bg-gradient-to-tr from-blue-200 to-blue-800 rounded border shadow shadow-blue-500/50 hover:shadow-lg hover:shadow-blue-500/50 transition"
                     >
-                        <div class="p-3">
+                        <div
+                            class="bg-white rounded-t p-3 flex justify-between"
+                        >
                             <h3 class="font-bold">{{ doc.name }}</h3>
-                            <p v-html="doc.description" />
+                            <i
+                                v-if="doc.file_url"
+                                class="text-blue-800 text-2xl ri-folder-upload-fill"
+                            ></i>
                         </div>
+
+                        <p
+                            class="max-h-60 overflow-hidden rounded bg-white m-3 p-3 prose max-w-full"
+                            v-html="doc.description"
+                        />
                     </Link>
                 </div>
                 <div

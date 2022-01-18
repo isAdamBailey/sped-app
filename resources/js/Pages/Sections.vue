@@ -47,7 +47,7 @@
                     v-for="(section, index) in sectionsData"
                     :key="index"
                     :href="route('sections.show', section.slug)"
-                    class="flex items-center hover:bg-gray-100 hover:text-blue-800 transition"
+                    class="flex items-center hover:bg-blue-100 hover:text-blue-800 transition"
                 >
                     <div class="p-3">
                         <span class="font-bold"

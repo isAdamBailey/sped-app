@@ -52,7 +52,10 @@
                 title="View document"
                 target="_blank"
             >
-                <jet-button>View Uploaded File</jet-button>
+                <jet-button>
+                    <i class="mr-3 ri-file-cloud-fill"></i>
+                    View Uploaded File
+                </jet-button>
             </a>
         </div>
     </app-layout>
