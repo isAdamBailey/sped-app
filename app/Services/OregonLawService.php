@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Abstracts\AbstractStateService;
 use App\Models\Chapter;
+use App\Models\Section;
 use App\Models\State;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -62,33 +64,38 @@ class OregonLawService extends AbstractStateService
         // this value is updated by reference in the loop below.
         $sectionCount = 0;
 
-        $activeChapters = $this->state->chapters()->whereActive('1')->get();
+        DB::table('chapters')->where([
+            'state_id' => $this->state->id,
+            'active' => 1,
+        ])->chunkById(100, function ($chapters) use ($initialCount, &$sectionCount) {
+            foreach ($chapters as $chapter) {
+                $initialCount += Section::where('chapter_id', $chapter->id)->count();
 
-        foreach ($activeChapters as $chapter) {
-            $initialCount += $chapter->sections->count();
+                $urlString = $this->endpoint.'ors/ors'.$chapter->code.'.html';
+                $chapterPage = $this->fetch($urlString);
 
-            $urlString = $this->endpoint.'ors/ors'.$chapter->code.'.html';
-            $chapterPage = $this->fetch($urlString);
+                $chapterPage->filter('p span')->each(
+                    function (Crawler $node) use ($chapter, $urlString, &$sectionCount) {
+                        $content = htmlentities($node->text(), null, 'utf-8');
 
-            $chapterPage->filter('p span')->each(function (Crawler $node) use ($chapter, $urlString, &$sectionCount) {
-                $content = htmlentities($node->text(), null, 'utf-8');
+                        if (Str::startsWith($content, $chapter->code)) {
+                            // literally using the number of forced spaces to explode this data.
+                            $numberOfSpaces = $chapter->code === '329A' ? '&nbsp;' : '&nbsp;&nbsp;&nbsp;&nbsp;';
+                            $sectionArray = explode($numberOfSpaces, $content);
+                            if (count($sectionArray) === 2) {
+                                $this->saveSection($chapter, [
+                                    'code' => $sectionArray[0],
+                                    'description' => $sectionArray[1],
+                                    'url' => $urlString,
+                                ]);
 
-                if (Str::startsWith($content, $chapter->code)) {
-                    // literally using the number of forced spaces to explode this data.
-                    $numberOfSpaces = $chapter->code === '329A' ? '&nbsp;' : '&nbsp;&nbsp;&nbsp;&nbsp;';
-                    $sectionArray = explode($numberOfSpaces, $content);
-                    if (count($sectionArray) === 2) {
-                        $this->saveSection($chapter, [
-                            'code' => $sectionArray[0],
-                            'description' => $sectionArray[1],
-                            'url' => $urlString,
-                        ]);
-
-                        $sectionCount++;
+                                $sectionCount++;
+                            }
+                        }
                     }
-                }
-            });
-        }
+                );
+            }
+        });
 
         return $this->response($initialCount, $sectionCount, 'sections');
     }
@@ -96,43 +103,49 @@ class OregonLawService extends AbstractStateService
     public function saveSectionContent(): array
     {
         $contentCount = 0;
-        $sections = $this->state->sections;
+        $sectionCount = Section::where('state_id', $this->state->id)->count();
 
-        foreach ($sections as $section) {
-            $sectionPage = $this->fetch($section->url);
+        DB::table('sections')
+            ->where('state_id', $this->state->id)
+            ->chunkById(100, function ($sections) use (&$contentCount) {
+                foreach ($sections as $section) {
+                    $sectionPage = $this->fetch($section->url);
 
-            // we need to find the p tag with the section code, then append further p tag contents until the section code changes.
-            $hasTitle = false;
+                    // we need to find the p tag with the section code, then append further p tag contents until the section code changes.
+                    $hasTitle = false;
 
-            // these values are updated by reference in the loop below.
-            $sectionCode = '';
-            $contents = '';
+                    // these values are updated by reference in the loop below.
+                    $sectionCode = '';
+                    $contents = '';
 
-            $sectionPage->filter('p')->each(function (Crawler $node) use ($section, &$hasTitle, &$sectionCode, &$contents, &$contentCount) {
-                $hasTitle = $node->filter('b')->count();
-                if ($hasTitle) {
-                    $sectionCode = $node->filter('b')->text('');
-                }
-                // as long as the section code doesn't change, keep appending contents
-                if (Str::contains($sectionCode, $section->code)) {
-                    if ($hasTitle) {
-                        $contents .= htmlentities($node->filter('span')->eq(1)->text(''), null, 'utf-8');
-                    } else {
-                        $contents .= htmlentities($node->text(''), null, 'utf-8');
+                    $sectionPage->filter('p')->each(
+                        function (Crawler $node) use ($section, &$hasTitle, &$sectionCode, &$contents, &$contentCount) {
+                            $hasTitle = $node->filter('b')->count();
+                            if ($hasTitle) {
+                                $sectionCode = $node->filter('b')->text('');
+                            }
+                            // as long as the section code doesn't change, keep appending contents
+                            if (Str::contains($sectionCode, $section->code)) {
+                                if ($hasTitle) {
+                                    $contents .= htmlentities($node->filter('span')->eq(1)->text(''), null, 'utf-8');
+                                } else {
+                                    $contents .= htmlentities($node->text(''), null, 'utf-8');
+                                }
+                            }
+                        }
+                    );
+                    $sectionContents = html_entity_decode(Str::replace('&nbsp;', '', $contents));
+
+                    if ($sectionContents !== $section->content) {
+                        Section::where('id', $section->id)->update(['content' => $sectionContents]);
+                    }
+
+                    if (! empty($sectionContents)) {
+                        $contentCount++;
                     }
                 }
             });
-            $sectionContents = html_entity_decode(Str::replace('&nbsp;', '', $contents));
 
-            if ($sectionContents !== $section->content) {
-                $section->update(['content' => $sectionContents]);
-            }
-
-            if (! empty($sectionContents)) {
-                $contentCount++;
-            }
-        }
-
-        return $this->response($sections->count(), $contentCount, 'contents');
+        return $this->response($sectionCount, $contentCount, 'contents');
     }
 }

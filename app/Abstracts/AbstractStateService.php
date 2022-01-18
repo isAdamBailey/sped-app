@@ -37,7 +37,7 @@ abstract class AbstractStateService
         return $chapter;
     }
 
-    protected function saveSection(Chapter $chapter, array $data): Model
+    protected function saveSection(\stdClass $chapter, array $data): Model
     {
         $description = trim(strip_tags($data['description']));
 

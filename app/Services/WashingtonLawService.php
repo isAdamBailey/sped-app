@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Abstracts\AbstractStateService;
 use App\Models\Chapter;
+use App\Models\Section;
 use App\Models\State;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\DomCrawler\Crawler;
 
 class WashingtonLawService extends AbstractStateService
@@ -47,33 +49,36 @@ class WashingtonLawService extends AbstractStateService
         // this value is updated by reference in the loop below.
         $sectionCount = 0;
 
-        $activeChapters = $this->state->chapters()->whereActive('1')->get();
+        DB::table('chapters')->where([
+            'state_id' => $this->state->id,
+            'active' => 1,
+        ])->chunkById(100, function ($chapters) use ($initialCount, &$sectionCount) {
+            foreach ($chapters as $chapter) {
+                $initialCount += Section::where('chapter_id', $chapter->id)->count();
 
-        foreach ($activeChapters as $chapter) {
-            $initialCount += $chapter->sections->count();
+                $chapterPage = $this->fetch($this->endpoint.$chapter->code);
 
-            $chapterPage = $this->fetch($this->endpoint.$chapter->code);
+                $sectionTable = $chapterPage->filter('table')->first();
 
-            $sectionTable = $chapterPage->filter('table')->first();
+                if ($sectionTable->count() > 0) {
+                    $sectionTable->filter('tr')->each(function (Crawler $node) use (&$sectionCount, $chapter) {
+                        $sectionCode = $node->filter('td a')->text('');
 
-            if ($sectionTable->count() > 0) {
-                $sectionTable->filter('tr')->each(function (Crawler $node) use (&$sectionCount, $chapter) {
-                    $sectionCode = $node->filter('td a')->text('');
+                        if (! empty($sectionCode)) {
+                            $description = $node->filter('td')->last()->text('');
 
-                    if (! empty($sectionCode)) {
-                        $description = $node->filter('td')->last()->text('');
+                            $this->saveSection($chapter, [
+                                'code' => $sectionCode,
+                                'description' => $description,
+                                'url' => $this->endpoint.$sectionCode,
+                            ]);
 
-                        $this->saveSection($chapter, [
-                            'code' => $sectionCode,
-                            'description' => $description,
-                            'url' => $this->endpoint.$sectionCode,
-                        ]);
-
-                        $sectionCount++;
-                    }
-                });
+                            $sectionCount++;
+                        }
+                    });
+                }
             }
-        }
+        });
 
         return $this->response($initialCount, $sectionCount, 'sections');
     }
@@ -81,22 +86,27 @@ class WashingtonLawService extends AbstractStateService
     public function saveSectionContent(): array
     {
         $contentCount = 0;
-        $sections = $this->state->sections;
+        $sectionCount = Section::where('state_id', $this->state->id)->count();
 
-        foreach ($sections as $section) {
-            $sectionPage = $this->fetch($section->url);
+        DB::table('sections')
+            ->where('state_id', $this->state->id)
+            ->chunkById(100, function ($sections) use (&$contentCount) {
+                foreach ($sections as $section) {
+                    $sectionPage = $this->fetch($section->url);
 
-            $sectionContent = $sectionPage->filter('#contentWrapper div')->eq(2)->text('');
+                    $sectionContent = $sectionPage->filter('#contentWrapper div')->eq(2)->text('');
 
-            if ($sectionContent !== $section->content) {
-                $section->update(['content' => $sectionContent]);
-            }
+                    if ($sectionContent !== $section->content) {
+                        Section::where('id', $section->id)->update(['content' => $sectionContent]);
+                    }
 
-            if (! empty($sectionContent)) {
-                $contentCount++;
-            }
-        }
+                    if (! empty($sectionContent)) {
+                        $contentCount++;
+                    }
+                }
+            });
 
-        return $this->response($sections->count(), $contentCount, 'contents');
+
+        return $this->response($sectionCount, $contentCount, 'contents');
     }
 }

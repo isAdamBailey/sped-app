@@ -25,11 +25,11 @@ class FetchesLawsCommandTest extends TestCase
     public function test_fetches_oregon_chapters_and_contents()
     {
         $this->markTestSkipped('it takes a long time');
-        // oregon title 30 has 28 chapters totalling 1753 sections
+        // oregon title 30 has 28 chapters totalling 1784 sections
         $this->helperTestChapterContents('oregon', [
             'title' => 30,
             'chapterCount' => 28,
-            'sectionCount' => 1753,
+            'sectionCount' => 1784,
         ]);
     }
 
