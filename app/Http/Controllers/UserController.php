@@ -21,15 +21,22 @@ class UserController extends Controller
                 fn ($query) => $query->where('name', 'LIKE', '%'.$search.'%')
                     ->orWhere('email', 'LIKE', '%'.$search.'%')
             )
-            ->when(
-                $filter,
-                fn ($query) => $query->whereHas('roles',
-                    fn ($q) => $q->where('roles.name', Str::replace('_', ' ', $filter))),
-            )
+            ->when($filter, function ($query) use ($filter) {
+                if (Str::startsWith($filter, 'team_')) {
+                    return $query->whereHas('teams',
+                        fn ($q) => $q->where('team_user.role', Str::replace('team_', '', $filter)));
+                }
+
+                return $query->whereHas(
+                    'roles',
+                    fn ($q) => $q->where('roles.name', Str::replace('_', ' ', $filter))
+                );
+            })
             ->paginate();
 
         return Inertia::render('Dashboard/Users/Index', [
             'users' => $users->through(fn ($user) => [
+                'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'profile_photo_url' => $user->profile_photo_url,

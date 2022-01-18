@@ -15,6 +15,13 @@
     >
         Active Chapters
     </dashboard-nav-link>
+    <dashboard-nav-link
+        v-if="roles.includes('super admin')"
+        :href="route('users.index')"
+        :active="route().current('users.*')"
+    >
+        Users
+    </dashboard-nav-link>
 </template>
 
 <script>

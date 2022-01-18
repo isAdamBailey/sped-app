@@ -37,6 +37,7 @@ class UserControllerTest extends TestCase
                 ->url('/users')
                 ->has('users.data', 15)
                 ->has('users.links')
+                ->has('users.data.0.id')
                 ->has('users.data.0.name')
                 ->has('users.data.0.email')
                 ->has('users.data.0.profile_photo_url')
@@ -67,6 +68,7 @@ class UserControllerTest extends TestCase
                 ->url('/users?search='.$searchTerm)
                 ->has('users.data', 1)
                 ->has('users.links')
+                ->has('users.data.0.id')
                 ->has('users.data.0.name')
                 ->has('users.data.0.email')
                 ->has('users.data.0.profile_photo_url')
@@ -79,10 +81,16 @@ class UserControllerTest extends TestCase
     public function testFilterUsersIndexPage()
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+        $user->currentTeam->users()->attach(
+            $user, ['role' => 'admin']
+        );
         $user->assignRole('super admin');
 
         User::factory()->count(20)->create();
         $superAdminUser = User::factory()->create();
+        $user->currentTeam->users()->attach(
+            $superAdminUser, ['role' => 'editor']
+        );
         $superAdminUser->assignRole('super admin');
 
         $response = $this->get(route('users.index', ['filter' => 'super_admin']));
@@ -93,6 +101,7 @@ class UserControllerTest extends TestCase
                 ->url('/users?filter=super_admin')
                 ->has('users.data', 2)
                 ->has('users.links')
+                ->has('users.data.0.id')
                 ->has('users.data.0.name')
                 ->has('users.data.0.email')
                 ->has('users.data.0.profile_photo_url')
@@ -104,6 +113,16 @@ class UserControllerTest extends TestCase
                         ->etc()
                 )
                 ->has('users.data.0.permissions')
+        );
+
+        $teamResponse = $this->get(route('users.index', ['filter' => 'team_admin']));
+
+        $teamResponse->assertInertia(
+            fn (Assert $user) => $user
+                ->component('Dashboard/Users/Index')
+                ->url('/users?filter=team_admin')
+                ->has('users.data', 1)
+                ->has('users.links')
         );
 
         $nonRoleName = 'kjhkjh';

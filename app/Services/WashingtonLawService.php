@@ -106,7 +106,6 @@ class WashingtonLawService extends AbstractStateService
                 }
             });
 
-
         return $this->response($sectionCount, $contentCount, 'contents');
     }
 }

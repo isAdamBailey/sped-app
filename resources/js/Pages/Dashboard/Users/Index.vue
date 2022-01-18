@@ -21,6 +21,16 @@
                             <dropdown-link
                                 :href="
                                     route('users.index', {
+                                        filter: 'team_admin',
+                                        search: $page.props.search,
+                                    })
+                                "
+                            >
+                                Team Admin
+                            </dropdown-link>
+                            <dropdown-link
+                                :href="
+                                    route('users.index', {
                                         filter: 'super_admin',
                                         search: $page.props.search,
                                     })
@@ -39,19 +49,77 @@
                     Administer users from this page
                 </info-text>
                 <div v-if="usersData.length">
-                    <div
-                        v-for="(user, index) in usersData"
-                        :key="index"
-                        class="flex items-center"
-                    >
-                        <div class="p-2">
-                            <span class="font-bold">
-                                {{ user.name }}
-                            </span>
-                            -
-                            {{ user.email }}
+                    <div class="flex flex-col">
+                        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div
+                                class="py-2 inline-block min-w-full sm:px-6 lg:px-8"
+                            >
+                                <div class="overflow-hidden">
+                                    <table class="min-w-full">
+                                        <thead class="border-b">
+                                            <tr>
+                                                <th
+                                                    scope="col"
+                                                    class="text-sm font-semibold text-gray-900 px-6 py-4 text-left"
+                                                >
+                                                    Name
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    class="text-sm font-semibold text-gray-900 px-6 py-4 text-left"
+                                                >
+                                                    Email
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    class="text-sm font-semibold text-gray-900 px-6 py-4 text-left"
+                                                >
+                                                    Role
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                v-for="(
+                                                    user, index
+                                                ) in usersData"
+                                                :key="index"
+                                                class="bg-white border-b transition hover:bg-blue-100 cursor-pointer"
+                                                @click="
+                                                    $inertia.get(
+                                                        route(
+                                                            'users.show',
+                                                            user.id
+                                                        )
+                                                    )
+                                                "
+                                            >
+                                                <td
+                                                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                                                >
+                                                    {{ user.name }}
+                                                </td>
+                                                <td
+                                                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                                                >
+                                                    {{ user.email }}
+                                                </td>
+                                                <td
+                                                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                                                >
+                                                    {{
+                                                        user.roles[0]?.name ||
+                                                        "user"
+                                                    }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                     <div
                         v-if="users.next_page_url"
                         class="flex justify-center mt-7"
