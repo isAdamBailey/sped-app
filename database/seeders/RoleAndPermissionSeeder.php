@@ -16,6 +16,7 @@ class RoleAndPermissionSeeder extends Seeder
 
         // create permissions
         Permission::firstOrCreate(['name' => 'edit chapters']);
+        Permission::firstOrCreate(['name' => 'edit users']);
 
         // create roles and assign created permissions
         $role = Role::firstOrCreate(['name' => 'super admin']);

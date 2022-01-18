@@ -4,6 +4,7 @@ use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\NewTeamController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -45,6 +46,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::group(['middleware' => ['can:edit chapters']], function () {
             Route::get('/chapters', [ChapterController::class, 'index'])->name('chapters.index');
             Route::put('chapters/{chapter}', [ChapterController::class, 'update'])->name('chapters.update');
+        });
+
+        Route::group(['middleware' => ['can:edit users']], function () {
+            Route::get('/users', [UserController::class, 'index'])->name('users.index');
         });
     });
 });
