@@ -136,4 +136,38 @@ class UserControllerTest extends TestCase
                 ->has('users.links')
         );
     }
+
+    public function testUsersShowPageNotSuperAdmin()
+    {
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+
+        $this->get(route('users.show', $user))->assertStatus(403);
+    }
+
+    public function testUserShowPage()
+    {
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+        $user->assignRole('super admin');
+
+        $secondUser = User::factory()->create();
+        $user->currentTeam->users()->attach(
+            $secondUser, ['role' => 'editor']
+        );
+
+
+        $response = $this->get(route('users.show', $secondUser));
+
+        $response->assertInertia(
+            fn (Assert $page) => $page
+                ->component('Dashboard/Users/Show')
+                ->url('/users/'.$secondUser->id)
+                ->has('user.id')
+                ->has('user.name')
+                ->has('user.email')
+                ->has('user.profile_photo_url')
+                ->has('user.teams')
+                ->has('user.roles')
+                ->has('user.permissions')
+        );
+    }
 }

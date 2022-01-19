@@ -48,4 +48,12 @@ class UserController extends Controller
             'filter' => $filter,
         ]);
     }
+
+    public function show(User $user): Response
+    {
+        return Inertia::render('Dashboard/Users/Show', [
+            'user' => $user->load(['teams', 'roles', 'permissions'])
+                ->only('id', 'name', 'email', 'profile_photo_url', 'teams', 'roles', 'permissions'),
+        ]);
+    }
 }
