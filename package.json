@@ -37,6 +37,7 @@
         "@tiptap/extension-typography": "*",
         "@tiptap/starter-kit": "*",
         "@tiptap/vue-3": "*",
+        "@vueform/multiselect": "^2.3.1",
         "date-fns": "^2.27.0",
         "remixicon": "^2.5.0",
         "vue3-date-time-picker": "^2.3.6"

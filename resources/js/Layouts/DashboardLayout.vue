@@ -8,7 +8,7 @@
             <primary-nav />
 
             <div
-                v-if="roles.includes('super admin')"
+                v-if="permissions.includes('edit chapters', 'edit users')"
                 class="md:min-h-screen grid grid-cols-1 md:grid-cols-[15rem,1fr]"
             >
                 <div class="aside bg-gray-800 text-gray-100">
@@ -49,8 +49,8 @@ export default defineComponent({
         title: String,
     },
     computed: {
-        roles() {
-            return this.$page.props.user.roles;
+        permissions() {
+            return this.$page.props.user.permissions;
         },
     },
 });

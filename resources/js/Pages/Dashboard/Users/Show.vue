@@ -46,23 +46,13 @@
                     <div v-else class="text-sm text-gray-500">
                         User has no roles
                     </div>
-                    <h3 class="mt-3 border-b text-lg font-semibold">
+                    <h3 class="my-3 border-b text-lg font-semibold">
                         Permissions
                     </h3>
-                    <ul v-if="userObject.permissions_names.length">
-                        <li
-                            v-for="(
-                                perm, index
-                            ) in userObject.permissions_names"
-                            :key="index"
-                            class="mt-2 flex justify-between"
-                        >
-                            <span class="text-gray-500">{{ perm }}</span>
-                        </li>
-                    </ul>
-                    <div v-else class="text-sm text-gray-500">
-                        User has no permissions
-                    </div>
+                    <assign-permissions
+                        :user-object="userObject"
+                        :permissions="permissions"
+                    />
                 </div>
                 <div class="m-2 p-5 bg-white rounded-lg">tile</div>
                 <div class="m-2 p-5 bg-white rounded-lg">tile</div>
@@ -74,14 +64,17 @@
 <script>
 import { defineComponent } from "vue";
 import DashboardLayout from "@/Layouts/DashboardLayout";
+import AssignPermissions from "@/Pages/Dashboard/Users/Partials/AssignPermissions";
 
 export default defineComponent({
     components: {
+        AssignPermissions,
         DashboardLayout,
     },
 
     props: {
         userObject: Object,
+        permissions: Array,
     },
 });
 </script>

@@ -169,4 +169,21 @@ class UserControllerTest extends TestCase
                 ->has('userObject.permissions_names')
         );
     }
+
+    public function testUpdatePermissions()
+    {
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+        $user->assignRole('super admin');
+
+        $secondUser = User::factory()->create();
+
+        $payload = ['permissions' => ['edit users']];
+
+        $this->put(route('users.update', $secondUser), $payload)
+            ->assertRedirect()
+            ->assertSessionHas('flash.banner');
+
+        $this->assertTrue($secondUser->hasPermissionTo('edit users'));
+        $this->assertFalse($secondUser->hasPermissionTo('edit chapters'));
+    }
 }
