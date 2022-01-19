@@ -31,6 +31,16 @@
                             <dropdown-link
                                 :href="
                                     route('users.index', {
+                                        filter: 'team_editor',
+                                        search: $page.props.search,
+                                    })
+                                "
+                            >
+                                Team Editor
+                            </dropdown-link>
+                            <dropdown-link
+                                :href="
+                                    route('users.index', {
                                         filter: 'super_admin',
                                         search: $page.props.search,
                                     })
@@ -105,12 +115,15 @@
                                                     {{ user.email }}
                                                 </td>
                                                 <td
-                                                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                                                    :class="
+                                                        userRole(user) ===
+                                                        'super admin'
+                                                            ? 'text-blue-600'
+                                                            : 'text-purple-600'
+                                                    "
+                                                    class="text-sm px-6 py-4 whitespace-nowrap"
                                                 >
-                                                    {{
-                                                        user.roles[0]?.name ||
-                                                        "user"
-                                                    }}
+                                                    {{ userRole(user) }}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -181,6 +194,11 @@ export default defineComponent({
         },
     },
     methods: {
+        userRole(user) {
+            const roles = user.roles[0];
+            const teamPermission = user.teams[0].membership.role;
+            return roles ?? `team ${teamPermission}`;
+        },
         loadMore() {
             this.loadingMore = true;
 

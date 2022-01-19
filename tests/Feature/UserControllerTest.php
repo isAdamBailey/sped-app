@@ -107,9 +107,9 @@ class UserControllerTest extends TestCase
                 ->has('users.data.0.profile_photo_url')
                 ->has('users.data.0.teams')
                 ->has(
-                    'users.data.0.roles.0',
+                    'users.data.0.roles',
                     fn (Assert $page) => $page
-                        ->where('name', 'super admin')
+                        ->where('0', 'super admin')
                         ->etc()
                 )
                 ->has('users.data.0.permissions')
@@ -154,20 +154,19 @@ class UserControllerTest extends TestCase
             $secondUser, ['role' => 'editor']
         );
 
-
         $response = $this->get(route('users.show', $secondUser));
 
         $response->assertInertia(
             fn (Assert $page) => $page
                 ->component('Dashboard/Users/Show')
                 ->url('/users/'.$secondUser->id)
-                ->has('user.id')
-                ->has('user.name')
-                ->has('user.email')
-                ->has('user.profile_photo_url')
-                ->has('user.teams')
-                ->has('user.roles')
-                ->has('user.permissions')
+                ->has('userObject.id')
+                ->has('userObject.name')
+                ->has('userObject.email')
+                ->has('userObject.profile_photo_url')
+                ->has('userObject.teams')
+                ->has('userObject.roles_names')
+                ->has('userObject.permissions_names')
         );
     }
 }

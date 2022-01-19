@@ -9,14 +9,14 @@
         <h1 class="text-xl font-semibold">Dashboard</h1>
     </dashboard-nav-link>
     <dashboard-nav-link
-        v-if="roles.includes('super admin')"
+        v-if="permissions.includes('edit chapters')"
         :href="route('chapters.index')"
         :active="route().current('chapters.*')"
     >
         Active Chapters
     </dashboard-nav-link>
     <dashboard-nav-link
-        v-if="roles.includes('super admin')"
+        v-if="permissions.includes('edit users')"
         :href="route('users.index')"
         :active="route().current('users.*')"
     >
@@ -32,8 +32,8 @@ import ApplicationMark from "@/Jetstream/ApplicationMark";
 export default defineComponent({
     components: { ApplicationMark, DashboardNavLink },
     computed: {
-        roles() {
-            return this.$page.props.user.roles;
+        permissions() {
+            return this.$page.props.user.permissions;
         },
     },
 });

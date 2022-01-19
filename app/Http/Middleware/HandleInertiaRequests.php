@@ -42,8 +42,8 @@ class HandleInertiaRequests extends Middleware
 
         return array_merge(parent::share($request), [
             'name' => config('app.name'),
-            'user.permissions' => $user?->getAllPermissions()->pluck('name'),
-            'user.roles' => $user?->roles()->pluck('name'),
+            'user.permissions' => $user?->permissions_names,
+            'user.roles' => $user?->roles_names,
             'teamPermissions' => [
                 'name' => $team?->name,
                 'canDelete' => Gate::check('delete', $team),

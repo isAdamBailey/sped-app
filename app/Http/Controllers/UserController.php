@@ -41,8 +41,8 @@ class UserController extends Controller
                 'email' => $user->email,
                 'profile_photo_url' => $user->profile_photo_url,
                 'teams' => $user->teams,
-                'roles' => $user->roles,
-                'permissions' => $user->permissions,
+                'roles' => $user->roles_names,
+                'permissions' => $user->permissions_names,
             ]),
             'search' => $search,
             'filter' => $filter,
@@ -51,9 +51,11 @@ class UserController extends Controller
 
     public function show(User $user): Response
     {
+        $userObject = $user
+            ->only('id', 'name', 'email', 'profile_photo_url', 'teams', 'roles_names', 'permissions_names');
+
         return Inertia::render('Dashboard/Users/Show', [
-            'user' => $user->load(['teams', 'roles', 'permissions'])
-                ->only('id', 'name', 'email', 'profile_photo_url', 'teams', 'roles', 'permissions'),
+            'userObject' => $userObject,
         ]);
     }
 }
