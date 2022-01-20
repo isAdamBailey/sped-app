@@ -5,24 +5,7 @@
 
             <div class="mt-5 text-2xl">Welcome to {{ $page.props.name }}!</div>
 
-            <div>You are on {{ $page.props.teamPermissions.name }}.</div>
-
-            <div v-if="$page.props.user.roles.length" class="mt-6">
-                <span class="text-gray-500">You are logged in as </span>
-                <span class="text-xl font-semibold">{{
-                    $page.props.user.roles[0]
-                }}</span>
-                <span v-if="$page.props.user.permissions.length">
-                    which allows you to
-                    <span
-                        v-for="(permission, index) in $page.props.user
-                            .permissions"
-                        :key="index"
-                        class="inline-flex"
-                        >{{ permission }}&nbsp;
-                    </span>
-                </span>
-            </div>
+            <div>You are on {{ $page.props.currentTeamPermissions.name }}.</div>
 
             <div class="flex mt-10">
                 <Link :href="route('sections.index')">

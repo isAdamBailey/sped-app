@@ -19,7 +19,7 @@ class UserController extends Controller
         $search = $request->search;
         $filter = $request->filter;
 
-        $users = User::with(['permissions'])
+        $users = User::with(['permissions', 'teams'])
             ->when(
                 $search,
                 fn ($query) => $query->where('name', 'LIKE', '%'.$search.'%')

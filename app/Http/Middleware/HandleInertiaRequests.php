@@ -38,12 +38,15 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $user = auth()->user();
-        $team = $user?->teams->first();
+        if ($user && ! $user->current_team_id) {
+            $user->switchTeam($user->allTeams()->first());
+        }
+        $team = $user?->currentTeam;
 
         return array_merge(parent::share($request), [
             'name' => config('app.name'),
             'user.permissions' => $user?->permissions_names,
-            'teamPermissions' => [
+            'currentTeamPermissions' => [
                 'name' => $team?->name,
                 'canDelete' => Gate::check('delete', $team),
                 'canUpdate' => Gate::check('update', $team),

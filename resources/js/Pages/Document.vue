@@ -16,7 +16,7 @@
                 </div>
                 <div class="flex items-center">
                     <jet-button
-                        v-if="$page.props.teamPermissions.canUpdate"
+                        v-if="$page.props.currentTeamPermissions.canUpdate"
                         class="mr-3 flex items-center"
                         @click="editDocumentModalOpen = true"
                     >
@@ -26,7 +26,7 @@
                         >
                     </jet-button>
                     <danger-button
-                        v-if="$page.props.teamPermissions.canDelete"
+                        v-if="$page.props.currentTeamPermissions.canDelete"
                         class="flex items-center"
                         @click="deleteDocumentModalOpen = true"
                     >
