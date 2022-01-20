@@ -23,7 +23,7 @@ class SiteSeeder extends Seeder
         $user->currentTeam->users()->attach(
             $user, ['role' => 'admin']
         );
-        $user->assignRole('super admin');
+        $user->givePermissionTo(['edit users', 'edit chapters']);
 
         // create a team member
         $anotherUser = User::factory()->create([

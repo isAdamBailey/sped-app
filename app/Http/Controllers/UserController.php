@@ -19,7 +19,7 @@ class UserController extends Controller
         $search = $request->search;
         $filter = $request->filter;
 
-        $users = User::with(['roles', 'permissions'])
+        $users = User::with(['permissions'])
             ->when(
                 $search,
                 fn ($query) => $query->where('name', 'LIKE', '%'.$search.'%')
@@ -32,8 +32,8 @@ class UserController extends Controller
                 }
 
                 return $query->whereHas(
-                    'roles',
-                    fn ($q) => $q->where('roles.name', Str::replace('_', ' ', $filter))
+                    'permissions',
+                    fn ($q) => $q->where('permissions.name', Str::replace('_', ' ', $filter))
                 );
             })
             ->paginate();
@@ -45,7 +45,6 @@ class UserController extends Controller
                 'email' => $user->email,
                 'profile_photo_url' => $user->profile_photo_url,
                 'teams' => $user->teams,
-                'roles' => $user->roles_names,
                 'permissions' => $user->permissions_names,
             ]),
             'search' => $search,
@@ -56,7 +55,7 @@ class UserController extends Controller
     public function show(User $user): Response
     {
         $userObject = $user
-            ->only('id', 'name', 'email', 'profile_photo_url', 'teams', 'roles_names', 'permissions_names');
+            ->only('id', 'name', 'email', 'profile_photo_url', 'teams', 'permissions_names');
 
         return Inertia::render('Dashboard/Users/Show', [
             'userObject' => $userObject,

@@ -25,7 +25,7 @@ class UserControllerTest extends TestCase
     public function testUsersIndexPage()
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-        $user->assignRole('super admin');
+        $user->givePermissionTo('edit users');
 
         User::factory()->count(20)->create();
 
@@ -42,7 +42,6 @@ class UserControllerTest extends TestCase
                 ->has('users.data.0.email')
                 ->has('users.data.0.profile_photo_url')
                 ->has('users.data.0.teams')
-                ->has('users.data.0.roles')
                 ->has('users.data.0.permissions')
         );
     }
@@ -50,7 +49,7 @@ class UserControllerTest extends TestCase
     public function testSearchUsersIndexPage()
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-        $user->assignRole('super admin');
+        $user->givePermissionTo('edit users');
 
         User::factory()->count(120)->create();
 
@@ -73,7 +72,6 @@ class UserControllerTest extends TestCase
                 ->has('users.data.0.email')
                 ->has('users.data.0.profile_photo_url')
                 ->has('users.data.0.teams')
-                ->has('users.data.0.roles')
                 ->has('users.data.0.permissions')
         );
     }
@@ -84,21 +82,21 @@ class UserControllerTest extends TestCase
         $user->currentTeam->users()->attach(
             $user, ['role' => 'admin']
         );
-        $user->assignRole('super admin');
+        $user->givePermissionTo(['edit users', 'edit chapters']);
 
         User::factory()->count(20)->create();
         $superAdminUser = User::factory()->create();
         $user->currentTeam->users()->attach(
             $superAdminUser, ['role' => 'editor']
         );
-        $superAdminUser->assignRole('super admin');
+        $superAdminUser->givePermissionTo('edit chapters');
 
-        $response = $this->get(route('users.index', ['filter' => 'super_admin']));
+        $response = $this->get(route('users.index', ['filter' => 'edit_chapters']));
 
         $response->assertInertia(
             fn (Assert $user) => $user
                 ->component('Dashboard/Users/Index')
-                ->url('/users?filter=super_admin')
+                ->url('/users?filter=edit_chapters')
                 ->has('users.data', 2)
                 ->has('users.links')
                 ->has('users.data.0.id')
@@ -107,12 +105,16 @@ class UserControllerTest extends TestCase
                 ->has('users.data.0.profile_photo_url')
                 ->has('users.data.0.teams')
                 ->has(
-                    'users.data.0.roles',
+                    'users.data.0.permissions',
                     fn (Assert $page) => $page
-                        ->where('0', 'super admin')
-                        ->etc()
+                        ->where('0', 'edit chapters')
+                        ->where('1', 'edit users')
                 )
-                ->has('users.data.0.permissions')
+                ->has(
+                    'users.data.1.permissions',
+                    fn (Assert $page) => $page
+                        ->where('0', 'edit chapters')
+                )
         );
 
         $teamResponse = $this->get(route('users.index', ['filter' => 'team_admin']));
@@ -147,7 +149,7 @@ class UserControllerTest extends TestCase
     public function testUserShowPage()
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-        $user->assignRole('super admin');
+        $user->givePermissionTo('edit users');
 
         $secondUser = User::factory()->create();
         $user->currentTeam->users()->attach(
@@ -165,7 +167,6 @@ class UserControllerTest extends TestCase
                 ->has('userObject.email')
                 ->has('userObject.profile_photo_url')
                 ->has('userObject.teams')
-                ->has('userObject.roles_names')
                 ->has('userObject.permissions_names')
         );
     }
@@ -173,7 +174,7 @@ class UserControllerTest extends TestCase
     public function testUpdatePermissions()
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-        $user->assignRole('super admin');
+        $user->givePermissionTo('edit users');
 
         $secondUser = User::factory()->create();
 

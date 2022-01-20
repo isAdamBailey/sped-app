@@ -68,9 +68,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->getAllPermissions()->pluck('name');
     }
-
-    public function getRolesNamesAttribute(): Collection
-    {
-        return $this->roles()->pluck('name');
-    }
 }

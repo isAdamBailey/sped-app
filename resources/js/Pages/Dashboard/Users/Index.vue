@@ -41,12 +41,22 @@
                             <dropdown-link
                                 :href="
                                     route('users.index', {
-                                        filter: 'super_admin',
+                                        filter: 'edit_users',
                                         search: $page.props.search,
                                     })
                                 "
                             >
-                                Super Admin
+                                Can Edit Users
+                            </dropdown-link>
+                            <dropdown-link
+                                :href="
+                                    route('users.index', {
+                                        filter: 'edit_chapters',
+                                        search: $page.props.search,
+                                    })
+                                "
+                            >
+                                Can Edit Chapters
                             </dropdown-link>
                             <dropdown-link :href="route('users.index')">
                                 <i class="ri-filter-off-fill"></i> Clear
@@ -117,7 +127,7 @@
                                                 <td
                                                     :class="
                                                         userRole(user) ===
-                                                        'super admin'
+                                                        'site administrator'
                                                             ? 'text-blue-600'
                                                             : 'text-purple-600'
                                                     "
@@ -177,7 +187,7 @@ export default defineComponent({
     },
     computed: {
         dropdownText() {
-            let text = "Filter By Role";
+            let text = "Filter By Permissions";
 
             if (this.$inertia.page.props.filter) {
                 text = this.$page.props.filter;
@@ -195,9 +205,12 @@ export default defineComponent({
     },
     methods: {
         userRole(user) {
-            const roles = user.roles[0];
+            // does the user have ANY of the possible admin roles?
+            const roles = ["edit chapters", "edit users"].some((perm) =>
+                user.permissions.includes(perm)
+            );
             const teamPermission = user.teams[0].membership.role;
-            return roles ?? `team ${teamPermission}`;
+            return roles ? "site administrator" : `team ${teamPermission}`;
         },
         loadMore() {
             this.loadingMore = true;

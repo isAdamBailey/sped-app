@@ -27,7 +27,7 @@ class ChapterControllerTest extends TestCase
     public function testChaptersIndexPage()
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-        $user->assignRole('super admin');
+        $user->givePermissionTo('edit chapters');
 
         $state = State::factory()->create();
         Chapter::factory()
@@ -59,7 +59,7 @@ class ChapterControllerTest extends TestCase
     public function testSearchChaptersIndexPage()
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-        $user->assignRole('super admin');
+        $user->givePermissionTo('edit chapters');
 
         $state = State::factory()->create();
         Chapter::factory()
@@ -98,7 +98,7 @@ class ChapterControllerTest extends TestCase
     public function testFilterChaptersIndexPage()
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-        $user->assignRole('super admin');
+        $user->givePermissionTo('edit chapters');
 
         $state = State::factory()->create();
         Chapter::factory()
