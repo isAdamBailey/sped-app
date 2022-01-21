@@ -2,14 +2,13 @@
 
 namespace App\Services;
 
-use App\Abstracts\AbstractStateService;
-use App\Models\Chapter;
+use App\Abstracts\AbstractLawService;
 use App\Models\Section;
 use App\Models\State;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\DomCrawler\Crawler;
 
-class WashingtonLawService extends AbstractStateService
+class WashingtonLawService extends AbstractLawService
 {
     public function __construct(?string $title)
     {

@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Abstracts\AbstractLawService;
+use App\Services\IDEAService;
 use App\Services\OregonLawService;
 use App\Services\WashingtonLawService;
 use Exception;
@@ -59,11 +61,12 @@ class FetchLaws extends Command
         return 0;
     }
 
-    private function stateService(?string $title): OregonLawService|Exception|WashingtonLawService
+    private function stateService(?string $title): AbstractLawService|Exception
     {
         return match ($this->argument('state')) {
             'washington' => new WashingtonLawService($title),
             'oregon' => new OregonLawService($title),
+            'idea' => new IDEAService($title),
             default => new Exception('Enter a valid state')
         };
     }

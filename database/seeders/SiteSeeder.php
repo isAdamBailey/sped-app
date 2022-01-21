@@ -37,5 +37,6 @@ class SiteSeeder extends Seeder
 
         // fetch washington laws by title
         Artisan::call('fetch:laws washington 28A');
+        Artisan::call('fetch:laws idea');
     }
 }

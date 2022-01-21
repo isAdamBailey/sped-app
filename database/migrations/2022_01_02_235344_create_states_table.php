@@ -28,6 +28,10 @@ class CreateStatesTable extends Migration
                 'name' => 'oregon',
                 'code_title' => 'ORS',
             ],
+            [
+                'name' => 'federal',
+                'code_title' => 'IDEA',
+            ],
         ]);
     }
 

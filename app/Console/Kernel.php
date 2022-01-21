@@ -22,6 +22,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('fetch:laws oregon 30')
             ->dailyAt('01:00')
             ->emailOutputOnFailure('adamjbailey7@gmail.com');
+
+        $schedule->command('fetch:laws idea')
+            ->dailyAt('02:00')
+            ->emailOutputOnFailure('adamjbailey7@gmail.com');
     }
 
     /**

@@ -33,6 +33,17 @@ class FetchesLawsCommandTest extends TestCase
         ]);
     }
 
+    public function test_fetches_IDEA_chapters_and_contents()
+    {
+        $this->markTestSkipped('it takes a long time');
+        // IDEA has 4 chapters totalling 34 sections
+        $this->helperTestChapterContents('idea', [
+            'title' => 'statute-chapter-33',
+            'chapterCount' => 4,
+            'sectionCount' => 34,
+        ]);
+    }
+
     private function helperTestChapterContents(string $state, array $data)
     {
         $this->artisan('fetch:laws '.$state.' '.$data['title'])

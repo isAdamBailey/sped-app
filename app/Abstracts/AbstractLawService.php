@@ -7,7 +7,7 @@ use App\Models\Section;
 use Goutte;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class AbstractStateService
+abstract class AbstractLawService
 {
     protected Model $state;
 
@@ -15,11 +15,11 @@ abstract class AbstractStateService
 
     protected string $title;
 
-    abstract protected function saveChapters(): array;
+    abstract public function saveChapters(): array;
 
-    abstract protected function saveChapterSections(): array;
+    abstract public function saveChapterSections(): array;
 
-    abstract protected function saveSectionContent(): array;
+    abstract public function saveSectionContent(): array;
 
     protected function saveChapter(string $code, string $description)
     {
