@@ -17,7 +17,7 @@
                             :href="route('sections.index')"
                             :active="route().current('sections.*')"
                         >
-                            State Laws
+                            Laws
                         </jet-nav-link>
                         <jet-nav-link
                             :href="route('documents.index')"
@@ -304,7 +304,7 @@
                     :href="route('sections.index')"
                     :active="route().current('sections.*')"
                 >
-                    State Laws
+                    Laws
                 </jet-responsive-nav-link>
 
                 <jet-responsive-nav-link

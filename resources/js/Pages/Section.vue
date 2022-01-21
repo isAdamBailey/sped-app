@@ -4,7 +4,7 @@
             <Link
                 class="underline text-blue-600 hover:text-blue-400"
                 :href="route('sections.index')"
-                >State Laws</Link
+                >Laws</Link
             >
             / Section {{ section.state.code_title }}
             {{ section.code }}

@@ -38,6 +38,16 @@
                             >
                                 Oregon
                             </dropdown-link>
+                            <dropdown-link
+                                :href="
+                                    route('chapters.index', {
+                                        filter: 'Federal',
+                                        search: $page.props.search,
+                                    })
+                                "
+                            >
+                                IDEA
+                            </dropdown-link>
                             <dropdown-link :href="route('chapters.index')">
                                 <i class="ri-filter-off-fill"></i> Clear
                             </dropdown-link>
@@ -53,23 +63,71 @@
                     checked daily for changes.
                 </info-text>
                 <div v-if="chaptersData.length">
-                    <span class="text-sm font-semibold underline">Active</span>
-                    <div
-                        v-for="(chapter, index) in chaptersData"
-                        :key="index"
-                        class="flex items-center"
-                    >
-                        <chapter-active-form class="mr-5" :chapter="chapter" />
-
-                        <div class="p-2">
-                            <span class="font-bold"
-                                >{{ chapter.state.code_title }}
-                                {{ chapter.code }}</span
+                    <div class="flex flex-col">
+                        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div
+                                class="py-2 inline-block min-w-full sm:px-6 lg:px-8"
                             >
-                            -
-                            {{ chapter.description }}
+                                <div class="overflow-hidden">
+                                    <table class="min-w-full">
+                                        <thead class="border-b">
+                                            <tr>
+                                                <th
+                                                    scope="col"
+                                                    class="text-sm font-semibold text-gray-900 px-6 py-1 text-left"
+                                                >
+                                                    Active
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    class="text-sm font-semibold text-gray-900 px-6 py-1 text-left"
+                                                >
+                                                    Code
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    class="text-sm font-semibold text-gray-900 px-6 py-1 text-left"
+                                                >
+                                                    Description
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                v-for="(
+                                                    chapter, index
+                                                ) in chaptersData"
+                                                :key="index"
+                                                class="bg-white border-b"
+                                            >
+                                                <td
+                                                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                                                >
+                                                    <chapter-active-form
+                                                        :chapter="chapter"
+                                                    />
+                                                </td>
+                                                <td
+                                                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                                                >
+                                                    {{
+                                                        chapter.state.code_title
+                                                    }}
+                                                    {{ chapter.code }}
+                                                </td>
+                                                <td
+                                                    class="text-sm px-6 py-4 whitespace-nowrap"
+                                                >
+                                                    {{ chapter.description }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                     <div
                         v-if="chapters.next_page_url"
                         class="flex justify-center mt-7"
@@ -116,7 +174,7 @@ export default defineComponent({
     },
     computed: {
         dropdownText() {
-            let text = "Filter By State";
+            let text = "Filter Chapters";
             const state = this.chapters.data[0]?.state;
             if (this.$inertia.page.props.filter) {
                 text = `${this.$page.props.filter} ${state?.code_title || ""}`;

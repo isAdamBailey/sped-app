@@ -1,6 +1,6 @@
 <template>
     <app-layout title="State Laws">
-        <template #header>State Laws</template>
+        <template #header>Laws</template>
 
         <div class="p-10">
             <div class="flex justify-between">
@@ -35,6 +35,16 @@
                             "
                         >
                             Oregon
+                        </dropdown-link>
+                        <dropdown-link
+                            :href="
+                                route('sections.index', {
+                                    filter: 'Federal',
+                                    search: $page.props.search,
+                                })
+                            "
+                        >
+                            IDEA
                         </dropdown-link>
                         <dropdown-link :href="route('sections.index')">
                             <i class="ri-filter-off-fill"></i> Clear
@@ -99,7 +109,7 @@ export default defineComponent({
     },
     computed: {
         dropdownText() {
-            let text = "Filter By State";
+            let text = "Filter Laws";
             const state = this.sections.data[0]?.state;
             if (this.$inertia.page.props.filter) {
                 text = `${this.$page.props.filter} ${state?.code_title || ""}`;
