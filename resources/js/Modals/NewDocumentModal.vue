@@ -3,7 +3,7 @@
         <template #title>New Document</template>
 
         <template #content>
-            <div class="mt-3 col-span-6 sm:col-span-4">
+            <div class="col-span-6 mt-3 sm:col-span-4">
                 <jet-label for="name" value="Document Title" />
                 <jet-input
                     id="name"
@@ -15,9 +15,9 @@
                 <jet-input-error :message="form.errors.name" class="mt-2" />
             </div>
 
-            <div class="mt-3 col-span-6">
-                <div class="flex flex-wrap -mx-3">
-                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <div class="col-span-6 mt-3">
+                <div class="-mx-3 flex flex-wrap">
+                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                         <jet-label
                             for="next_action_date"
                             value="Date of next expected action"
@@ -28,7 +28,7 @@
                             class="mt-2"
                         />
                     </div>
-                    <div class="w-full md:w-1/2 px-3">
+                    <div class="w-full px-3 md:w-1/2">
                         <jet-label for="document" :value="`${fileText} file`" />
                         <jet-input
                             id="fileInput"
@@ -46,7 +46,7 @@
                 </div>
             </div>
 
-            <div class="mt-3 col-span-6 sm:col-span-4">
+            <div class="col-span-6 mt-3 sm:col-span-4">
                 <jet-label for="description" value="Description" />
                 <wysiwyg v-model="form.description" />
                 <jet-input-error

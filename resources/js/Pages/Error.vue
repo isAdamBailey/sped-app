@@ -1,13 +1,13 @@
 <template>
     <home-layout :title="title">
         <div>
-            <div class="font-bold text-gray-700 text-6xl md:text-8xl">
+            <div class="text-6xl font-bold text-gray-700 md:text-8xl">
                 <h1>{{ title }}</h1>
             </div>
-            <div class="mt-6 text-gray-500 text-l md:text-2xl">
+            <div class="text-l mt-6 text-gray-500 md:text-2xl">
                 <div>{{ description }}</div>
             </div>
-            <div class="flex justify-center mt-10">
+            <div class="mt-10 flex justify-center">
                 <Link :href="route('dashboard')">
                     <jet-button>Back Home?</jet-button>
                 </Link>

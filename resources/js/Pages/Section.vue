@@ -2,7 +2,7 @@
     <app-layout :title="`${section.state.code_title} ${section.code}`">
         <template #header>
             <Link
-                class="underline text-blue-600 hover:text-blue-400"
+                class="text-blue-600 underline hover:text-blue-400"
                 :href="route('sections.index')"
                 >Laws</Link
             >
@@ -12,14 +12,14 @@
 
         <div class="p-10">
             <div class="flex justify-between">
-                <div class="text-2xl font-bold mb-5">
+                <div class="mb-5 text-2xl font-bold">
                     {{ section.state.name }} Chapter
                     {{ section.state.code_title }}
                     {{ section.chapter.code }}, Section
                     {{ section.code }}
                 </div>
             </div>
-            <div :id="section.code" class="font-semibold border-b">
+            <div :id="section.code" class="border-b font-semibold">
                 <span class="text-lg">Section {{ section.code }}</span>
                 - {{ section.description }}
             </div>
@@ -33,7 +33,7 @@
                     >{{ section.url }}</a
                 >
             </div>
-            <div class="ml-5 my-3 prose max-w-full">
+            <div class="prose my-3 ml-5 max-w-full">
                 {{ section.content }}
             </div>
         </div>

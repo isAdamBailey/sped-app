@@ -2,7 +2,7 @@
     <app-layout :title="document.name">
         <template #header>
             <Link
-                class="underline text-blue-600 hover:text-blue-400"
+                class="text-blue-600 underline hover:text-blue-400"
                 :href="route('documents.index')"
                 >Documentation</Link
             >
@@ -11,7 +11,7 @@
 
         <div class="p-10">
             <div class="flex justify-between">
-                <div class="text-2xl font-bold mb-5">
+                <div class="mb-5 text-2xl font-bold">
                     {{ document.name }}
                 </div>
                 <div class="flex items-center">
@@ -21,7 +21,7 @@
                         @click="editDocumentModalOpen = true"
                     >
                         <i class="ri-file-edit-fill"></i>
-                        <span class="hidden md:block md:ml-3"
+                        <span class="hidden md:ml-3 md:block"
                             >Edit Document</span
                         >
                     </jet-button>
@@ -42,7 +42,7 @@
             </div>
 
             <div
-                class="ml-5 mt-3 mb-16 prose max-w-full"
+                class="prose ml-5 mt-3 mb-16 max-w-full"
                 v-html="document.description"
             ></div>
 
@@ -53,7 +53,7 @@
                 target="_blank"
             >
                 <jet-button>
-                    <i class="mr-3 ri-file-cloud-fill"></i>
+                    <i class="ri-file-cloud-fill mr-3"></i>
                     View Uploaded File
                 </jet-button>
             </a>

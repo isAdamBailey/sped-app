@@ -1,9 +1,9 @@
 <template>
     <dashboard-layout title="Users">
-        <div class="m-5 p-5 bg-white shadow-xl rounded-lg">
+        <div class="m-5 rounded-lg bg-white p-5 shadow-xl">
             <div class="p-10">
                 <div class="flex justify-between">
-                    <div class="text-2xl font-bold mb-5">Users</div>
+                    <div class="mb-5 text-2xl font-bold">Users</div>
 
                     <search-input
                         route-name="users.index"
@@ -72,7 +72,7 @@
                     <div class="flex flex-col">
                         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div
-                                class="py-2 inline-block min-w-full sm:px-6 lg:px-8"
+                                class="inline-block min-w-full py-2 sm:px-6 lg:px-8"
                             >
                                 <div class="overflow-hidden">
                                     <table class="min-w-full">
@@ -80,19 +80,19 @@
                                             <tr>
                                                 <th
                                                     scope="col"
-                                                    class="text-sm font-semibold text-gray-900 px-6 py-4 text-left"
+                                                    class="px-6 py-4 text-left text-sm font-semibold text-gray-900"
                                                 >
                                                     Name
                                                 </th>
                                                 <th
                                                     scope="col"
-                                                    class="text-sm font-semibold text-gray-900 px-6 py-4 text-left"
+                                                    class="px-6 py-4 text-left text-sm font-semibold text-gray-900"
                                                 >
                                                     Email
                                                 </th>
                                                 <th
                                                     scope="col"
-                                                    class="text-sm font-semibold text-gray-900 px-6 py-4 text-left"
+                                                    class="px-6 py-4 text-left text-sm font-semibold text-gray-900"
                                                 >
                                                     Role
                                                 </th>
@@ -104,7 +104,7 @@
                                                     user, index
                                                 ) in usersData"
                                                 :key="index"
-                                                class="bg-white border-b transition hover:bg-blue-100 cursor-pointer"
+                                                class="cursor-pointer border-b bg-white transition hover:bg-blue-100"
                                                 @click="
                                                     $inertia.get(
                                                         route(
@@ -115,12 +115,12 @@
                                                 "
                                             >
                                                 <td
-                                                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                                                    class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900"
                                                 >
                                                     {{ user.name }}
                                                 </td>
                                                 <td
-                                                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                                                    class="whitespace-nowrap px-6 py-4 text-sm font-light text-gray-900"
                                                 >
                                                     {{ user.email }}
                                                 </td>
@@ -131,7 +131,7 @@
                                                             ? 'text-blue-600'
                                                             : 'text-purple-600'
                                                     "
-                                                    class="text-sm px-6 py-4 whitespace-nowrap"
+                                                    class="whitespace-nowrap px-6 py-4 text-sm"
                                                 >
                                                     {{ userRole(user) }}
                                                 </td>
@@ -145,7 +145,7 @@
 
                     <div
                         v-if="users.next_page_url"
-                        class="flex justify-center mt-7"
+                        class="mt-7 flex justify-center"
                     >
                         <jet-button @click="loadMore">
                             Load More Users

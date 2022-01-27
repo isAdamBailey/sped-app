@@ -1,7 +1,7 @@
 <template>
     <home-layout title="Welcome">
         <div>
-            <div class="font-bold text-blue-900 text-6xl md:text-8xl">
+            <div class="text-6xl font-bold text-blue-900 md:text-8xl">
                 Welcome
             </div>
             <div class="text-gray-500 md:text-2xl">
@@ -10,16 +10,16 @@
                     >{{ $page.props.name }}!</span
                 >
             </div>
-            <div class="mt-6 text-gray-500 text-l md:text-2xl">
+            <div class="text-l mt-6 text-gray-500 md:text-2xl">
                 We hope this application can be a great resource for navigating
                 through the atrocities and confusions of special education.
             </div>
 
-            <div class="mt-10 md:flex -mx-2 -mx-4">
+            <div class="-mx-2 -mx-4 mt-10 md:flex">
                 <div class="mx-3 px-2 md:w-1/3">
-                    <i class="text-7xl text-blue-900 ri-book-open-fill"></i>
+                    <i class="ri-book-open-fill text-7xl text-blue-900"></i>
 
-                    <h3 class="text-2xl text-blue-900 mb-0">
+                    <h3 class="mb-0 text-2xl text-blue-900">
                         Your states laws
                     </h3>
 
@@ -31,10 +31,10 @@
                     </p>
                 </div>
 
-                <div class="mt-8 md:mt-0 mx-3 px-2 md:w-1/3">
-                    <i class="text-7xl text-blue-900 ri-draft-fill"></i>
+                <div class="mx-3 mt-8 px-2 md:mt-0 md:w-1/3">
+                    <i class="ri-draft-fill text-7xl text-blue-900"></i>
 
-                    <h3 class="text-2xl text-blue-900 mb-0">Documentation</h3>
+                    <h3 class="mb-0 text-2xl text-blue-900">Documentation</h3>
 
                     <p class="text-gray-600">
                         We have a way for you to upload and securely keep track
@@ -44,10 +44,10 @@
                     </p>
                 </div>
 
-                <div class="mt-8 md:mt-0 mx-3 px-2 md:w-1/3">
-                    <i class="text-7xl text-blue-900 ri-team-fill"></i>
+                <div class="mx-3 mt-8 px-2 md:mt-0 md:w-1/3">
+                    <i class="ri-team-fill text-7xl text-blue-900"></i>
 
-                    <h3 class="text-2xl text-blue-900 mb-0">
+                    <h3 class="mb-0 text-2xl text-blue-900">
                         Contribute as a team.
                     </h3>
 

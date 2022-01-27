@@ -13,18 +13,18 @@
             <div class="flex justify-around">
                 <button
                     :class="leaderClass"
-                    class="flex justify-center items-center mr-5 bg-green-100 hover:bg-green-600 focus:bg-green-600 p-3 rounded-xl text-gray-900 focus:text-white hover:text-white uppercase transition"
+                    class="mr-5 flex items-center justify-center rounded-xl bg-green-100 p-3 uppercase text-gray-900 transition hover:bg-green-600 hover:text-white focus:bg-green-600 focus:text-white"
                     @click="clickLeader"
                 >
-                    <i class="text-3xl md:mr-3 ri-user-add-fill"></i>
+                    <i class="ri-user-add-fill text-3xl md:mr-3"></i>
                     I am creating my own team where i am the admin
                 </button>
                 <button
                     :class="invitedClass"
-                    class="flex justify-center items-center bg-blue-100 hover:bg-blue-600 focus:bg-blue-600 p-3 rounded-xl text-gray-900 focus:text-white hover:text-white uppercase transition"
+                    class="flex items-center justify-center rounded-xl bg-blue-100 p-3 uppercase text-gray-900 transition hover:bg-blue-600 hover:text-white focus:bg-blue-600 focus:text-white"
                     @click="clickInvited"
                 >
-                    <i class="text-3xl md:mr-3 ri-team-fill"></i>
+                    <i class="ri-team-fill text-3xl md:mr-3"></i>
                     I was invited to join an existing team
                 </button>
             </div>
@@ -37,13 +37,13 @@
                 enter-to-class="opacity-100 scale-100"
                 leave-to-class="opacity-0 scale-70"
             >
-                <div v-if="isLeader" class="origin-top-right right-0">
-                    <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+                <div v-if="isLeader" class="right-0 origin-top-right">
+                    <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
                         <create-team-form />
                     </div>
                 </div>
-                <div v-if="isInvited" class="origin-top-right right-0">
-                    <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+                <div v-if="isInvited" class="right-0 origin-top-right">
+                    <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
                         <p class="mb-5 text-lg text-gray-500">
                             If you were sent here from an email inviting you to
                             a team,
@@ -62,7 +62,7 @@
             </transition-group>
         </div>
 
-        <div v-else class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+        <div v-else class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
             <create-team-form />
         </div>
     </home-layout>

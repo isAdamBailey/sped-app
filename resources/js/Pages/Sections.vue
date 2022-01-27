@@ -4,7 +4,7 @@
 
         <div class="p-10">
             <div class="flex justify-between">
-                <div class="text-2xl font-bold mb-5">Sections</div>
+                <div class="mb-5 text-2xl font-bold">Sections</div>
 
                 <search-input
                     route-name="sections.index"
@@ -57,7 +57,7 @@
                     v-for="(section, index) in sectionsData"
                     :key="index"
                     :href="route('sections.show', section.slug)"
-                    class="flex items-center hover:bg-blue-100 hover:text-blue-800 transition"
+                    class="flex items-center transition hover:bg-blue-100 hover:text-blue-800"
                 >
                     <div class="p-3">
                         <span class="font-bold"
@@ -70,7 +70,7 @@
                 </Link>
                 <div
                     v-if="sections.next_page_url"
-                    class="flex justify-center mt-7"
+                    class="mt-7 flex justify-center"
                 >
                     <jet-button @click="loadMore">
                         Load More Sections

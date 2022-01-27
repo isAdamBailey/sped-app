@@ -1,5 +1,5 @@
 <template>
-    <Link :href="route('dashboard')" class="hidden md:flex justify-center my-2">
+    <Link :href="route('dashboard')" class="my-2 hidden justify-center md:flex">
         <application-mark size="text-7xl" color="text-gray-400" />
     </Link>
     <dashboard-nav-link

@@ -9,7 +9,7 @@
 
             <div
                 v-if="permissions.includes('edit chapters', 'edit users')"
-                class="md:min-h-screen grid grid-cols-1 md:grid-cols-[15rem,1fr]"
+                class="grid grid-cols-1 md:min-h-screen md:grid-cols-[15rem,1fr]"
             >
                 <div class="aside bg-gray-800 text-gray-100">
                     <dashboard-nav></dashboard-nav>
@@ -19,7 +19,7 @@
                 </main>
             </div>
 
-            <div v-else class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div v-else class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
                 <main>
                     <slot></slot>
                 </main>

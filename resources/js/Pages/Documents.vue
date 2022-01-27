@@ -3,8 +3,8 @@
         <template #header>Documentation</template>
 
         <div class="p-10">
-            <div class="flex flex-wrap justify-between items-start">
-                <div class="text-2xl font-bold mb-5">Documentation</div>
+            <div class="flex flex-wrap items-start justify-between">
+                <div class="mb-5 text-2xl font-bold">Documentation</div>
 
                 <search-input
                     route-name="documents.index"
@@ -12,11 +12,11 @@
                 />
 
                 <jet-button
-                    class="flex items-center h-10"
+                    class="flex h-10 items-center"
                     @click="newDocumentModalOpen = true"
                 >
-                    <i class="text-xl ri-file-add-fill"></i>
-                    <span class="hidden md:block md:ml-3">New Document</span>
+                    <i class="ri-file-add-fill text-xl"></i>
+                    <span class="hidden md:ml-3 md:block">New Document</span>
                 </jet-button>
             </div>
             <info-text
@@ -25,33 +25,33 @@
             >
             <div v-if="documentsData.length">
                 <div
-                    class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-4 mx-auto md:p-4"
+                    class="mx-auto grid grid-cols-1 gap-4 md:grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] md:p-4"
                 >
                     <Link
                         v-for="(doc, index) in documentsData"
                         :key="index"
                         :href="route('documents.show', doc.id)"
-                        class="bg-gradient-to-tr from-blue-200 to-blue-800 rounded border shadow shadow-blue-500/50 hover:shadow-lg hover:shadow-blue-500/50 transition"
+                        class="rounded border bg-gradient-to-tr from-blue-200 to-blue-800 shadow shadow-blue-500/50 transition hover:shadow-lg hover:shadow-blue-500/50"
                     >
                         <div
-                            class="bg-white rounded-t p-3 flex justify-between"
+                            class="flex justify-between rounded-t bg-white p-3"
                         >
                             <h3 class="font-bold">{{ doc.name }}</h3>
                             <i
                                 v-if="doc.file_url"
-                                class="text-blue-800 text-2xl ri-folder-upload-fill"
+                                class="ri-folder-upload-fill text-2xl text-blue-800"
                             ></i>
                         </div>
 
                         <p
-                            class="max-h-60 overflow-hidden rounded bg-white m-3 p-3 prose max-w-full"
+                            class="prose m-3 max-h-60 max-w-full overflow-hidden rounded bg-white p-3"
                             v-html="doc.description"
                         />
                     </Link>
                 </div>
                 <div
                     v-if="documents.next_page_url"
-                    class="flex justify-center mt-7"
+                    class="mt-7 flex justify-center"
                 >
                     <jet-button @click="loadMore">
                         Load More Documentation
