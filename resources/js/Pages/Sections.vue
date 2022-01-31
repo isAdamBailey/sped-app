@@ -68,14 +68,11 @@
                         {{ section.description }}
                     </div>
                 </Link>
-                <div
-                    v-if="sections.next_page_url"
-                    class="mt-7 flex justify-center"
-                >
-                    <jet-button @click="loadMore">
-                        Load More Sections
-                    </jet-button>
-                </div>
+                <load-more
+                    title="Sections"
+                    :items="sections"
+                    @append-items="onAppendSections"
+                />
             </div>
             <div v-else class="my-12 text-gray-500">No sections found</div>
         </div>
@@ -88,11 +85,11 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import SearchInput from "@/Jetstream/SearchInput";
 import JetDropdown from "@/Jetstream/Dropdown";
 import DropdownLink from "@/Jetstream/DropdownLink";
-import JetButton from "@/Jetstream/Button";
+import LoadMore from "@/Components/LoadMore";
 
 export default defineComponent({
     components: {
-        JetButton,
+        LoadMore,
         DropdownLink,
         JetDropdown,
         SearchInput,
@@ -104,7 +101,6 @@ export default defineComponent({
     data() {
         return {
             sectionsData: this.sections.data,
-            loadingMore: false,
         };
     },
     computed: {
@@ -117,33 +113,9 @@ export default defineComponent({
             return text;
         },
     },
-    watch: {
-        sections() {
-            if (this.loadingMore) {
-                this.sectionsData.push(...this.sections.data);
-                this.loadingMore = false;
-            }
-        },
-    },
     methods: {
-        loadMore() {
-            this.loadingMore = true;
-
-            const links = this.sections.links;
-            const next = links[links.length - 1];
-            if (next.url) {
-                this.$inertia.get(
-                    next.url,
-                    {
-                        search: this.$inertia.page.props.search,
-                        filter: this.$inertia.page.props.filter,
-                    },
-                    {
-                        preserveScroll: true,
-                        preserveState: true,
-                    }
-                );
-            }
+        onAppendSections(event) {
+            this.sectionsData.push(...event);
         },
     },
 });

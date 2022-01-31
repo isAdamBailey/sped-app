@@ -143,14 +143,11 @@
                         </div>
                     </div>
 
-                    <div
-                        v-if="users.next_page_url"
-                        class="mt-7 flex justify-center"
-                    >
-                        <jet-button @click="loadMore">
-                            Load More Users
-                        </jet-button>
-                    </div>
+                    <load-more
+                        title="Users"
+                        :items="users"
+                        @append-items="onAppendUsers"
+                    />
                 </div>
                 <div v-else class="my-12 text-gray-500">No users found</div>
             </div>
@@ -163,15 +160,15 @@ import { defineComponent } from "vue";
 import SearchInput from "@/Jetstream/SearchInput";
 import JetDropdown from "@/Jetstream/Dropdown";
 import DropdownLink from "@/Jetstream/DropdownLink";
-import JetButton from "@/Jetstream/Button";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import InfoText from "@/Jetstream/InfoText";
+import LoadMore from "@/Components/LoadMore";
 
 export default defineComponent({
     components: {
+        LoadMore,
         InfoText,
         DashboardLayout,
-        JetButton,
         DropdownLink,
         JetDropdown,
         SearchInput,
@@ -182,7 +179,6 @@ export default defineComponent({
     data() {
         return {
             usersData: this.users.data,
-            loadingMore: false,
         };
     },
     computed: {
@@ -195,14 +191,6 @@ export default defineComponent({
             return text;
         },
     },
-    watch: {
-        users() {
-            if (this.loadingMore) {
-                this.usersData.push(...this.users.data);
-                this.loadingMore = false;
-            }
-        },
-    },
     methods: {
         userRole(user) {
             // does the user have ANY of the possible admin roles?
@@ -212,24 +200,8 @@ export default defineComponent({
             const teamPermission = user.teams[0].membership.role;
             return roles ? "site administrator" : `team ${teamPermission}`;
         },
-        loadMore() {
-            this.loadingMore = true;
-
-            const links = this.users.links;
-            const next = links[links.length - 1];
-            if (next.url) {
-                this.$inertia.get(
-                    next.url,
-                    {
-                        search: this.$inertia.page.props.search,
-                        filter: this.$inertia.page.props.filter,
-                    },
-                    {
-                        preserveScroll: true,
-                        preserveState: true,
-                    }
-                );
-            }
+        onAppendUsers(event) {
+            this.usersData.push(...event);
         },
     },
 });

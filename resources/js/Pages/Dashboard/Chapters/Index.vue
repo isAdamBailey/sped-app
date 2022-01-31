@@ -128,14 +128,11 @@
                         </div>
                     </div>
 
-                    <div
-                        v-if="chapters.next_page_url"
-                        class="mt-7 flex justify-center"
-                    >
-                        <jet-button @click="loadMore">
-                            Load More Chapters
-                        </jet-button>
-                    </div>
+                    <load-more
+                        title="Chapters"
+                        :items="chapters"
+                        @append-items="onAppendChapters"
+                    />
                 </div>
                 <div v-else class="my-12 text-gray-500">No chapters found</div>
             </div>
@@ -148,17 +145,17 @@ import { defineComponent } from "vue";
 import SearchInput from "@/Jetstream/SearchInput";
 import JetDropdown from "@/Jetstream/Dropdown";
 import DropdownLink from "@/Jetstream/DropdownLink";
-import JetButton from "@/Jetstream/Button";
 import ChapterActiveForm from "@/Pages/Dashboard/Chapters/Partials/ChapterActiveForm";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import InfoText from "@/Jetstream/InfoText";
+import LoadMore from "@/Components/LoadMore";
 
 export default defineComponent({
     components: {
+        LoadMore,
         InfoText,
         DashboardLayout,
         ChapterActiveForm,
-        JetButton,
         DropdownLink,
         JetDropdown,
         SearchInput,
@@ -169,7 +166,6 @@ export default defineComponent({
     data() {
         return {
             chaptersData: this.chapters.data,
-            loadingMore: false,
         };
     },
     computed: {
@@ -182,33 +178,9 @@ export default defineComponent({
             return text;
         },
     },
-    watch: {
-        chapters() {
-            if (this.loadingMore) {
-                this.chaptersData.push(...this.chapters.data);
-                this.loadingMore = false;
-            }
-        },
-    },
     methods: {
-        loadMore() {
-            this.loadingMore = true;
-
-            const links = this.chapters.links;
-            const next = links[links.length - 1];
-            if (next.url) {
-                this.$inertia.get(
-                    next.url,
-                    {
-                        search: this.$inertia.page.props.search,
-                        filter: this.$inertia.page.props.filter,
-                    },
-                    {
-                        preserveScroll: true,
-                        preserveState: true,
-                    }
-                );
-            }
+        onAppendChapters(event) {
+            this.chaptersData.push(...event);
         },
     },
 });
