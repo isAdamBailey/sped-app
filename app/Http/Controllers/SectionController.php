@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SectionResource;
 use App\Models\Section;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -21,12 +22,7 @@ class SectionController extends Controller
             ->paginate();
 
         return Inertia::render('Sections', [
-            'sections' => $sections->through(fn ($section) => [
-                'slug' => $section->slug,
-                'code' => $section->code,
-                'description' => $section->description,
-                'state' => $section->state,
-            ]),
+            'sections' => SectionResource::collection($sections),
             'search' => $search,
             'filter' => $filter,
         ]);
@@ -34,9 +30,10 @@ class SectionController extends Controller
 
     public function show(Section $section): Response
     {
+        $section->include_content = true; // tell resource to include the content column
+
         return Inertia::render('Section', [
-            'section' => $section->load(['state', 'chapter'])
-                ->only('slug', 'url', 'code', 'description', 'content', 'state', 'chapter'),
+            'section' => SectionResource::make($section->load(['state', 'chapter'])),
         ]);
     }
 }

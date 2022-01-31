@@ -50,14 +50,12 @@ class Section extends Model
 
     public function state(): BelongsTo
     {
-        return $this->belongsTo(State::class)
-            ->select(['id', 'name', 'code_title']);
+        return $this->belongsTo(State::class);
     }
 
     public function chapter(): BelongsTo
     {
-        return $this->belongsTo(Chapter::class)
-            ->select(['id', 'code', 'description', 'active']);
+        return $this->belongsTo(Chapter::class);
     }
 
     /**

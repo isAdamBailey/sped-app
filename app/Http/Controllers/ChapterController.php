@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ChapterResource;
 use App\Models\Chapter;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -30,13 +31,7 @@ class ChapterController extends Controller
             ->paginate();
 
         return Inertia::render('Dashboard/Chapters/Index', [
-            'chapters' => $chapters->through(fn ($chapter) => [
-                'slug' => $chapter->slug,
-                'code' => $chapter->code,
-                'description' => $chapter->description,
-                'state' => $chapter->state,
-                'active' => $chapter->active,
-            ]),
+            'chapters' => ChapterResource::collection($chapters),
             'search' => $search,
             'filter' => $filter,
         ]);

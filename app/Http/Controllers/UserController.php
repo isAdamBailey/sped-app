@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -19,7 +20,7 @@ class UserController extends Controller
         $search = $request->search;
         $filter = $request->filter;
 
-        $users = User::with(['permissions', 'teams'])
+        $users = User::query()
             ->when(
                 $search,
                 fn ($query) => $query->where('name', 'LIKE', '%'.$search.'%')
@@ -27,26 +28,19 @@ class UserController extends Controller
             )
             ->when($filter, function ($query) use ($filter) {
                 if (Str::startsWith($filter, 'team_')) {
-                    return $query->whereHas('teams',
+                    return $query->with('teams')->whereHas('teams',
                         fn ($q) => $q->where('team_user.role', Str::replace('team_', '', $filter)));
                 }
 
                 return $query->whereHas(
                     'permissions',
-                    fn ($q) => $q->where('permissions.name', Str::replace('_', ' ', $filter))
+                    fn ($q) => $q->with('permissions')->where('permissions.name', Str::replace('_', ' ', $filter))
                 );
             })
             ->paginate();
 
         return Inertia::render('Dashboard/Users/Index', [
-            'users' => $users->through(fn ($user) => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'profile_photo_url' => $user->profile_photo_url,
-                'teams' => $user->teams,
-                'permissions' => $user->permissions_names,
-            ]),
+            'users' => UserResource::collection($users),
             'search' => $search,
             'filter' => $filter,
         ]);

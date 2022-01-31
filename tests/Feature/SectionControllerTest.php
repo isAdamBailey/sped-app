@@ -38,6 +38,7 @@ class SectionControllerTest extends TestCase
                 ->has('sections.data.0.slug')
                 ->has('sections.data.0.code')
                 ->has('sections.data.0.description')
+                ->missing('sections.data.0.content')
                 ->has(
                     'sections.data.0.state',
                     fn (Assert $page) => $page
@@ -99,6 +100,7 @@ class SectionControllerTest extends TestCase
                 ->has('sections.data.0.slug')
                 ->has('sections.data.0.code')
                 ->has('sections.data.0.description')
+                ->missing('sections.data.0.content')
                 ->has(
                     'sections.data.0.state',
                     fn (Assert $page) => $page
@@ -132,6 +134,7 @@ class SectionControllerTest extends TestCase
                 ->has('sections.data.0.slug')
                 ->has('sections.data.0.code')
                 ->has('sections.data.0.description')
+                ->missing('sections.data.0.content')
                 ->has(
                     'sections.data.0.state',
                     fn (Assert $page) => $page
