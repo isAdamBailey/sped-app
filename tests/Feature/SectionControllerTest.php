@@ -17,8 +17,6 @@ class SectionControllerTest extends TestCase
 
     public function testSectionsIndexPage()
     {
-        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-
         $state = State::factory()->create();
         $chapter = Chapter::factory()->for($state)->create();
         Section::factory()
@@ -27,12 +25,12 @@ class SectionControllerTest extends TestCase
             ->for($chapter)
             ->create();
 
-        $response = $this->get(route('sections.index'));
+        $response = $this->get(route('laws.index'));
 
         $response->assertInertia(
             fn (Assert $chapter) => $chapter
                 ->component('Sections')
-                ->url('/sections')
+                ->url('/laws')
                 ->has('sections.data', 15)
                 ->has('sections.links')
                 ->has('sections.data.0.slug')
@@ -51,8 +49,6 @@ class SectionControllerTest extends TestCase
 
     public function testSectionsIndexPageDoesNotShowInactiveChapterSections()
     {
-        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-
         $state = State::factory()->create();
         $chapter = Chapter::factory()->for($state)->create(['active' => 0]);
         Section::factory()
@@ -61,20 +57,18 @@ class SectionControllerTest extends TestCase
             ->for($chapter)
             ->create();
 
-        $response = $this->get(route('sections.index'));
+        $response = $this->get(route('laws.index'));
 
         $response->assertInertia(
             fn (Assert $chapter) => $chapter
                 ->component('Sections')
-                ->url('/sections')
+                ->url('/laws')
                 ->has('sections.data', 0)
         );
     }
 
     public function testSearchSectionsIndexPage()
     {
-        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-
         $state = State::factory()->create();
         $chapter = Chapter::factory()->for($state)->create();
         Section::factory()
@@ -89,12 +83,12 @@ class SectionControllerTest extends TestCase
             'content' => "content that has {$searchTerm} in the content",
         ]);
 
-        $response = $this->get(route('sections.index', ['search' => $searchTerm]));
+        $response = $this->get(route('laws.index', ['search' => $searchTerm]));
 
         $response->assertInertia(
             fn (Assert $chapter) => $chapter
                 ->component('Sections')
-                ->url('/sections?search='.$searchTerm)
+                ->url('/laws?search='.$searchTerm)
                 ->has('sections.data', 1)
                 ->has('sections.links')
                 ->has('sections.data.0.slug')
@@ -113,8 +107,6 @@ class SectionControllerTest extends TestCase
 
     public function testFilterSectionsIndexPageByState()
     {
-        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-
         $state = State::factory()->create();
         $chapter = Chapter::factory()->for($state)->create();
         Section::factory()
@@ -123,12 +115,12 @@ class SectionControllerTest extends TestCase
             ->for($chapter)
             ->create();
 
-        $response = $this->get(route('sections.index', ['filter' => $state->name]));
+        $response = $this->get(route('laws.index', ['filter' => $state->name]));
 
         $response->assertInertia(
             fn (Assert $chapter) => $chapter
                 ->component('Sections')
-                ->url('/sections?filter='.$state->name)
+                ->url('/laws?filter='.$state->name)
                 ->has('sections.data', 10)
                 ->has('sections.links')
                 ->has('sections.data.0.slug')
@@ -145,12 +137,12 @@ class SectionControllerTest extends TestCase
         );
 
         $nonStateName = 'derp';
-        $badResponse = $this->get(route('sections.index', ['filter' => $nonStateName]));
+        $badResponse = $this->get(route('laws.index', ['filter' => $nonStateName]));
 
         $badResponse->assertInertia(
             fn (Assert $chapter) => $chapter
                 ->component('Sections')
-                ->url('/sections?filter='.$nonStateName)
+                ->url('/laws?filter='.$nonStateName)
                 ->has('sections.data', 0)
                 ->has('sections.links')
         );
@@ -158,8 +150,6 @@ class SectionControllerTest extends TestCase
 
     public function testSectionShowPage()
     {
-        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-
         $state = State::factory()->create();
         $chapter = Chapter::factory()->for($state)->create();
 
@@ -168,12 +158,12 @@ class SectionControllerTest extends TestCase
             ->for($chapter)
             ->create();
 
-        $response = $this->get(route('sections.show', $section));
+        $response = $this->get(route('laws.show', $section));
 
         $response->assertInertia(
             fn (Assert $page) => $page
                 ->component('Section')
-                ->url('/sections/'.$section->slug)
+                ->url('/laws/'.$section->slug)
                 ->has('section.slug')
                 ->has('section.code')
                 ->has('section.description')

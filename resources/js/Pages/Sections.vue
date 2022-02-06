@@ -1,5 +1,5 @@
 <template>
-    <app-layout title="State Laws">
+    <app-layout title="Laws">
         <template #header>Laws</template>
 
         <div class="p-10">
@@ -7,7 +7,7 @@
                 <div class="mb-5 text-2xl font-bold">Sections</div>
 
                 <search-input
-                    route-name="sections.index"
+                    route-name="laws.index"
                     :result-count="sections.total"
                 />
 
@@ -18,7 +18,7 @@
                         </div>
                         <dropdown-link
                             :href="
-                                route('sections.index', {
+                                route('laws.index', {
                                     filter: 'Washington',
                                     search: $page.props.search,
                                 })
@@ -28,7 +28,7 @@
                         </dropdown-link>
                         <dropdown-link
                             :href="
-                                route('sections.index', {
+                                route('laws.index', {
                                     filter: 'Oregon',
                                     search: $page.props.search,
                                 })
@@ -38,7 +38,7 @@
                         </dropdown-link>
                         <dropdown-link
                             :href="
-                                route('sections.index', {
+                                route('laws.index', {
                                     filter: 'Federal',
                                     search: $page.props.search,
                                 })
@@ -46,7 +46,7 @@
                         >
                             IDEA
                         </dropdown-link>
-                        <dropdown-link :href="route('sections.index')">
+                        <dropdown-link :href="route('laws.index')">
                             <i class="ri-filter-off-fill"></i> Clear
                         </dropdown-link>
                     </template>
@@ -56,7 +56,7 @@
                 <Link
                     v-for="(section, index) in sectionsData"
                     :key="index"
-                    :href="route('sections.show', section.slug)"
+                    :href="route('laws.show', section.slug)"
                     class="flex items-center transition hover:bg-blue-100 hover:text-blue-800"
                 >
                     <div class="p-3">

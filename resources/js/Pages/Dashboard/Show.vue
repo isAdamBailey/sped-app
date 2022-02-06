@@ -8,7 +8,7 @@
             <div>You are on {{ $page.props.currentTeamPermissions.name }}.</div>
 
             <div class="mt-10 flex">
-                <Link :href="route('sections.index')">
+                <Link :href="route('laws.index')">
                     <jet-button>View State Laws</jet-button>
                 </Link>
                 <Link class="ml-3" :href="route('documents.index')">

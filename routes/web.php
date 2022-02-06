@@ -22,7 +22,10 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
-});
+})->name('home');
+
+Route::get('/laws', [SectionController::class, 'index'])->name('laws.index');
+Route::get('/laws/{section}', [SectionController::class, 'show'])->name('laws.show');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/create-first-team', NewTeamController::class)
@@ -33,9 +36,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/dashboard', function () {
             return Inertia::render('Dashboard/Show');
         })->name('dashboard');
-
-        Route::get('/sections', [SectionController::class, 'index'])->name('sections.index');
-        Route::get('/sections/{section}', [SectionController::class, 'show'])->name('sections.show');
 
         Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
         Route::get('/documents/{document}', [DocumentController::class, 'show'])->name('documents.show');
@@ -55,3 +55,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         });
     });
 });
+
+Route::fallback(function () {
+    return Inertia::render('Error', ['status' => 404]);
+})->name('404.show');

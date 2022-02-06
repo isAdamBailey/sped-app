@@ -59,11 +59,17 @@
             </div>
 
             <div class="mt-5 md:mt-12">
-                <Link v-if="$page.props.user.name" :href="route('dashboard')">
-                    <jet-button>Dashboard</jet-button>
+                <Link :href="route('laws.index')" class="mr-4">
+                    <jet-button class="py-3 px-10 text-3xl"
+                        >Search Laws</jet-button
+                    >
                 </Link>
 
-                <template v-else>
+                <Link v-if="$page.props.user.name" :href="route('dashboard')">
+                    <secondary-button>Dashboard</secondary-button>
+                </Link>
+
+                <div class="mt-12">
                     <Link :href="route('login')">
                         <secondary-button>Log In</secondary-button>
                     </Link>
@@ -71,7 +77,7 @@
                     <Link :href="route('register')" class="ml-4">
                         <jet-button> Register </jet-button>
                     </Link>
-                </template>
+                </div>
             </div>
         </div>
     </home-layout>

@@ -3,7 +3,7 @@
         <template #header>
             <Link
                 class="text-blue-600 underline hover:text-blue-400"
-                :href="route('sections.index')"
+                :href="route('laws.index')"
                 >Laws</Link
             >
             / Section {{ section.state.code_title }}
