@@ -17,5 +17,6 @@ class RoleAndPermissionSeeder extends Seeder
         // create permissions
         Permission::firstOrCreate(['name' => 'edit chapters']);
         Permission::firstOrCreate(['name' => 'edit users']);
+        Permission::firstOrCreate(['name' => 'edit site settings']);
     }
 }

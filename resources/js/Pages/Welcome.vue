@@ -74,7 +74,11 @@
                         <secondary-button>Log In</secondary-button>
                     </Link>
 
-                    <Link :href="route('register')" class="ml-4">
+                    <Link
+                        v-if="$page.props.siteSettings.registration_active"
+                        :href="route('register')"
+                        class="ml-4"
+                    >
                         <jet-button> Register </jet-button>
                     </Link>
                 </div>

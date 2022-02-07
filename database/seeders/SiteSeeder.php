@@ -23,7 +23,7 @@ class SiteSeeder extends Seeder
         $user->currentTeam->users()->attach(
             $user, ['role' => 'admin']
         );
-        $user->givePermissionTo(['edit users', 'edit chapters']);
+        $user->givePermissionTo(['edit users', 'edit chapters', 'edit site settings']);
 
         // create a team member
         $anotherUser = User::factory()->create([
@@ -36,7 +36,7 @@ class SiteSeeder extends Seeder
         Document::factory()->for($user->currentTeam)->count(5)->create();
 
         // fetch washington laws by title
-        Artisan::call('fetch:laws washington 28A');
-        Artisan::call('fetch:laws idea');
+//        Artisan::call('fetch:laws washington 28A');
+//        Artisan::call('fetch:laws idea');
     }
 }

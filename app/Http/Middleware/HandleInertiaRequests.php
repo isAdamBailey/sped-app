@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Middleware;
@@ -51,6 +52,7 @@ class HandleInertiaRequests extends Middleware
                 'canDelete' => Gate::check('delete', $team),
                 'canUpdate' => Gate::check('update', $team),
             ],
+            'siteSettings' => SiteSetting::first()->only('registration_active'),
         ]);
     }
 }

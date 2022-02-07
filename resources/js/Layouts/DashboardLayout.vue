@@ -8,7 +8,13 @@
             <primary-nav />
 
             <div
-                v-if="permissions.includes('edit chapters', 'edit users')"
+                v-if="
+                    permissions.includes(
+                        'edit chapters',
+                        'edit users',
+                        'edit site settings'
+                    )
+                "
                 class="grid grid-cols-1 md:min-h-screen md:grid-cols-[15rem,1fr]"
             >
                 <div class="aside bg-gray-800 text-gray-100">

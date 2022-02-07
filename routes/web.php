@@ -4,6 +4,7 @@ use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\NewTeamController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
         Route::put('/documents/{document}', [DocumentController::class, 'update'])->name('documents.update');
         Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
+
+        Route::group(['middleware' => ['can:edit site settings']], function () {
+            Route::get('/site-settings', [SiteSettingController::class, 'show'])->name('site-settings.show');
+            Route::put('/site-settings/{setting}', [SiteSettingController::class, 'update'])->name('site-settings.update');
+        });
 
         Route::group(['middleware' => ['can:edit chapters']], function () {
             Route::get('/chapters', [ChapterController::class, 'index'])->name('chapters.index');

@@ -9,6 +9,13 @@
         <h1 class="text-xl font-semibold">Dashboard</h1>
     </dashboard-nav-link>
     <dashboard-nav-link
+        v-if="permissions.includes('edit site settings')"
+        :href="route('site-settings.show')"
+        :active="route().current('site-settings.*')"
+    >
+        Site Settings
+    </dashboard-nav-link>
+    <dashboard-nav-link
         v-if="permissions.includes('edit chapters')"
         :href="route('chapters.index')"
         :active="route().current('chapters.*')"
