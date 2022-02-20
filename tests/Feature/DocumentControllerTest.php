@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Inertia\Testing\Assert;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class DocumentControllerTest extends TestCase
@@ -188,6 +188,6 @@ class DocumentControllerTest extends TestCase
 
         Storage::disk('s3')->assertMissing($filePath);
 
-        $this->assertDeleted($document);
+        $this->assertModelMissing($document);
     }
 }
