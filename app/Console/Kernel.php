@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use App\Models\User;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -18,15 +17,15 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('fetch:laws washington 28A')
             ->dailyAt('00:00')
-            ->emailOutputOnFailure(User::siteAdminEmails());
+            ->emailOutputOnFailure('adamjbailey7@gmail.com');
 
         $schedule->command('fetch:laws oregon 30')
             ->dailyAt('01:00')
-            ->emailOutputOnFailure(User::siteAdminEmails());
+            ->emailOutputOnFailure('adamjbailey7@gmail.com');
 
         $schedule->command('fetch:laws idea')
             ->dailyAt('02:00')
-            ->emailOutputOnFailure(User::siteAdminEmails());
+            ->emailOutputOnFailure('adamjbailey7@gmail.com');
     }
 
     /**

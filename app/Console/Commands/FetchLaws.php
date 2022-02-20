@@ -3,14 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Abstracts\AbstractLawService;
-use App\Mail\AdminEmail;
-use App\Models\User;
 use App\Services\IDEAService;
 use App\Services\OregonLawService;
 use App\Services\WashingtonLawService;
 use Exception;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Mail;
 
 class FetchLaws extends Command
 {
@@ -37,23 +34,23 @@ class FetchLaws extends Command
     {
         $service = $this->stateService($this->argument('title'));
         if (is_a($service, Exception::class)) {
-            $this->sendAdminEmails($service->getMessage());
+            $this->error($service->getMessage());
 
             return 1;
         }
 
         $chapters = $service->saveChapters();
         if (0 === $chapters['count']) {
-            $this->sendAdminEmails('Could not find chapters in the page. '.$chapters['message']);
-
+            $this->error('Could not find chapters in the page. '.$chapters['message']);
+            // email admins
             return 1;
         }
         $this->info($chapters['message']);
 
         $sections = $service->saveChapterSections();
         if (0 === $sections['count']) {
-            $this->sendAdminEmails('Could not find sections in the page. '.$sections['message']);
-
+            $this->error('Could not find sections in the page. '.$sections['message']);
+            // email admins
             return 1;
         }
         $this->info($sections['message']);
@@ -72,14 +69,5 @@ class FetchLaws extends Command
             'idea' => new IDEAService($title),
             default => new Exception('Enter a valid state')
         };
-    }
-
-    private function sendAdminEmails(string $message)
-    {
-        $this->error($message);
-
-        foreach (User::siteAdminEmails() as $email) {
-            Mail::to($email)->send(new AdminEmail($message));
-        }
     }
 }

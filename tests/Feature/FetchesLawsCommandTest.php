@@ -2,31 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Mail\AdminEmail;
 use App\Models\Section;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class FetchesLawsCommandTest extends TestCase
 {
     use RefreshDatabase;
-
-    public function test_unexpected_response_is_emailed_to_admins()
-    {
-        Mail::fake();
-        $users = User::factory()->count(5)->withPersonalTeam()->create();
-        foreach ($users as $user) {
-            $user->givePermissionTo('edit site settings');
-        }
-
-        $this->artisan('fetch:laws poop')
-            ->expectsOutput('Enter a valid state');
-
-        Mail::assertSent(AdminEmail::class, 5);
-    }
 
     public function test_fetches_washington_chapters_and_contents()
     {

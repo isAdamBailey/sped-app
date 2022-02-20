@@ -82,9 +82,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->getAllPermissions()->pluck('name');
     }
-
-    public static function siteAdminEmails()
-    {
-        return self::permission('edit site settings')->pluck('email');
-    }
 }
