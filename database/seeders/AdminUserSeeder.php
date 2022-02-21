@@ -16,7 +16,7 @@ class AdminUserSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::where('email', config('app.admin-email'))->first();
+        $user = User::where('email', config('app.admin_email'))->first();
         $user->givePermissionTo(['edit users', 'edit chapters', 'edit site settings']);
     }
 }
