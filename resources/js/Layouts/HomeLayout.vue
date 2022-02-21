@@ -3,7 +3,7 @@
         <Head :title="title" />
 
         <div
-            class="items-top relative flex min-h-screen justify-center bg-gray-100 sm:items-center sm:pt-0"
+            class="items-top relative flex min-h-screen justify-center bg-gradient-to-r from-gray-100 to-gray-300 sm:items-center sm:pt-0"
         >
             <main>
                 <div class="mx-auto max-w-6xl">
@@ -15,7 +15,8 @@
                         >
                             <slot></slot>
                             <application-mark
-                                class="mx-auto mb-6 w-1/2 lg:mb-0"
+                                color="text-orange-300"
+                                class="min-w-1/4 mx-auto mb-6 h-1/4 rounded-full bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-3 text-center lg:mb-0"
                             />
                         </div>
                     </div>

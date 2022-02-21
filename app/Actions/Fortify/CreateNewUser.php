@@ -2,9 +2,8 @@
 
 namespace App\Actions\Fortify;
 
-use App\Models\Team;
+use App\Models\SiteSetting;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -24,12 +23,20 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
-        Validator::make($input, [
+        $validator = Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
-        ])->validate();
+        ]);
+
+        $validator->after(function ($validator) {
+            if (! SiteSetting::first()->registration_active) {
+                $validator->errors()->add(
+                    'inactive', 'Registration is inactive at this time.'
+                );
+            }
+        })->validate();
 
         /** @var User $user */
         return User::create([

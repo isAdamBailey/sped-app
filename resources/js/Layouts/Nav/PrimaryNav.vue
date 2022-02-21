@@ -13,7 +13,11 @@
                                     : route('home')
                             "
                         >
-                            <jet-application-mark size="text-4xl" />
+                            <jet-application-mark
+                                size="text-4xl"
+                                color="text-orange-300"
+                                class="rounded-full bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-2 text-center"
+                            />
                         </Link>
                     </div>
 

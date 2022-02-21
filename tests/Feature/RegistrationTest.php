@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\SiteSetting;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
@@ -34,11 +35,31 @@ class RegistrationTest extends TestCase
         $response->assertStatus(404);
     }
 
+    public function test_users_cannot_register_if_registration_is_disabled()
+    {
+        if (! Features::enabled(Features::registration())) {
+            return $this->markTestSkipped('Registration support is not enabled.');
+        }
+
+        $response = $this->post('/register', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature(),
+        ]);
+
+        $response->assertSessionHasErrors('inactive')
+            ->assertStatus(302);
+    }
+
     public function test_new_users_can_register()
     {
         if (! Features::enabled(Features::registration())) {
             return $this->markTestSkipped('Registration support is not enabled.');
         }
+
+        SiteSetting::first()->update(['registration_active' => true]);
 
         $response = $this->post('/register', [
             'name' => 'Test User',

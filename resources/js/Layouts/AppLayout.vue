@@ -4,7 +4,7 @@
 
         <banner />
 
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gradient-to-r from-gray-100 to-gray-300">
             <primary-nav />
 
             <!-- Page Heading -->

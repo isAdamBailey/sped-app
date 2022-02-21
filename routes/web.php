@@ -6,6 +6,7 @@ use App\Http\Controllers\NewTeamController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\UserController;
+use App\Models\State;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,7 +23,13 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome');
+    $states = State::where('name', '!=', 'federal')->pluck('name');
+    $federal = State::where('name', 'federal')->pluck('code_title');
+
+    return Inertia::render('Welcome', [
+        'states' => $states,
+        'federal' => $federal,
+    ]);
 })->name('home');
 
 Route::get('/laws', [SectionController::class, 'index'])->name('laws.index');
