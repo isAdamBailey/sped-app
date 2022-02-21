@@ -1,6 +1,11 @@
 <template>
     <div>
-        <div v-if="userPermissions.canAddTeamMembers">
+        <div
+            v-if="
+                userPermissions.canAddTeamMembers &&
+                $page.props.siteSettings.registration_active
+            "
+        >
             <jet-section-border />
 
             <!-- Add Team Member -->
