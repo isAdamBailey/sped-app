@@ -61,14 +61,9 @@ abstract class AbstractLawService
         return $section;
     }
 
-    protected function fetch(string $endpoint): Crawler
+    protected function fetch(string $endpoint)
     {
-        $client = new Client(HttpClient::create([
-            'verify_peer' => false,
-            'verify_host' => false,
-        ]));
-
-        return $client->request('GET', $endpoint);
+        return \Goutte::request('GET', $endpoint);
     }
 
     protected function response(int $storedCount, int $foundCount, string $name): array
