@@ -5,7 +5,10 @@ namespace App\Abstracts;
 use App\Models\Chapter;
 use App\Models\Section;
 use Goutte;
+use Goutte\Client;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpClient\HttpClient;
 
 abstract class AbstractLawService
 {
@@ -58,9 +61,11 @@ abstract class AbstractLawService
         return $section;
     }
 
-    protected function fetch(string $endpoint)
+    protected function fetch(string $endpoint): Crawler
     {
-        return \Goutte::request('GET', $endpoint);
+        $client = new Client(HttpClient::create(['verify_peer' => false]));
+
+        return $client->request('GET', $endpoint);
     }
 
     protected function response(int $storedCount, int $foundCount, string $name): array
