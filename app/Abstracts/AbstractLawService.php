@@ -63,7 +63,10 @@ abstract class AbstractLawService
 
     protected function fetch(string $endpoint): Crawler
     {
-        $client = new Client(HttpClient::create(['verify_peer' => false]));
+        $client = new Client(HttpClient::create([
+            'verify_peer' => false,
+            'verify_host' => false,
+        ]));
 
         return $client->request('GET', $endpoint);
     }
