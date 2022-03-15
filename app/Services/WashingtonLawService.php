@@ -51,7 +51,7 @@ class WashingtonLawService extends AbstractLawService
         DB::table('chapters')->where([
             'state_id' => $this->state->id,
             'active' => 1,
-        ])->chunkById(100, function ($chapters) use ($initialCount, &$sectionCount) {
+        ])->chunkById(100, function ($chapters) use (&$initialCount, &$sectionCount) {
             foreach ($chapters as $chapter) {
                 $initialCount += Section::where('chapter_id', $chapter->id)->count();
 

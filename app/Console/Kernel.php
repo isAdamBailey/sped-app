@@ -17,15 +17,15 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('fetch:laws washington 28A')
-            ->dailyAt('00:00')
+            ->weeklyOn(7, '01:00')
             ->emailOutputOnFailure(User::siteAdminEmails());
 
         $schedule->command('fetch:laws oregon 30')
-            ->dailyAt('01:00')
+            ->weeklyOn(7, '02:00')
             ->emailOutputOnFailure(User::siteAdminEmails());
 
         $schedule->command('fetch:laws idea')
-            ->dailyAt('02:00')
+            ->weeklyOn(7, '03:00')
             ->emailOutputOnFailure(User::siteAdminEmails());
     }
 

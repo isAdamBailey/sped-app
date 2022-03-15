@@ -42,12 +42,15 @@ class FetchLaws extends Command
             return 1;
         }
 
+        $fullMessage = '';
         $chapters = $service->saveChapters();
         if (0 === $chapters['count']) {
             $this->sendAdminEmails('Could not find chapters in the page. '.$chapters['message']);
 
             return 1;
         }
+
+        $fullMessage .= $chapters['message'].'\r\n';
         $this->info($chapters['message']);
 
         $sections = $service->saveChapterSections();
@@ -56,11 +59,16 @@ class FetchLaws extends Command
 
             return 1;
         }
+
+        $fullMessage .= $sections['message'].'\r\n';
         $this->info($sections['message']);
 
         $content = $service->saveSectionContent();
+
+        $fullMessage .= $content['message'].'\r\n';
         $this->info($content['message']);
 
+        $this->sendAdminEmails('Command '.$this->name.' ran from '.config('app.name').'. '.$fullMessage);
         return 0;
     }
 
