@@ -3,55 +3,37 @@
         <template #header>Laws</template>
 
         <div class="p-10">
-            <div class="flex justify-between">
-                <div class="mb-5 text-2xl font-bold">Sections</div>
+            <div class="mb-5 text-2xl font-bold">{{ dropdownText }}</div>
 
-                <search-input
-                    route-name="laws.index"
-                    :result-count="sections.total"
-                />
-
-                <jet-dropdown width="48" :arrow-trigger-title="dropdownText">
-                    <template #content>
-                        <div class="block px-4 py-2 text-xs text-gray-400">
-                            Filter By:
-                        </div>
-                        <dropdown-link
-                            :href="
-                                route('laws.index', {
-                                    filter: 'Washington',
-                                    search: $page.props.search,
-                                })
-                            "
-                        >
-                            Washington
-                        </dropdown-link>
-                        <dropdown-link
-                            :href="
-                                route('laws.index', {
-                                    filter: 'Oregon',
-                                    search: $page.props.search,
-                                })
-                            "
-                        >
-                            Oregon
-                        </dropdown-link>
-                        <dropdown-link
-                            :href="
-                                route('laws.index', {
-                                    filter: 'Federal',
-                                    search: $page.props.search,
-                                })
-                            "
-                        >
-                            IDEA
-                        </dropdown-link>
-                        <dropdown-link :href="route('laws.index')">
-                            <i class="ri-filter-off-fill"></i> Clear
-                        </dropdown-link>
-                    </template>
-                </jet-dropdown>
+            <div class="mb-5 flex flex-wrap">
+                <button
+                    v-for="(state, index) in stateChoices"
+                    :key="index"
+                    class="mb-3 mr-3 rounded-full py-2 px-5 hover:shadow-lg md:mr-5"
+                    :class="
+                        filter === state.filter
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-gray-200 text-gray-900'
+                    "
+                >
+                    <Link
+                        :href="
+                            route('laws.index', {
+                                filter: state.filter,
+                                search,
+                            })
+                        "
+                    >
+                        {{ state.name }}
+                    </Link>
+                </button>
             </div>
+            <search-input
+                class="mb-5"
+                route-name="laws.index"
+                :result-count="sections.total"
+            />
+
             <div v-if="sectionsData.length">
                 <Link
                     v-for="(section, index) in sectionsData"
@@ -79,44 +61,37 @@
     </app-layout>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script setup>
+import { defineProps, ref, computed } from "vue";
+import { usePage } from "@inertiajs/inertia-vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import SearchInput from "@/Jetstream/SearchInput";
-import JetDropdown from "@/Jetstream/Dropdown";
-import DropdownLink from "@/Jetstream/DropdownLink";
 import LoadMore from "@/Components/LoadMore";
 
-export default defineComponent({
-    components: {
-        LoadMore,
-        DropdownLink,
-        JetDropdown,
-        SearchInput,
-        AppLayout,
-    },
-    props: {
-        sections: Object,
-    },
-    data() {
-        return {
-            sectionsData: this.sections.data,
-        };
-    },
-    computed: {
-        dropdownText() {
-            let text = "Filter Laws";
-            const state = this.sections.data[0]?.state;
-            if (this.$inertia.page.props.filter) {
-                text = `${this.$page.props.filter} ${state?.code_title || ""}`;
-            }
-            return text;
-        },
-    },
-    methods: {
-        onAppendSections(event) {
-            this.sectionsData.push(...event);
-        },
-    },
+const props = defineProps({
+    sections: Object,
+});
+
+const stateChoices = [
+    { name: "All", filter: null },
+    { name: "Washington", filter: "Washington" },
+    { name: "Oregon", filter: "Oregon" },
+    { name: "Federal", filter: "Federal" },
+];
+const sectionsData = ref(props.sections.data);
+const search = usePage().props.value.search;
+const filter = usePage().props.value.filter;
+
+function onAppendSections(event) {
+    sectionsData.value.push(...event);
+}
+
+const dropdownText = computed(() => {
+    let text = "All Laws";
+    const state = props.sections.data[0]?.state;
+    if (filter) {
+        text = `${filter} ${state?.code_title || ""}`;
+    }
+    return text;
 });
 </script>
