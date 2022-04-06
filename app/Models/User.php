@@ -85,6 +85,6 @@ class User extends Authenticatable
 
     public static function siteAdminEmails()
     {
-        return self::permission('edit site settings')->pluck('email');
+        return self::permission('edit site settings')->pluck('email')->toArray();
     }
 }
