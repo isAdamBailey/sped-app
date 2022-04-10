@@ -68,7 +68,7 @@ class FetchLaws extends Command
         $fullMessage .= $content['message'].'\r\n';
         $this->info($content['message']);
 
-        $this->sendAdminEmails('Command '.$this->name.' ran from '.config('app.name').'. '.$fullMessage);
+        $this->sendAdminEmails($this->name.' for '.$this->argument('state').'/r/n. '.$fullMessage);
         return 0;
     }
 

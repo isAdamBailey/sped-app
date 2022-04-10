@@ -1,5 +1,5 @@
 @component('mail::message')
-{{ $message }}
+{{{ $message }}}
 
 @component('mail::button', ['url' => config('app.url')])
     Go to {{ config('app.name') }}

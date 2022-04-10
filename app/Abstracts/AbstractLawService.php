@@ -69,7 +69,7 @@ abstract class AbstractLawService
     protected function response(int $storedCount, int $foundCount, string $name): array
     {
         $message = $storedCount !== $foundCount
-            ? 'We had '.$storedCount.' stored, but found '.$foundCount.'. '
+            ? 'We had '.$storedCount.' '.$name.' stored, but found '.$foundCount.'. '
             : '';
         $message .= $foundCount ? $foundCount.' '.$name.' were imported' : 'no '.$name.' were imported';
 
