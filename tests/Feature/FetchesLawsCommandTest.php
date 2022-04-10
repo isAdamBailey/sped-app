@@ -64,8 +64,8 @@ class FetchesLawsCommandTest extends TestCase
     private function helperTestChapterContents(string $state, array $data)
     {
         $this->artisan('fetch:laws '.$state.' '.$data['title'])
-            ->expectsOutput('We had 0 stored, but found '.$data['chapterCount'].'. '.$data['chapterCount'].' chapters were imported')
-            ->expectsOutput('We had 0 stored, but found '.$data['sectionCount'].'. '.$data['sectionCount'].' sections were imported')
+            ->expectsOutput('We had 0 chapters stored, but found '.$data['chapterCount'].'. '.$data['chapterCount'].' chapters were imported')
+            ->expectsOutput('We had 0 sections stored, but found '.$data['sectionCount'].'. '.$data['sectionCount'].' sections were imported')
             ->expectsOutput($data['sectionCount'].' contents were imported')
             ->assertExitCode(0);
 
