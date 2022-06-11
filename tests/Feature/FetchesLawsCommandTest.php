@@ -30,7 +30,7 @@ class FetchesLawsCommandTest extends TestCase
 
     public function test_fetches_washington_chapters_and_contents()
     {
-        $this->markTestSkipped('it takes a long time');
+//        $this->markTestSkipped('it takes a long time');
         // title 1 has 10 chapters totalling 143 sections
         $this->helperTestChapterContents('washington', [
             'title' => 1,
