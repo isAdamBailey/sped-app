@@ -62,7 +62,7 @@
 </template>
 
 <script setup>
-import { defineProps, ref, computed } from "vue";
+import { ref, computed } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import SearchInput from "@/Jetstream/SearchInput";
