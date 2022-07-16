@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full bg-white px-4">
+    <div class="w-full rounded-full bg-white">
         <label for="search" class="hidden">Search</label>
         <input
             id="search"

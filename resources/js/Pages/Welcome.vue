@@ -10,10 +10,7 @@
             </div>
 
             <div class="-mx-2 -mx-4 mt-10 md:flex">
-                <div
-                    class="mx-3 px-2"
-                    :class="registrationEnabled ? 'md:w-1/3' : ''"
-                >
+                <div class="mx-3 px-2">
                     <i class="ri-book-open-fill text-7xl text-blue-900"></i>
 
                     <h3 class="mb-0 text-2xl text-blue-900">States Laws</h3>
@@ -44,11 +41,7 @@
                         </li>
                     </ul>
                 </div>
-
-                <div
-                    v-if="registrationEnabled"
-                    class="mx-3 mt-8 px-2 md:mt-0 md:w-1/3"
-                >
+                <div class="mx-3 mt-8 px-2 md:mt-0 md:w-1/3">
                     <i class="ri-draft-fill text-7xl text-blue-900"></i>
 
                     <h3 class="mb-0 text-2xl text-blue-900">Documentation</h3>
@@ -61,10 +54,7 @@
                     </p>
                 </div>
 
-                <div
-                    v-if="registrationEnabled"
-                    class="mx-3 mt-8 px-2 md:mt-0 md:w-1/3"
-                >
+                <div class="mx-3 mt-8 px-2 md:mt-0 md:w-1/3">
                     <i class="ri-team-fill text-7xl text-blue-900"></i>
 
                     <h3 class="mb-0 text-2xl text-blue-900">
@@ -79,12 +69,12 @@
             </div>
 
             <div class="mt-5 md:mt-12">
-                <Link :href="route('laws.index')" class="mr-4">
-                    <jet-button
-                        class="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 py-3 px-10 text-3xl text-orange-300 transition hover:text-gray-900 hover:shadow-lg"
-                        >Search Laws</jet-button
-                    >
-                </Link>
+                <div
+                    class="rounded-full bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 py-3 px-10 text-3xl text-orange-300 transition hover:text-gray-900 hover:shadow-lg"
+                >
+                    Search Laws
+                    <SearchInput class="mb-10" route-name="laws.index" />
+                </div>
 
                 <Link v-if="$page.props.user.name" :href="route('dashboard')">
                     <secondary-button>Dashboard</secondary-button>
@@ -112,13 +102,15 @@
 import { defineComponent } from "vue";
 import HomeLayout from "@/Layouts/HomeLayout";
 import JetButton from "@/Jetstream/Button";
-import SecondaryButton from "../Jetstream/SecondaryButton";
+import SecondaryButton from "@/Jetstream/SecondaryButton";
+import SearchInput from "@/Jetstream/SearchInput";
 
 export default defineComponent({
     components: {
         SecondaryButton,
         HomeLayout,
         JetButton,
+        SearchInput,
     },
 
     props: {
